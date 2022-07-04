@@ -26,13 +26,13 @@ jobs:
             submodules: 'true'
 
         - uses: actions/cache@v3
-          id: cache-nuget-uheadless
+          id: cache-nuget-h5yr
           with:
             path: |
               ~/.nuget/packages
             key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
             restore-keys: |
-              ${{ runner.os }}-nuget-uheadless
+              ${{ runner.os }}-nuget-h5yr
 
         - name: Create Build Directory
           run: mkdir _build
