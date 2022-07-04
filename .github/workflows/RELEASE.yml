@@ -37,15 +37,13 @@ jobs:
         - name: Create Build Directory
           run: mkdir _build
 
-        #- name: Restore Packages
-        # run: dotnet restore ${{env.SolutionName}}
-        # - name: Variable Substitution
-        #  uses: microsoft/variable-substitution@v1
-        #  with:
-            # comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-        #    files: 'UmbHost.Web/appsettings.json'
-        #  env:
-        #    MailGun.BaseUrl: ${{ secrets.RELEASE_TEST_VALUE }}
+        - name: Variable Substitution
+          uses: microsoft/variable-substitution@v1
+          with:
+              #comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+            files: 'appsettings.json'
+          env:
+            ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
             
         - name: Build Solution
           run: | 
