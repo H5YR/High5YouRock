@@ -1,0 +1,66 @@
+name: Build, publish and deploy project to UmbHost
+
+on:
+  workflow_dispatch: 
+
+env:
+    SolutionName: ${{ secrets.SOLUTION_NAME }}
+    BuildPlatform: Any CPU
+    BuildConfiguration: Release
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    steps:
+        - name: Get current date
+          id: date
+          uses: Kaven-Universe/github-action-current-date-time@v1.1.0
+          with:
+            format: "YYYY_MM_DD HH_mm_ss_SSS"
+            
+        - name: Checkout
+          uses: actions/checkout@v3.0.0
+          with:
+            submodules: 'true'
+
+        - uses: actions/cache@v3
+          id: cache-nuget-h5yr
+          with:
+            path: |
+              ~/.nuget/packages
+            key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-nuget-h5yr
+
+        - name: Create Build Directory
+          run: mkdir _build
+
+        - name: Variable Substitution
+          uses: microsoft/variable-substitution@v1
+          with:
+              #comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
+            files: 'appsettings.json'
+          env:
+            ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
+            
+        - name: Build Solution
+          run: | 
+            dotnet build ${{env.SolutionName}} /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:DeleteExistingFiles=True /p:SkipInvalidConfigurations=true /p:IncludeSetAclProviderOnDestination=False /p:AutoParameterizationWebConfigConnectionStrings=False /p:platform="${{env.BuildPlatform}}" /p:configuration="${{env.BuildConfiguration}}" /p:PackageLocation="_build"
+            
+        - name: Deploy to UmbHost EU
+          uses: UmbHost/umbhost-web-deploy@v1.0.1
+          with:
+            website-name: ${{ secrets.UMBHOST_WEBSITE_NAME }}
+            server-computer-name: ${{ secrets.UMBHOST_SERVER_COMPUTER_NAME }}
+            server-username: ${{ secrets.UMBHOST_USERNAME }}
+            server-password: ${{ secrets.UMBHOST_PASSWORD }}
+            source-path: '_build'
+            source-fileName: h5yr.zip
+            
+        - name: Tag Build
+          uses: tvdias/github-tagger@v0.0.1
+          with:
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            tag: ProductionBuild-${{ steps.date.outputs.year }}${{ steps.date.outputs.month }}${{ steps.date.outputs.day }}-${{ github.run_number }}
