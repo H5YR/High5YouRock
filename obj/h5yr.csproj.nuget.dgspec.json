@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[68.2.0.9, )"
             },
+            "TweetinviAPI": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
             "Umbraco.Cms": {
               "target": "Package",
               "version": "[10.0.0, )"

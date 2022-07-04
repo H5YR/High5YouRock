@@ -20,5 +20,6 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\owain_h0f7sp0\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.2</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgLucene_Net Condition=" '$(PkgLucene_Net)' == '' ">C:\Users\owain_h0f7sp0\.nuget\packages\lucene.net\4.8.0-beta00016</PkgLucene_Net>
+    <PkgTweetinviAPI Condition=" '$(PkgTweetinviAPI)' == '' ">C:\Users\owain_h0f7sp0\.nuget\packages\tweetinviapi\5.0.4</PkgTweetinviAPI>
   </PropertyGroup>
 </Project>

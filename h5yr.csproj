@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="TweetinviAPI" Version="5.0.4" />
     <PackageReference Include="Umbraco.Cms" Version="10.0.0" />
   </ItemGroup>
 
@@ -21,12 +22,59 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot" />
+    <None Include="wwwroot\static\css\base\base.scss" />
+    <None Include="wwwroot\static\css\base\reset.scss" />
+    <None Include="wwwroot\static\css\base\typography.scss" />
+    <None Include="wwwroot\static\css\config\mixins.scss" />
+    <None Include="wwwroot\static\css\config\variables.scss" />
+    <None Include="wwwroot\static\css\first-paint.css" />
+    <None Include="wwwroot\static\css\first-paint.css.map" />
+    <None Include="wwwroot\static\css\first-paint.scss" />
+    <None Include="wwwroot\static\css\layout\container.scss" />
+    <None Include="wwwroot\static\css\layout\footer.scss" />
+    <None Include="wwwroot\static\css\layout\header.scss" />
+    <None Include="wwwroot\static\css\layout\navigation.scss" />
+    <None Include="wwwroot\static\css\layout\section.scss" />
+    <None Include="wwwroot\static\css\maps\style.css.map" />
+    <None Include="wwwroot\static\css\maps\_svg-sprite-template.scss" />
+    <None Include="wwwroot\static\css\maps\_svg-sprite.scss" />
+    <None Include="wwwroot\static\css\modules\buttons.scss" />
+    <None Include="wwwroot\static\css\modules\content.scss" />
+    <None Include="wwwroot\static\css\modules\cookie-notification.scss" />
+    <None Include="wwwroot\static\css\modules\forms.scss" />
+    <None Include="wwwroot\static\css\modules\friends.scss" />
+    <None Include="wwwroot\static\css\modules\grid.scss" />
+    <None Include="wwwroot\static\css\modules\hero.scss" />
+    <None Include="wwwroot\static\css\modules\icons.scss" />
+    <None Include="wwwroot\static\css\modules\richtext-rte.scss" />
+    <None Include="wwwroot\static\css\modules\richtext.scss" />
+    <None Include="wwwroot\static\css\modules\title.scss" />
+    <None Include="wwwroot\static\css\modules\tweets.scss" />
+    <None Include="wwwroot\static\css\rte.scss" />
+    <None Include="wwwroot\static\css\style.css" />
+    <None Include="wwwroot\static\css\style.css.map" />
+    <None Include="wwwroot\static\css\style.scss" />
+    <None Include="wwwroot\static\css\vendor\README.md" />
+    <None Include="wwwroot\static\images\icons\sprite-icon-comment.svg" />
+    <None Include="wwwroot\static\images\icons\sprite-icon-hand.svg" />
+    <None Include="wwwroot\static\images\icons\sprite-icon-heart.svg" />
+    <None Include="wwwroot\static\images\icons\sprite-icon-mail.svg" />
+    <None Include="wwwroot\static\images\icons\sprite-icon-retweet.svg" />
+    <None Include="wwwroot\static\images\icons\sprite-icon-twitter.svg" />
+    <None Include="wwwroot\static\images\icons\sprite-logo.svg" />
+    <None Include="wwwroot\static\images\sprite\sprite.png" />
+    <None Include="wwwroot\static\images\sprite\sprite.svg" />
+    <None Include="wwwroot\static\scripts\all.js" />
+    <None Include="wwwroot\static\scripts\libs.js" />
+    <None Include="wwwroot\static\tasks\css.tasks.js" />
+    <None Include="wwwroot\static\tasks\image.tasks.js" />
+    <None Include="wwwroot\static\tasks\js.tasks.js" />
   </ItemGroup>
 
   <!-- Keep this as false if ModelsBuilder mode is InMemoryAuto -->
   <PropertyGroup>
     <RazorCompileOnBuild>false</RazorCompileOnBuild>
     <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <UserSecretsId>d7a03a75-3b96-40fd-b776-54d5fd3da95f</UserSecretsId>
   </PropertyGroup>
 </Project>

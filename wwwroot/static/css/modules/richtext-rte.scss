@@ -1,0 +1,124 @@
+/* We're using an inner-outer file structure here so that the umbraco text
+  editor in the CMS can use a different scss file which imports the inner
+  file but not the outer file. This file will be used by the site as well
+  as the CMS, richtext.scss will only be used by the site, not the cms
+*/
+.left-float {
+  margin: 0 10px 10px 0;
+}
+
+.right-float {
+  margin: 0 0 10px 10px;
+}
+
+p {
+  
+  a {
+    text-decoration: none;
+    color: $purple;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+img {
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  display: block;
+  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 30px 0;
+
+  th,td {
+    padding: 10px 15px;
+  }
+
+  thead th {
+    text-align: left;
+    background-color: grey;
+    font-weight: bold;
+  }
+
+  tbody {
+    tr {
+      &:nth-child(odd) {
+        background-color: grey;
+      }
+    }
+  }
+}
+
+ul {
+  list-style: disc outside;
+  padding-left: 1.5em;
+}
+
+ol {
+  list-style: decimal outside;
+  padding-left: 1.5em;
+}
+
+li {
+  padding-bottom: 8px;
+  line-height: 20px;
+}
+
+/* TODO: Add blockquote styling */
+blockquote {
+  position: relative;
+
+  &:before,
+  &:after {
+    content: '\0201C';
+    position: absolute;
+    font-style: normal;
+    top: 0;
+    left: 0;
+  }
+
+  &:after {
+    content: '\0201D';
+  }
+
+  &:after {
+    top: auto;
+    left: auto;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+h2, h3, h4, h5, h6 {
+  margin-top: 2.5rem;
+}
+
+h2 {
+  @include font-size(28);
+}
+
+h3 {
+  @include font-size(26);
+}
+
+h4 {
+  @include font-size(24);
+}
+
+.videoWrapper {
+  width: 100%;
+  position: relative;
+  text-align: center;
+  margin: 2rem 0;
+}

@@ -1,0 +1,89 @@
+/*** replace with project specific fonts ***/
+
+body {
+  font-family: 'Montserrat', Helvetica, sans-serif;
+}
+
+html {
+  font-size: 16px;
+  font-weight: 100;
+  line-height: 1.6rem;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+  color: $purple2;
+  font-weight: 800;
+}
+
+h1, .h1 {
+  @include font-size(40);
+  margin-bottom: 1.5rem;
+
+  @include media($mega, $huge) {
+    @include font-size(38);
+  }
+
+  @include media($huge, $large) {
+    @include font-size(36);
+  }
+
+  @include media($large, $medium) {
+    @include font-size(34);
+  }
+
+  @include media($medium, $small) {
+    @include font-size(32);
+  }
+
+  @include media($small, $tiny) {
+    @include font-size(30);
+  }
+}
+
+.h1-large {
+  @include font-size(50);
+  margin-bottom: 2.5rem;
+
+  @include media($mega, $huge) {
+    @include font-size(47);
+  }
+
+  @include media($huge, $large) {
+    @include font-size(44);
+  }
+
+  @include media($large, $medium) {
+    @include font-size(41);
+  }
+
+  @include media($medium, $small) {
+    @include font-size(38);
+  }
+
+  @include media($small, $tiny) {
+    @include font-size(35);
+  }
+}
+
+h2, .h2 {
+  @include font-size(34);
+  margin-bottom: 1.5rem;
+}
+
+h3, .h3 {
+  @include font-size(30);
+}
+
+h4, .h4 {
+  @include font-size(26);
+}
+
+h4, .h4 {
+  @include font-size(24);
+}

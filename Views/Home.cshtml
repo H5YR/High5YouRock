@@ -1,0 +1,64 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "Master.cshtml";
+}
+
+    @* start: hero *@
+    <div class="hero">
+
+        <div class="container">
+        
+            <div class="hero__inner">
+
+                <div class="hero__animation" id="js-hero-animation"></div>
+                <noscript>Enable JavaScript to view our high 5 animation!</noscript>
+            
+            </div>
+        
+        </div>
+
+    </div>
+    @* end: hero *@
+
+    @* start: intro content block *@
+    <section class="[ section -overhang-large -margin-bottom ]">
+        <div class="container">
+            <div class="[ content-block -align-center ]">
+                @if(Model.PageTitle != null)
+                {
+                    <h1>@Model.PageTitle</h1>
+                }
+                @if (Model.BodyText != null)
+                {
+                    @Model.BodyText
+                }
+                <div class="[ button-holder -margin-top ]">
+                    <a class="[ button -icon-left ]" href="https://twitter.com/intent/tweet?button_hashtag=H5YR">
+                        <svg class="[ icon icon--button-twitter ]">
+                            <use xlink:href="#sprite-icon-twitter"></use>
+                        </svg>
+                        <span>Tweet a high five</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    @* end: intro content block *@
+
+    <section class="[ section -margin-top -margin-bottom ]">
+        <div class="container">
+            @await  Component.InvokeAsync("Tweets")
+         
+        </div>
+    </section>
+
+@section LastScripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.7/jquery.timeago.min.js" defer></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("time.timeago").timeago();
+        });
+    </script>
+}

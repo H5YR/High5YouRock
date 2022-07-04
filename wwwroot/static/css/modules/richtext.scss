@@ -1,0 +1,20 @@
+.rich-text {
+
+  > * {
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* We're using an inner-outer file structure here so that the umbraco text 
+    editor in the CMS can use a different scss file which imports the inner 
+    file but not the outer file. richtext-rte will be used by the site as well
+    as the CMS, the code here will only be used by the site, not the cms. So code
+    being used by the CMS text editor should NOT be put here
+  */
+  @import "richtext-rte";		
+}

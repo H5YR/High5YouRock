@@ -1,0 +1,158 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    Layout = null;
+
+
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @*Global site tag (gtag.js) - Google Analytics*@
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135183194-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-135183194-1');
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.2/lottie.min.js" integrity="sha256-G8zbnVrieJloV/OI6KCIpVKvP5uWGxqJ59/Z7w/MhAA=" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Model.Value("websiteTitle", fallback: Fallback.ToAncestors)</title>
+    @{
+    var socialImage = Model.Value<IPublishedContent>("socialImage", fallback: Fallback.ToAncestors);
+    var metaDescription = Model.Value<string>("metaDescription");
+    if(string.IsNullOrWhiteSpace(metaDescription) == false)
+    {
+        <meta name="description" content="@metaDescription" />
+        <meta property="og:description" content="@metaDescription" />
+    }
+    }
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="@Model.Value("websiteTitle", fallback: Fallback.ToAncestors)" />
+    <meta property="og:url" content="@Model.Url(mode:UrlMode.Absolute)" /> 
+    
+    
+    @if(socialImage != null){
+        var url = Context.Request.PathBase.ToString();
+      
+    var socialUrl = url + socialImage.Url();
+    <meta property="og:image" content="@socialUrl" />
+    }
+    <meta property="og:site_name" content="#H5YR High Five You Rock"/>
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@("@h5yr")" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    @* start: FirstPaint (https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint) *@
+    @await Html.PartialAsync("~/Views/Shared/FirstPaint.cshtml")
+    @* end: FirstPaint *@
+
+</head>
+<body data-layout="">
+
+    @*Google Tag Manager (noscript)*@
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PM6879J" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    @*End Google Tag Manager (noscript)*@
+
+    @* start: header *@
+    <header class="header">
+        <div class="container">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <a href="/">
+                        <svg class="[ icon icon--header-logo ]">
+                            <use xlink:href="#sprite-logo"></use>
+                        </svg>
+                    </a>
+                </div>
+                <nav class="navigation" role="navigation">
+                    @{
+                        var selection = Umbraco.ContentAtRoot().FirstOrDefault()
+                        .Children()
+                        .Where(x => x.IsVisible());
+                    }
+                    @foreach (var item in selection)
+                    {
+                        <a href="@item.Url()" class="navigation__item">@item.Name</a>
+                    }
+                </nav>
+            </div>
+        </div>
+    </header>
+    @* end: header *@
+
+    @* start: main *@
+    <main role="main">
+        @RenderBody()
+    </main>
+    @* end: main *@
+
+    @* start: friends *@
+    <section class="[ section -margin-top -margin-bottom ]">
+        <div class="container">
+            <div class="[ content-block -align-center ]">           
+                <h2 class="h3">Friends of H5YR</h2>
+                <div class="friends">
+                    <a class="friends__item" href="https://www.umbraco.com" target="_blank" rel="noopener">
+                        <img src="//images.weserv.nl/?url=https://h5yr.com/assets/images/umbraco_logo.png&w=150&h=150")" alt="Umbraco" />
+                    </a>
+                    <a class="friends__item" href="https://carbonsix.digital/" target="_blank" rel="noopener">
+                        <img src="//images.weserv.nl/?url=https://h5yr.com/assets/images/carbon-six-wide-logo.png&w=300")" alt="Carbon Six Digital" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    @* end: friends *@
+
+    @* start: footer *@
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <svg class="footer__logo">
+                    <use xlink:href="#sprite-logo"></use>
+                </svg>
+                <p>Hosted on <a href="https://umbraco.com" target="_blank" rel="noopener" class="footer__link">Umbraco Cloud</a>, built by the <a href="https://our.umbraco.com" target="_blank" rel="noopener" class="footer__link">Umbraco Community</a></p>
+            </div>
+        </div>
+    </footer>
+    @* end: footer *@
+
+    @* start: Optmised CSS Delivery - https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery *@
+    <noscript id="deferred-styles">
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+    </noscript>
+    <script>
+      var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+      };
+      var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+          window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+      else window.addEventListener('load', loadDeferredStyles);
+    </script>
+    @* end: Optmised CSS Delivery *@
+
+    @RenderSection("LastScripts", false)
+
+    @* start: SVG Sprite *@
+    <div class="svg-sprite">
+    @await Html.PartialAsync("~/Views/Shared/SVG_Sprite.cshtml")
+    </div>
+    @* end: SVG Sprite *@
+
+    <script src="/static/scripts/libs.js"></script>
+    <script src="/static/scripts/all.js" defer></script>
+</body>
+</html>

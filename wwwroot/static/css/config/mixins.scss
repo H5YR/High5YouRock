@@ -1,0 +1,54 @@
+/* convert to em from px */
+@function em($px, $base: $base-font-size) {
+  @return ($px / $base) * 1em;
+}
+
+/* convert to rem from px */
+@function calculateRem($px, $base: $base-font-size) {
+  $remSize: $px / $base;
+  @return #{$remSize}rem;
+}
+
+/* unit conversion used by font size */
+@function meta-unit($number, $unit) {
+
+  @if $unit == "px" {
+    @return $number+px;
+  }
+  @if $unit == "%" {
+    @return $number+"%";
+  }
+  @if $unit == "em" {
+    @return em($number)+px;
+  }
+  @if $unit == "rem" {
+    @return calculateRem($number);
+  }
+}
+
+/* media query mixins that use breakpoints set in constants.scss */
+@mixin media($max, $min: "") {
+
+  @if ( $min == "" ) {
+    @media all and (max-width: #{$max} ){
+      @content;
+    }
+  } @else {
+    @media all and (max-width: #{$max} ) and (min-width: #{$min}) {
+      @content;
+    }
+  }
+}
+
+@mixin media-min($min) {
+  @media all and (min-width: #{$min} ){
+    @content;
+  }
+}
+
+@mixin font-size($size, $line-height: ($size + 6)) {
+  font-size: $size + px;
+  font-size: meta-unit($size,rem);
+  line-height: meta-unit($line-height,px);
+  line-height: meta-unit($line-height,rem);
+}

@@ -1,0 +1,21 @@
+.title {
+
+  // Title colour variation
+  &.-grey {
+    color: grey;
+  }
+
+  &.-white {
+    color: $white;
+  }
+
+  // Title alignment
+  &.-center {
+    text-align: center;
+  }
+
+  // Used for emphasising parts of title in different colour
+  .purple {
+    color: $purple;
+  }
+}

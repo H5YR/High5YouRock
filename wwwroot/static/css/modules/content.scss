@@ -1,0 +1,16 @@
+.content-block {
+  box-shadow: 0 3px 6px rgba($black, 0.2);
+  border-radius: 3px;
+  background-color: $white;
+  padding: 2rem 2rem 2.5rem;
+  position: relative;
+
+  &.-align-center {
+    text-align: center;
+  }
+}
+
+.content-block__inner {
+  max-width: 780px;
+  margin: 0 auto;
+}

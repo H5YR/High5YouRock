@@ -1,0 +1,125 @@
+.tweetgrid-panel { -webkit-column-width: 366px; column-width: 366px; -webkit-column-gap: 30px; column-gap: 30px;}
+.tweetgrid-panel .tweetcard { -webkit-column-break-inside: avoid; break-inside: avoid-column; }
+.tweetgrid-panel .tweetcard + .tweetcard { margin-top: 30px; }
+
+.tweets .pagination { padding: 60px 20px; text-align: center; }
+
+
+.load-more-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.load-more {
+  display: inline-block;
+}
+
+.spinner {
+  display: none;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-top-color: $white;
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tweets__title {
+  margin-bottom: 2rem;
+}
+
+.tweets__counter {
+  @include font-size(18);
+  font-weight: bold;
+}
+
+.tweets__counter-data {
+  color: $purple;
+}
+
+.tweet__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-gap: 30px;
+  grid-auto-flow: dense;
+}
+
+.tweet__card {
+  @include font-size(14);
+  background: $white;
+  box-shadow: 0 3px 6px rgba($black, 0.2);
+  border-radius: 3px;
+  padding: 1.5rem 1.5rem 1.5rem 1.25rem;
+}
+
+.tweet__avatar {
+  width: 2.5rem;
+  float: left;
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.tweet__info {
+  font-weight: bold;
+  margin-left: 4rem;
+}
+
+.tweet__user-detail {
+  font-weight: bold;
+
+  a, time {
+    font-weight: bold;
+  }
+
+  a {
+    color: $purple;
+    text-decoration: none;
+  }
+
+  time {
+    color: $grey;
+  }
+}
+
+.tweet__content {
+  margin-top: 1rem;
+
+  a {
+    font-weight: normal;
+    color: $grey;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.tweet__actions {
+  margin-left: 4rem;
+  padding: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  list-style-type: none;
+}
+
+.tweet__actions-item {
+  margin-right: 1rem;
+
+  span {
+    position: absolute;
+    left: -9999px;
+    clip: rect(1px, 1px, 1px, 1px);
+  }
+}
+
+.h5yr {
+  font-weight: bold;
+  color: $purple;
+}

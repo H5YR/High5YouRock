@@ -1,0 +1,18 @@
+.section {
+
+  &.-margin-top {
+    margin-top: 3rem;
+  }
+
+  &.-margin-bottom {
+    margin-bottom: 3rem;
+  }
+
+  &.-overhang-small {
+    margin-top: -10vh;
+  }
+
+  &.-overhang-large {
+    margin-top: -10vh; // Hero height is calculated on vh, makes sense to use vh here
+  }
+}

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<h5yr.ViewComponents.TweetModel>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="tweets">
+    <div class="tweets__header">
+        <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
+        <div class="tweets__counter">
+            @*Total #H5YRs in 2019: <data class="tweets__counter-data" id="tweet-count">@numberOfTweets</data>*@
+        </div>
+    </div>
+
+    <div class="tweet__grid">
+   
+
+@if(Model != null && Model.Any())
+{
+    foreach(var tweet in Model)
+    {
+           <div class="tweet__card">
+        <div class="tweet__avatar">
+            <a href="https://twitter.com/@tweet.ScreenName" target="_blank" rel="noopener">
+                <img src="@tweet.Avatar" alt="Profile image of @tweet.ScreenName" />
+            </a>
+        </div>
+        <div class="tweet__info">
+            <div class="tweet__user-detail">
+                <a href="https://twitter.com/@tweet.ScreenName" target="_blank" rel="noopener">@tweet.Username</a>
+                <time class="timeago" datetime="@tweet.TweetedOn.ToString()">@tweet.TweetedOn.ToString("dd/MM/yyyy")</time>
+            </div>
+            <div class="tweet__content">
+                <a href="@tweet.Url" target="_blank" rel="noopener">
+                    @tweet.Content
+                </a>
+            </div>
+        </div>
+        <p></p>
+        <ul class="tweet__actions">
+            <li class="tweet__actions-item">
+                <a href="https://twitter.com/intent/tweet?in_reply_to=@tweet.ReplyToTweet" target="_blank" rel="noopener">
+                    <svg class="[ icon icon--comment ]">
+                        <use xlink:href="#sprite-icon-comment"></use>
+                    </svg>
+                    <span>reply</span>
+                </a>
+            </li>
+            <li class="tweet__actions-item">
+                <a href="https://twitter.com/intent/retweet?tweet_id=@tweet.ReplyToTweet" target="_blank" rel="noopener">
+                    <svg class="[ icon icon--retweet ]">
+                        <use xlink:href="#sprite-icon-retweet"></use>
+                    </svg>
+                    <span>retweet</span>
+                </a>
+            </li>
+            <li class="tweet__actions-item">
+                <a href="https://twitter.com/intent/favorite?tweet_id=@tweet.ReplyToTweet" target="_blank" rel="noopener">
+                    <svg class="[ icon icon--heart ]">
+                        <use xlink:href="#sprite-icon-heart"></use>
+                    </svg>
+                    <span>like</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+        
+    }
+}
+ </div>
+
+    <div class="load-more-container">
+        <button class="button load-more">
+            <span>Load More</span>
+            <div class="spinner"></div>
+        </button>
+    </div>
+</div>

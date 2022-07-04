@@ -34,6 +34,14 @@ namespace h5yr
                 .AddWebsite()
                 .AddComposers()
                 .Build();
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
         }
 
         /// <summary>
@@ -47,6 +55,9 @@ namespace h5yr
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            
+            app.UseSession();
 
             app.UseUmbraco()
                 .WithMiddleware(u =>

@@ -489,3 +489,13 @@ D:\dev\h5yr\obj\Debug\net6.0\refint\h5yr.dll
 D:\dev\h5yr\obj\Debug\net6.0\h5yr.pdb
 D:\dev\h5yr\obj\Debug\net6.0\h5yr.genruntimeconfig.cache
 D:\dev\h5yr\obj\Debug\net6.0\ref\h5yr.dll
+D:\dev\h5yr\bin\Debug\net6.0\appsettings-schema.json
+D:\dev\h5yr\bin\Debug\net6.0\Autofac.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.Controllers.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.Core.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.Credentials.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.Logic.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.Security.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.Streams.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.WebLogic.dll
+D:\dev\h5yr\bin\Debug\net6.0\Tweetinvi.dll
