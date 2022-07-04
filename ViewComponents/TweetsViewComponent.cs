@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using h5yr.Settings;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Tweetinvi;
 using Tweetinvi.Models;
 
@@ -6,17 +8,22 @@ namespace h5yr.ViewComponents
 {
     public class TweetsViewComponent : ViewComponent
     {
-        private readonly IConfiguration Configuration;
+        private readonly string _consumerKey;
+        private readonly string _consumerSecret;
+        private readonly string _accessToken;
+        private readonly string _accessTokenSecret;
 
-        public TweetsViewComponent(IConfiguration config)
+        public TweetsViewComponent(IOptions<TwitterSettings> twitterSettings)
         {
-            Configuration = config;
+            var ts = twitterSettings.Value;
+            if (ts != null)
+            {
+                _consumerKey = ts.ConsumerKey;
+                _consumerSecret = ts.ConsumerSecret;
+                _accessToken = ts.AccessToken;
+                _accessTokenSecret = ts.AccessTokenSecret;
+            }
         }
-        private string consumerKey => Configuration["TWITTER_CONSUMER_KEY"];
-        private string consumerSecret => Configuration["TWITTER_CONSUMER_SECRET"];
-        private string accessToken => Configuration["TWITTER_ACCESS_TOKEN"];
-        private string accessTokenSecret => Configuration["TWITTER_ACCESS_TOKEN_SECRET"];
-
 
         public IViewComponentResult Invoke(string loadmore = "false")
         {
@@ -42,7 +49,7 @@ namespace h5yr.ViewComponents
         private List<TweetModel> GetAllTweets(int tweetsToSkip, int tweetsToReturn)
         {
             // You need to make sure your app on dev.twitter.com has read and write permissions if you wish to tweet!
-            var creds =new TwitterCredentials(consumerKey, consumerSecret, accessToken, accessTokenSecret);
+            var creds =new TwitterCredentials(_consumerKey, _consumerSecret, _accessToken, _accessTokenSecret);
             var userClient = new TwitterClient(creds);
 
             var searchResults = userClient.Search.SearchTweetsAsync("#h5yr");
