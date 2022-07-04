@@ -1,3 +1,5 @@
+using h5yr.Settings;
+
 namespace h5yr
 {
     public class Startup
@@ -42,6 +44,8 @@ namespace h5yr
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
+            services.Configure<TwitterSettings>(_config.GetSection("Twitter"));
         }
 
         /// <summary>
