@@ -44,10 +44,10 @@ jobs:
             files: 'appsettings.json'
           env:
             ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
-            Twitter.ConsumerKey: ${{secrets.TWITTER_CONSUMER_KEY}}
-            Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
-            Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
-            Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
+            Twitter.ConsumerKey: ${{env.TWITTER_CONSUMER_KEY}}
+            Twitter.ConsumerSecret: ${{env.TWITTER_CONSUMER_SECRET}}
+            Twitter.AccessToken: ${{env.TWITTER_ACCESS_TOKEN}}
+            Twitter.AccessTokenSecret: ${{env.TWITTER_ACCESS_TOKEN_SECRET}}
             
         - name: Build Solution
           run: | 
