@@ -32,15 +32,7 @@ namespace h5yr.ViewComponents
 
             List<TweetModel> tweets;
 
-            if (loadmore == "false")
-            {
-             tweets = GetAllTweets(0, 12);
-
-            }
-            else
-            {
-                tweets = GetMoreTweets();
-            }
+            tweets = GetAllTweets(0, 12);
 
             return View(tweets);
         }
@@ -49,7 +41,7 @@ namespace h5yr.ViewComponents
         private List<TweetModel> GetAllTweets(int tweetsToSkip, int tweetsToReturn)
         {
             // You need to make sure your app on dev.twitter.com has read and write permissions if you wish to tweet!
-            var creds =new TwitterCredentials(_consumerKey, _consumerSecret, _accessToken, _accessTokenSecret);
+            var creds = new TwitterCredentials(_consumerKey, _consumerSecret, _accessToken, _accessTokenSecret);
             var userClient = new TwitterClient(creds);
 
             var searchResults = userClient.Search.SearchTweetsAsync("#h5yr");
@@ -80,24 +72,6 @@ namespace h5yr.ViewComponents
             return FetchTweets;
         }
 
-
-
-        [HttpGet]
-        public List<TweetModel> GetMoreTweets()
-        {
-
-            var tweetsToSkip = Convert.ToInt32(HttpContext.Session.GetInt32("NumberOfTweetsDisplayed"));
-
-            List<TweetModel> tweets = GetAllTweets(tweetsToSkip, 12);
-
-            HttpContext.Session.SetInt32("NumberOfTweetsDisplayed",tweetsToSkip + 12);
-
-            return tweets;
-        }
     }
-
-   
-
-
 }
 

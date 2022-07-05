@@ -7,7 +7,7 @@ $(".load-more").click(function (e) {
     $(this).addClass("loading");
     $(this).find(".spinner").show();
 
-    $.get("/getmoretweets", function (data) {
+    $.get("/loadmoretweets/gettweets", function (data) {
         $(".tweetgrid-panel").append(data);
         $(".load-more").removeClass("loading");
         $(".load-more").find(".spinner").hide();

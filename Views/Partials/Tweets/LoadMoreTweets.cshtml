@@ -1,16 +1,6 @@
 ﻿@model IEnumerable<h5yr.ViewComponents.TweetModel>
 
 
-<div class="tweets">
-    <div class="tweets__header">
-        <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
-        <div class="tweets__counter">
-            @*Total #H5YRs in 2019: <data class="tweets__counter-data" id="tweet-count">@numberOfTweets</data>*@
-        </div>
-    </div>
-
-    <div class="tweet__grid">
-   
 @if(Model != null && Model.Any())
 {
     foreach(var tweet in Model)
@@ -63,19 +53,3 @@
         
     }
 }
- </div>
-    <div class="load-more-container">
-        <button class="button load-more" id="loadmore">
-            <span>Load More</span>
-            <div class="spinner"></div>
-        </button>
-    </div>
-</div>
-
-@{
-    
-}
-
-<script id="tweets-template" type="text/x-handlebars-template">
-  <b>Tweet</b>
-</script>

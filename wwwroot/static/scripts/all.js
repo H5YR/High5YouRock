@@ -23,7 +23,7 @@
       $(this).addClass('loading');
       $(this).find('.spinner').show();
 
-      $.get('/loadmoretweets/index', function (data) {
+      $.get('api/loadmoretweets/', function (data) {
         $('.tweet__grid').append(data);
         $('.load-more').removeClass('loading');
         $('.load-more').find('.spinner').hide();
