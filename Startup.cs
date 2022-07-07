@@ -1,4 +1,5 @@
 using h5yr.Settings;
+using H5YR.Core.Services;
 
 namespace h5yr
 {
@@ -46,6 +47,7 @@ namespace h5yr
             });
 
             services.Configure<TwitterSettings>(_config.GetSection("Twitter"));
+            services.AddTransient<ITwitterHelper, TwitterHelper>();
         }
 
         /// <summary>
