@@ -35,6 +35,12 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-nuget-h5yr
 
+        - name: Sass Build
+          uses: gha-utilities/sass-build@v0.4.9
+          with:
+            source: wwwroot/static/css/style.scss
+            destination: wwwroot/static/css/style.css
+
         - name: Create Build Directory
           run: mkdir _build
 
