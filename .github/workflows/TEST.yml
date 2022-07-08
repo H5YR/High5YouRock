@@ -1,8 +1,8 @@
 name: Build, publish and test GitHub Workflow
 
 on:
-  push:
-    branches: [ feature/SASS_GitHub_Workflow ]
+  workflow_dispatch: 
+
 env:
     SolutionName: ${{ secrets.SOLUTION_NAME }}
     BuildPlatform: Any CPU
