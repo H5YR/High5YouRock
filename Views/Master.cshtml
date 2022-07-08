@@ -20,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.2/lottie.min.js" integrity="sha256-G8zbnVrieJloV/OI6KCIpVKvP5uWGxqJ59/Z7w/MhAA=" crossorigin="anonymous"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@Model.Value("websiteTitle", fallback: Fallback.ToAncestors)</title>
+    <title>@Model.Value("pageTitle", fallback: Fallback.ToAncestors)</title>
     @{
     var socialImage = Model.Value<IPublishedContent>("socialImage", fallback: Fallback.ToAncestors);
     var metaDescription = Model.Value<string>("metaDescription");
