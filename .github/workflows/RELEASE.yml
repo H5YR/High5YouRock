@@ -49,6 +49,8 @@ jobs:
             Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
             Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
             Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
+            API.Offline: "false"
+            API.CreateOfflineFile: "false"
             
         - name: Build Solution
           run: | 
