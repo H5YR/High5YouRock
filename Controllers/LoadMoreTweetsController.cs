@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Tweetinvi;
 using Tweetinvi.Models;
-using Umbraco.Cms.Web.Common.Controllers;
+
 
 namespace h5yr.Controllers
 {
@@ -17,9 +17,11 @@ namespace h5yr.Controllers
         private readonly string? _consumerSecret;
         private readonly string? _accessToken;
         private readonly string? _accessTokenSecret;
+        private readonly ILogger<LoadMoreTweetsController> _logger;
+        private readonly IOptions<APISettings> _apiSettings;
 
 
-        public LoadMoreTweetsController(IOptions<TwitterSettings> twitterSettings)
+        public LoadMoreTweetsController(IOptions<TwitterSettings> twitterSettings, ILogger<LoadMoreTweetsController> logger, IOptions<APISettings> apiSettings)
         {
             var ts = twitterSettings.Value;
             if (ts != null)
@@ -29,23 +31,37 @@ namespace h5yr.Controllers
                 _accessToken = ts.AccessToken;
                 _accessTokenSecret = ts.AccessTokenSecret;
             }
+            _logger = logger;
+            _apiSettings = apiSettings;
         }
 
         [HttpGet]
         public IActionResult GetTweets()
         {
             var tweetsToSkip = Convert.ToInt32(HttpContext.Session.GetInt32("NumberOfTweetsDisplayed"));
+            List<TweetModel> tweets = new();
 
-            var list = GetAllTweets(tweetsToSkip, 12);
+            if (_apiSettings.Value.Offline == null || _apiSettings.Value.Offline.ToLowerInvariant() != "true")
+            {
+                tweets = GetAllTweets(tweetsToSkip, 12);
+            }
+            else
+            {
+                string fileName = "TestTweets.json";
+                string jsonString = System.IO.File.ReadAllText(fileName);
+                tweets = System.Text.Json.JsonSerializer.Deserialize<List<TweetModel>>(jsonString)!;
+            }
+
+            
 
             HttpContext.Session.SetInt32("NumberOfTweetsDisplayed", tweetsToSkip+12);
 
-            return View("Tweets/LoadMoreTweets", list);
+            return View("Tweets/LoadMoreTweets", tweets);
         }
 
         private List<TweetModel> GetAllTweets(int tweetsToSkip, int tweetsToReturn)
         {
-            // You need to make sure your app on dev.twitter.com has read and write permissions if you wish to tweet!
+            // You need to make your own API keys on on dev.twitter.com if you want to pull in LIVE tweets
             var creds = new TwitterCredentials(_consumerKey, _consumerSecret, _accessToken, _accessTokenSecret);
             var userClient = new TwitterClient(creds);
 
