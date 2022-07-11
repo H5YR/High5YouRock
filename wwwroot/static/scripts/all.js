@@ -70,7 +70,7 @@
       renderer: 'svg',
       loop: 1,
       autoplay: true,
-      path: 'assets/data.json'
+      path: '/assets/data.json'
     };
 
     // Load animation parameters into lottie
