@@ -2,50 +2,56 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Page>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @{
-	Layout = "Master.cshtml";
+    Layout = "Master.cshtml";
 }
 
-    @* start: hero *@
-    <div class="hero">
+@* start: hero *@
+<div class="hero">
 
-        <div class="container">
-        
-            <div class="hero__inner">
+    <div class="container">
 
-                <div class="hero__animation" id="js-hero-animation"></div>
-                <noscript>Enable JavaScript to view our high 5 animation!</noscript>
-            
-            </div>
-        
+        <div class="hero__inner">
+
+            <div class="hero__animation" id="js-hero-animation"></div>
+            <noscript>Enable JavaScript to view our high 5 animation!</noscript>
+
         </div>
 
     </div>
-    @* end: hero *@
 
-    @* start: intro content block *@
-    <section class="[ section -overhang-large -margin-bottom ]">
-        <div class="container">
-            <div class="[ content-block -align-center ]">
-                @if(Model.PageTitle != null)
-                {
-                    <h1>@Model.PageTitle</h1>
-                }
-                @if (Model.BodyText != null)
-                {
-                    @Model.BodyText
-                }
-               
-            </div>
+</div>
+
+
+
+<section class="[ section -overhang-large -margin-bottom ]">
+    <div class="container">
+        <div class="[ content-block -align-center ]">
+            @if (Model.PageTitle != null)
+            {
+                <h1>@Model.PageTitle</h1>
+            }
+            @if (Model.BodyText != null)
+            {
+                @Model.BodyText
+            }
+
         </div>
-    </section>
-    @* end: intro content block *@
+        <div class="[ content-block -align-center ]">
+            @if(!Model.Script.IsNullOrWhiteSpace())
+            {
+                @Html.Raw(Model.Script)
+            }
+        </div>
+    </div>
+</section>
 
- 
+
+
 @section LastScripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.7/jquery.timeago.min.js" defer></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("time.timeago").timeago();
-        });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.7/jquery.timeago.min.js" defer></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("time.timeago").timeago();
+    });
+</script>
 }
