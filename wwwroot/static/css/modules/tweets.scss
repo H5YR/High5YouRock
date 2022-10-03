@@ -37,6 +37,7 @@
 .tweets__counter {
   @include font-size(18);
   font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 .tweets__counter-data {

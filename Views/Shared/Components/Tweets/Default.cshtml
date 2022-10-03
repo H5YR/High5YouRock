@@ -1,21 +1,21 @@
-﻿@model IEnumerable<h5yr.ViewComponents.TweetModel>
+﻿@model h5yr.ViewComponents.TweetsModel
 
 
 <div class="tweets">
     <div class="tweets__header">
         <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
         <div class="tweets__counter">
-            @*Total #H5YRs in 2019: <data class="tweets__counter-data" id="tweet-count">@numberOfTweets</data>*@
+            Total #H5YRs since October 2022: <data class="tweets__counter-data" id="tweet-count">@Model.NumberOfTweets</data>
         </div>
     </div>
 
     <div class="tweet__grid">
    
-@if(Model != null && Model.Any())
+@if(Model.Tweets?.Any() ?? false)
 {
-    foreach(var tweet in Model)
+    foreach(var tweet in Model.Tweets)
     {
-           <div class="tweet__card">
+        <div class="tweet__card">
         <div class="tweet__avatar">
             <a href="https://twitter.com/@tweet.ScreenName" target="_blank" rel="noopener">
                 <img src="@tweet.Avatar" alt="Profile image of @tweet.ScreenName" />
