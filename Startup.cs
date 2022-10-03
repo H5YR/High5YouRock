@@ -49,6 +49,7 @@ namespace h5yr
             services.Configure<TwitterSettings>(_config.GetSection("Twitter"));
             services.Configure<APISettings>(_config.GetSection("API"));
             services.AddTransient<ITwitterHelper, TwitterHelper>();
+            services.AddHostedService<TwitterAPICountHostedService>();
         }
 
         /// <summary>
