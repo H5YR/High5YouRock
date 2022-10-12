@@ -60,7 +60,7 @@ namespace H5YR.Core.Services
 
         public int GetTweetCount()
         {
-            if (apiSettings.Value.Offline != null || apiSettings.Value?.Offline?.ToLowerInvariant() == "true") { return 0; }
+            if (apiSettings.Value.Offline == null || apiSettings.Value?.Offline?.ToLowerInvariant() == "true") { return 0; }
                 
             var creds = new TwitterCredentials(settings.Value.ConsumerKey, settings.Value.ConsumerSecret, settings.Value.AccessToken, settings.Value.AccessTokenSecret);
             var userClient = new TwitterClient(creds);
@@ -70,7 +70,7 @@ namespace H5YR.Core.Services
             if (searchResults.Result?.Any() ?? false) 
             {
                 var dateTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
-                var recentTweets = searchResults.Result.Where(x => x.CreatedAt.Ticks <= dateTo.Ticks && x.CreatedAt.Ticks >= dateTo.AddDays(-1).Ticks);
+                var recentTweets = searchResults.Result.Where(x => x.CreatedAt.Ticks <= dateTo.AddDays(1).Ticks && x.CreatedAt.Ticks >= dateTo.Ticks);
 
                 return recentTweets.Count();
             }
