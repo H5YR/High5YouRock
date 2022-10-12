@@ -23,7 +23,7 @@ namespace H5YR.Core.Services
         private readonly ITwitterHelper _twitterHelper;
         private readonly ITweetCounterStore _tweetCounterStore;
 
-        private static TimeSpan HowOftenWeRepeat => TimeSpan.FromHours(6);
+        private static TimeSpan HowOftenWeRepeat => TimeSpan.FromMinutes(30);
         private static TimeSpan DelayBeforeWeStart => TimeSpan.FromMinutes(1);
 
         public TwitterAPICountHostedService(
@@ -58,10 +58,10 @@ namespace H5YR.Core.Services
             // Wrap the three content service calls in a scope to do it all in one transaction.
             using ICoreScope scope = _scopeProvider.CreateCoreScope();
 
-            _logger.LogInformation("Retrieving tweet count for {0}", DateTime.Now.ToString("dd/MM/yyyy"));
             var tweetCount = _twitterHelper.GetTweetCount();
             var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
-
+            _logger.LogInformation("Retrieving tweet count for " + DateTime.Now.ToString("dd/MM/yyyy") + ". " + tweetCount + " tweets found");
+            
             var tweetCountModel = new TweetCounter()
             {
                 Date = date,
@@ -72,6 +72,7 @@ namespace H5YR.Core.Services
 
             // Remember to complete the scope when done.
             scope.Complete();
+
             return Task.CompletedTask;
         }
     }

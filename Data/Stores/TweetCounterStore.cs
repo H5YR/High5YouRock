@@ -78,6 +78,8 @@ namespace h5yr.Data.Stores
 
                 if (tweetCount?.Any() ?? false)
                 {
+                    _logger.LogInformation("Existing tweet count found, updating existing value with quantity: " + poco.Quantity);
+                    
                     var row = tweetCount.FirstOrDefault();
                     row.Quantity = poco.Quantity;
                     _db.Update(row);
@@ -85,6 +87,7 @@ namespace h5yr.Data.Stores
                 }
                 else
                 {
+                    _logger.LogInformation("No tweet count found, adding new value with quantity: " + poco.Quantity + " for Date: " + poco.Date.ToLongDateString());
                     _db.Save(poco);
                     scope.Complete();
                 }
