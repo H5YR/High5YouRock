@@ -26,8 +26,7 @@ namespace h5yr.Core.Services {
             MastodonGetHashtagTimelineOptions options = new()
             {
                 Hashtag = "h5yr",
-                Limit = limit,
-                Local = true
+                Limit = limit
             };
 
             try
