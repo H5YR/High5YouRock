@@ -96,7 +96,7 @@
   a {
     font-weight: normal;
     color: $grey;
-    display: block;
+    word-break: break-word;
     text-decoration: none;
   }
 }
