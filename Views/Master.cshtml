@@ -46,7 +46,7 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@("@h5yr")" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
     @* start: FirstPaint (https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint) *@
     @await Html.PartialAsync("~/Views/Shared/FirstPaint.cshtml")
     @* end: FirstPaint *@
@@ -154,6 +154,7 @@
     </div>
     @* end: SVG Sprite *@
 
+    <script src="https://unpkg.com/javascript-time-ago@2.5.9/bundle/javascript-time-ago.js"></script>
     <script src="/static/scripts/all.js" defer></script>
 </body>
 </html>

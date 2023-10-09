@@ -52,12 +52,3 @@
             @await  Component.InvokeAsync("Mastodon")
         </div>
     </section>
-
-@section LastScripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.6.7/jquery.timeago.min.js" defer></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("time.timeago").timeago();
-        });
-    </script>
-}
