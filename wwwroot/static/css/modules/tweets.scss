@@ -92,9 +92,10 @@
 
 .tweet__content {
   margin-top: 1rem;
+  font-weight: normal;
 
   a {
-    font-weight: normal;
+    font-weight: bold;
     color: $grey;
     word-break: break-word;
     text-decoration: none;
