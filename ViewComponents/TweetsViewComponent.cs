@@ -1,4 +1,5 @@
-﻿using h5yr.Settings;
+﻿using h5yr.Data.Interfaces;
+using h5yr.Settings;
 using H5YR.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -10,14 +11,16 @@ namespace h5yr.ViewComponents
     {
         private readonly ITwitterHelper twitterHelper;
         private readonly IOptions<APISettings> apiSettings;
-      private readonly ILogger<TweetsViewComponent> logger;
+        private readonly ILogger<TweetsViewComponent> logger;
+        private readonly ITweetCounterStore tweetCounterStore;
 
 
-        public TweetsViewComponent(ITwitterHelper twitterHelper, IOptions<APISettings> apiSettings, ILogger<TweetsViewComponent> logger)
+        public TweetsViewComponent(ITwitterHelper twitterHelper, IOptions<APISettings> apiSettings, ILogger<TweetsViewComponent> logger, ITweetCounterStore tweetCounterStore)
         {
             this.twitterHelper = twitterHelper;
             this.apiSettings = apiSettings;
             this.logger = logger;
+            this.tweetCounterStore = tweetCounterStore;
         }
 
         public IViewComponentResult Invoke(string loadmore = "false")
@@ -26,8 +29,9 @@ namespace h5yr.ViewComponents
             HttpContext.Session.SetInt32("NumberOfTweetsDisplayed", 12);
 
             List<TweetModel> tweet = new();
+            var tweetsModel = new TweetsModel();
 
-            if(apiSettings.Value.Offline == null || apiSettings.Value.Offline.ToLowerInvariant() != "true")
+            if (apiSettings.Value.Offline == null || apiSettings.Value.Offline.ToLowerInvariant() != "true")
             {
                 tweet = twitterHelper.GetAllTweets(0, 12);
 
@@ -46,8 +50,18 @@ namespace h5yr.ViewComponents
                     {
                         logger.LogError("Error: Unable to write Test Tweets Json file", ex);
                     }
-                    
+                }
 
+                try
+                {
+                    var startDate = new DateTime(2022, 10, 01);
+                    var tweetCount = tweetCounterStore.GetTweetsCountTotalByDate(startDate, DateTime.Now);
+                    tweetsModel.NumberOfTweets = tweetCount;
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Error: Unable to read Tweets from database", ex);
                 }
             }
             else
@@ -62,10 +76,24 @@ namespace h5yr.ViewComponents
                 {
                     logger.LogError("Error: Unable to read Tweet Json file", ex);
                 }
+
+                try
+                {
+                    var startDate = new DateTime(2022, 10, 01);
+                    var tweetCount = tweetCounterStore.GetTweetsCountTotalByDate(startDate, DateTime.Now);
+                    tweetsModel.NumberOfTweets = tweetCount;
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Error: Unable to read Tweets from database", ex);
+                }
                 
             }
 
-            return View(tweet);
+            tweetsModel.Tweets = tweet;
+
+            return View(tweetsModel);
         }
 
     }

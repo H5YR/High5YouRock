@@ -39,6 +39,8 @@ namespace h5yr.Controllers
         public IActionResult GetTweets()
         {
             var tweetsToSkip = Convert.ToInt32(HttpContext.Session.GetInt32("NumberOfTweetsDisplayed"));
+            tweetsToSkip = tweetsToSkip == 0 ? 12 : tweetsToSkip;
+
             List<TweetModel> tweets = new();
 
             if (_apiSettings.Value.Offline == null || _apiSettings.Value.Offline.ToLowerInvariant() != "true")

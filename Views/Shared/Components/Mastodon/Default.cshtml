@@ -1,0 +1,65 @@
+﻿@using Skybrud.Social.Mastodon.Models.Statuses
+
+@model h5yr.ViewComponents.MastodonModel
+
+<div class="tweets">
+    <div class="tweets__header">
+        <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
+@*        <div class="tweets__counter">
+            Total #H5YRs since October 2022: <data class="tweets__counter-data" id="tweet-count">@Model.NumberOfTweets</data>
+        </div>*@
+    </div>
+    <div class="tweet__grid">
+        @if (Model.Statuses.Any()) {
+            foreach (MastodonStatus status in Model.Statuses) {
+                <div class="tweet__card">
+                    <div class="tweet__avatar">
+                        <a href="@status.Account.Url" target="_blank" rel="noopener">
+                            <img src="@status.Account.Avatar" alt="Profile image of @status.Account.Username" width="46" />
+                        </a>
+                    </div>
+                    <div class="tweet__info">
+                        <div class="tweet__user-detail">
+                            <a href="@status.Account.Url" target="_blank" rel="noopener">@status.Account.Username</a>
+                            <time class="timeago" datetime="@status.CreatedAt.ToString()">@status.CreatedAt.ToString("dd/MM/yyyy")</time>
+                            <a href="@status.Url" target="_blank" rel="noopener">
+                                [Permalink]
+                            </a>
+                        </div>
+                        <div class="tweet__content">
+                            @Html.Raw(status.Content)
+                        </div>
+                    </div>
+                    <p></p>
+@*                    <ul class="tweet__actions">
+                        <li class="tweet__actions-item">
+                            <a href="https://twitter.com/intent/tweet?in_reply_to=@tweet.ReplyToTweet" target="_blank" rel="noopener">
+                                <svg class="[ icon icon--comment ]">
+                                    <use xlink:href="#sprite-icon-comment"></use>
+                                </svg>
+                                <span>reply</span>
+                            </a>
+                        </li>
+                        <li class="tweet__actions-item">
+                            <a href="https://twitter.com/intent/retweet?tweet_id=@tweet.ReplyToTweet" target="_blank" rel="noopener">
+                                <svg class="[ icon icon--retweet ]">
+                                    <use xlink:href="#sprite-icon-retweet"></use>
+                                </svg>
+                                <span>retweet</span>
+                            </a>
+                        </li>
+                        <li class="tweet__actions-item">
+                            <a href="https://twitter.com/intent/favorite?tweet_id=@tweet.ReplyToTweet" target="_blank" rel="noopener">
+                                <svg class="[ icon icon--heart ]">
+                                    <use xlink:href="#sprite-icon-heart"></use>
+                                </svg>
+                                <span>like</span>
+                            </a>
+                        </li>
+                    </ul>*@
+                </div>
+
+            }
+        }
+    </div>
+</div>

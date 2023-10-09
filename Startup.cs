@@ -1,3 +1,4 @@
+using h5yr.Core.Services;
 using h5yr.Settings;
 using H5YR.Core.Services;
 
@@ -49,6 +50,8 @@ namespace h5yr
             services.Configure<TwitterSettings>(_config.GetSection("Twitter"));
             services.Configure<APISettings>(_config.GetSection("API"));
             services.AddTransient<ITwitterHelper, TwitterHelper>();
+            services.AddSingleton<IMastodonService, MastodonService>();
+            services.AddHostedService<TwitterAPICountHostedService>();
         }
 
         /// <summary>
@@ -63,7 +66,7 @@ namespace h5yr
                 app.UseDeveloperExceptionPage();
             }
 
-            
+
             app.UseSession();
 
             app.UseUmbraco()
