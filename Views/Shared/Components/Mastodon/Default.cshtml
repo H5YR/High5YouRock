@@ -22,15 +22,12 @@
                         <div class="tweet__user-detail">
                             <a href="@status.Account.Url" target="_blank" rel="noopener">@status.Account.Username</a>
                             <time class="timeago" datetime="@status.CreatedAt.ToString()">@status.CreatedAt.ToString("dd/MM/yyyy")</time>
+                            <a href="@status.Url" target="_blank" rel="noopener">
+                                [Permalink]
+                            </a>
                         </div>
                         <div class="tweet__content">
-                            @if (status.Url is null) {
-                                @Html.Raw(status.Content)
-                            } else {
-                                <a href="@status.Url" target="_blank" rel="noopener">
-                                    @Html.Raw(status.Content)
-                                </a>
-                            }
+                            @Html.Raw(status.Content)
                         </div>
                     </div>
                     <p></p>
