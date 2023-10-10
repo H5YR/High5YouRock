@@ -16,9 +16,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
     <PackageReference Include="uSync" Version="10.0.0" />
+    <PackageReference Include="Vite.AspNetCore" Version="1.10.1" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
   </ItemGroup>
-
 
   <PropertyGroup>
     <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
@@ -34,4 +34,5 @@
     <RazorCompileOnPublish>false</RazorCompileOnPublish>
     <UserSecretsId>d7a03a75-3b96-40fd-b776-54d5fd3da95f</UserSecretsId>
   </PropertyGroup>
+
 </Project>

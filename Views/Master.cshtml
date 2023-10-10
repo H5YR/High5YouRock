@@ -1,4 +1,4 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
     Layout = null;
@@ -35,7 +35,6 @@
     <meta property="og:title" content="@Model.Value("websiteTitle", fallback: Fallback.ToAncestors)" />
     <meta property="og:url" content="@Model.Url(mode:UrlMode.Absolute)" /> 
     
-    
     @if(socialImage != null){
         var url = Context.Request.PathBase.ToString();
       
@@ -47,9 +46,15 @@
     <meta name="twitter:site" content="@("@h5yr")" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
 
-    @* start: FirstPaint (https://developers.google.com/web/tools/lighthouse/audits/first-meaningful-paint) *@
-    @await Html.PartialAsync("~/Views/Shared/FirstPaint.cshtml")
-    @* end: FirstPaint *@
+    <environment include="Development">
+        <script type="module" defer src="~/@@vite/client"></script>
+        <script type="module" defer src="~/app.js"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <link rel="stylesheet" asp-href-include="~/frontend/assets/app-*.css">
+        <script type="module" defer asp-src-include="~/frontend/assets/app-*.js"></script>
+    </environment>
 
 </head>
 <body data-layout="">
@@ -127,34 +132,10 @@
     </footer>
     @* end: footer *@
 
-    @* start: Optmised CSS Delivery - https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery *@
-    <noscript id="deferred-styles">
-        <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-    </noscript>
-    <script>
-      var loadDeferredStyles = function() {
-        var addStylesNode = document.getElementById("deferred-styles");
-        var replacement = document.createElement("div");
-        replacement.innerHTML = addStylesNode.textContent;
-        document.body.appendChild(replacement)
-        addStylesNode.parentElement.removeChild(addStylesNode);
-      };
-      var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-          window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-      if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
-      else window.addEventListener('load', loadDeferredStyles);
-    </script>
-    @* end: Optmised CSS Delivery *@
-
-    @RenderSection("LastScripts", false)
-
     @* start: SVG Sprite *@
     <div class="svg-sprite">
     @await Html.PartialAsync("~/Views/Shared/SVG_Sprite.cshtml")
     </div>
     @* end: SVG Sprite *@
-
-    <script src="https://unpkg.com/javascript-time-ago@2.5.9/bundle/javascript-time-ago.js"></script>
-    <script src="/static/scripts/all.js" defer></script>
 </body>
 </html>

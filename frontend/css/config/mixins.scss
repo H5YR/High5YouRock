@@ -1,3 +1,5 @@
+@use "sass:math";
+
 /* convert to em from px */
 @function em($px, $base: $base-font-size) {
   @return ($px / $base) * 1em;
@@ -5,7 +7,7 @@
 
 /* convert to rem from px */
 @function calculateRem($px, $base: $base-font-size) {
-  $remSize: $px / $base;
+  $remSize: math.div($px, $base);
   @return #{$remSize}rem;
 }
 
