@@ -1,10 +1,21 @@
 # High 5, You Rock!
 H5YR website build with Umbraco 10 - https://h5yr.com
 
-* To get started - clone down this repo and spin up the site using IIS Express / Kestrel.
-* Create a new local DB, SQLLite is fine for this
-* Log in to the back office and run uSync from the Settings section - import everything
-* Refresh the content node and a Home node should appear. If it doesn't, log out and log back in again.
+## Working with this repo
+
+### Prerequisites
+
+- [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [Node.js](https://nodejs.org/en/) v18+
+
+
+### Getting started
+
+1. Clone down this repo
+2. Spin up the site using IIS Express or Kestrel
+3. Create a new local DB, SQLLite is fine for this
+4. Log in to the back office and run uSync from the Settings section - import everything
+5. Refresh the content node and a Home node should appear. If it doesn't, log out and log back in again.
 
 
 ## out of date
