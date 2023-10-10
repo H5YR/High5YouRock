@@ -1,7 +1,6 @@
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 
-console.log('ahoy!')
   //
   // heroAnimation
   //
@@ -11,8 +10,6 @@ console.log('ahoy!')
   // Define hero animation element
   var $animationContainer = document.getElementById('js-hero-animation');
   var lottie = window.lottie;
-
-  console.log($animationContainer);
 
   // Set up animation parameters
   var params = {
