@@ -12,6 +12,7 @@ H5YR website build with Umbraco 10 - https://h5yr.com
 ### Getting started
 
 1. Clone down this repo
+2. Install frontend dependencies (`cd frontend && npm i`)
 2. Spin up the site using IIS Express or Kestrel
 3. Create a new local DB, SQLLite is fine for this
 4. Log in to the back office and run uSync from the Settings section - import everything
