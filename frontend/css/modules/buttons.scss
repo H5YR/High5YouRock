@@ -12,6 +12,8 @@
   text-decoration: none;
   transition: background .2s ease;
   border: 0;
+  vertical-align: bottom;
+  margin-top: 0.5rem;
 
   &:hover,
   &:focus {
@@ -33,6 +35,6 @@
 .button-holder {
 
   &.-margin-top {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
 }

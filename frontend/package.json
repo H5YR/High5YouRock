@@ -10,6 +10,7 @@
     "vite": "^4.4.11"
   },
   "dependencies": {
+    "@justinribeiro/share-to-mastodon": "^2.0.2",
     "javascript-time-ago": "^2.5.9"
   }
 }

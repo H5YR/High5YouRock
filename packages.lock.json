@@ -60,15 +60,6 @@
           "uSync.Backoffice.Assets": "10.0.0"
         }
       },
-      "Vite.AspNetCore": {
-        "type": "Direct",
-        "requested": "[1.10.1, )",
-        "resolved": "1.10.1",
-        "contentHash": "1PUdAdL96Gm6qWfYBsV2tHcuV/916FPq8asZb5taXPY8CmGfYT6SSbQBegB0MUNNUUXFCJ4XEGxcREPqN4PpJA==",
-        "dependencies": {
-          "Vite.AspNetCore.Abstractions": "1.1.0"
-        }
-      },
       "Autofac": {
         "type": "Transitive",
         "resolved": "4.9.4",
@@ -2511,11 +2502,6 @@
         "dependencies": {
           "Umbraco.Cms.Web.Website": "10.0.0"
         }
-      },
-      "Vite.AspNetCore.Abstractions": {
-        "type": "Transitive",
-        "resolved": "1.1.0",
-        "contentHash": "glEvkFhzw/BpwpvXzEaPRKJq2C6qEhjUugAg3e3tXBcVr1ZIAqDCOj3KzsVQpTNUKutWvQ9kGJXvIIn5fFo1YQ=="
       }
     }
   }
