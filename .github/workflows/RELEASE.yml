@@ -7,6 +7,8 @@ env:
     SolutionName: ${{ secrets.SOLUTION_NAME }}
     BuildPlatform: Any CPU
     BuildConfiguration: Release
+    NodeVersion: 18
+    FrontendDir: ./frontend
 
 jobs:
   build:
@@ -26,6 +28,11 @@ jobs:
           with:
             submodules: 'true'
 
+        - name: Use Node.js ${{env.NodeVersion}}
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{env.NodeVersion}}
+
         - uses: actions/cache@v3
           id: cache-nuget-h5yr
           with:
@@ -35,11 +42,13 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-nuget-h5yr
 
-        - name: Sass Build
-          uses: gha-utilities/sass-build@v0.4.9
-          with:
-            source: wwwroot/static/css/style.scss
-            destination: wwwroot/static/css/style.css
+        - name: Install NPM dependencies
+          run: npm ci
+          working-directory: ${{env.FrontendDir}}
+  
+        - name: Build frontend
+          run: npm run build
+          working-directory: ${{env.FrontendDir}}
 
         - name: Create Build Directory
           run: mkdir _build

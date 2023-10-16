@@ -7,6 +7,8 @@ env:
     SolutionName: ${{ secrets.SOLUTION_NAME }}
     BuildPlatform: Any CPU
     BuildConfiguration: Release
+    NodeVersion: 18
+    FrontendDir: ./frontend
 
 jobs:
   build:
@@ -20,7 +22,12 @@ jobs:
           uses: Kaven-Universe/github-action-current-date-time@v1.1.0
           with:
             format: "YYYY_MM_DD HH_mm_ss_SSS"
-            
+
+        - name: Use Node.js ${{env.NodeVersion}}
+          uses: actions/setup-node@v3
+          with:
+            node-version: ${{env.NodeVersion}}
+
         - name: Checkout
           uses: actions/checkout@v3.0.0
           with:
@@ -35,11 +42,13 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-nuget-h5yr
 
-        - name: Sass Build
-          uses: gha-utilities/sass-build@v0.4.9
-          with:
-            source: wwwroot/static/css/style.scss
-            destination: wwwroot/static/css/style.css
+        - name: Install NPM dependencies
+          run: npm ci
+          working-directory: ${{env.FrontendDir}}
+
+        - name: Build frontend
+          run: npm run build
+          working-directory: ${{env.FrontendDir}}
 
         - name: Create Build Directory
           run: mkdir _build

@@ -1,6 +1,8 @@
 using h5yr.Core.Services;
 using h5yr.Settings;
 using H5YR.Core.Services;
+using Vite.AspNetCore;
+using Vite.AspNetCore.Extensions;
 
 namespace h5yr
 {
@@ -33,6 +35,12 @@ namespace h5yr
         /// </remarks>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddViteServices(new ViteOptions()
+            {
+                PackageDirectory = "frontend",
+                Server = new ViteServerOptions() { AutoRun = true, Https = true },
+            });
+
             services.AddUmbraco(_env, _config)
                 .AddBackOffice()
                 .AddWebsite()
@@ -52,6 +60,7 @@ namespace h5yr
             services.AddTransient<ITwitterHelper, TwitterHelper>();
             services.AddSingleton<IMastodonService, MastodonService>();
             services.AddHostedService<TwitterAPICountHostedService>();
+
         }
 
         /// <summary>
@@ -62,10 +71,10 @@ namespace h5yr
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
+           {
+                app.UseViteDevMiddleware();
                 app.UseDeveloperExceptionPage();
             }
-
 
             app.UseSession();
 
