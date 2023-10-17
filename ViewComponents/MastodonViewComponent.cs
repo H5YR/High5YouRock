@@ -23,10 +23,10 @@ public class MastodonViewComponent : ViewComponent {
         _mastodonService = mastodonService;
     }
 
-    public IViewComponentResult Invoke() {
+    public async Task<IViewComponentResult> InvokeAsync() {
 
         // Get the statuses
-        IReadOnlyList<MastodonStatus> statuses = GetStatuses();
+        IReadOnlyList<MastodonStatus> statuses = await GetStatuses();
 
         // Initialize a new model for the view component
         MastodonModel model = new(statuses);
@@ -36,7 +36,7 @@ public class MastodonViewComponent : ViewComponent {
 
     }
 
-    private IReadOnlyList<MastodonStatus> GetStatuses() {
+    private async Task<IReadOnlyList<MastodonStatus>> GetStatuses() {
 
         string fileName = "TestStatuses.json";
 
@@ -49,7 +49,7 @@ public class MastodonViewComponent : ViewComponent {
             }
         }
 
-        IReadOnlyList<MastodonStatus> statuses = _mastodonService.GetStatuses(12);
+        IReadOnlyList<MastodonStatus> statuses = await _mastodonService.GetStatuses(12);
 
         if (CreateOfflineFile) {
             try {
