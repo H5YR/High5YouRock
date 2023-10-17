@@ -15,7 +15,7 @@ namespace h5yr.Core.Services {
             _logger = logger;
         }
 
-        public IReadOnlyList<MastodonStatus> GetStatuses(int limit, string? maxId = null)
+        public async Task<IReadOnlyList<MastodonStatus>> GetStatuses(int limit, string? maxId = null)
         {
 
             // Initialize a new HTTP service (basically the API wrapper)
@@ -33,9 +33,9 @@ namespace h5yr.Core.Services {
             {
 
                 // Make the request to the API
-                MastodonStatusListResponse response = mastodon
+                MastodonStatusListResponse response = await mastodon
                     .Timelines
-                    .GetHashtagTimeline(options);
+                    .GetHashtagTimelineAsync(options);
 
                 // Return the statuses
                 return response.Body;

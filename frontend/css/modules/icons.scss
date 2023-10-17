@@ -1,0 +1,23 @@
+.icon {
+  display: block;
+}
+
+.icon--header-logo {
+  width: 80px;
+  height: 20px;
+}
+
+.icon--button-twitter,
+.icon--button-mastodon
+{
+    width: 20px;
+    height: 20px;
+}
+
+.icon--comment,
+.icon--retweet,
+.icon--heart {
+  width: 30px;
+  height: 30px;
+  color: $purple;
+}

@@ -2,12 +2,8 @@
 
 namespace h5yr.Core.Services
 {
-
     public interface IMastodonService
     {
-
-        IReadOnlyList<MastodonStatus> GetStatuses(int limit, string? maxId = null);
-
+        Task<IReadOnlyList<MastodonStatus>> GetStatuses(int limit, string? maxId = null);
     }
-
 }

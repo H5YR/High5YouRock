@@ -480,3 +480,6 @@ appsettings-schema.json
 obj/
 
 bin/
+
+# frontend build output
+wwwroot/frontend/
