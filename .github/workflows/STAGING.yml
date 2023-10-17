@@ -85,4 +85,4 @@ jobs:
           uses: tvdias/github-tagger@v0.0.1
           with:
             repo-token: ${{ secrets.GITHUB_TOKEN }}
-            tag: ProductionBuild-${{ steps.date.outputs.year }}${{ steps.date.outputs.month }}${{ steps.date.outputs.day }}-${{ github.run_number }}
+            tag: StagingBuild-${{ steps.date.outputs.year }}${{ steps.date.outputs.month }}${{ steps.date.outputs.day }}-${{ github.run_number }}
