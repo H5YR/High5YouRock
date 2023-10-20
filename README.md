@@ -34,5 +34,7 @@ Todo: This info is now out of date and really needs updating for mastodon.
     "AccessTokenSecret": "" 
   } 
   ``` 
-  
+  ## Free holopin badge
+
+  If you'd like a free badge for your holopin collection - (Grab it)[https://holopin.io/collect/clfcrtna163140fjsf31nv3ww]
  
