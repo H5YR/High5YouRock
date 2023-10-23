@@ -2,6 +2,7 @@
 using Skybrud.Social.Mastodon.Models.Statuses;
 using Skybrud.Social.Mastodon.Options.Timeline;
 using Skybrud.Social.Mastodon.Responses.Statuses;
+using Umbraco.Cms.Core.Cache;
 
 namespace h5yr.Core.Services {
 
@@ -9,23 +10,47 @@ namespace h5yr.Core.Services {
     {
 
         private readonly ILogger<MastodonService> _logger;
+        private readonly AppCaches _appCaches;
 
-        public MastodonService(ILogger<MastodonService> logger)
+        private const string FeedDomain = "umbracocommunity.social";
+        private const string FeedHashtag = "h5yr";
+        private const string FeedCacheKey = "mastodonposts";
+        private const int FeedCacheMinutes = 15;
+
+        public MastodonService(ILogger<MastodonService> logger, AppCaches appCaches)
         {
             _logger = logger;
+            _appCaches = appCaches;
         }
 
-        public async Task<IReadOnlyList<MastodonStatus>> GetStatuses(int limit, string? maxId = null)
+        public async Task<List<MastodonStatus>> GetStatuses(int limit)
+        {
+            var posts = _appCaches.RuntimeCache.GetCacheItem($"{FeedCacheKey}_{limit}",
+                () => LoadStatuses(limit),
+                TimeSpan.FromMinutes(FeedCacheMinutes));
+
+            if (posts != null)
+            {
+                return await posts;
+            }
+            else
+            {
+                return await Task.FromResult(new List<MastodonStatus>());
+            }
+        }
+
+
+        private async Task<List<MastodonStatus>> LoadStatuses(int limit)
         {
 
             // Initialize a new HTTP service (basically the API wrapper)
             MastodonHttpService mastodon = MastodonHttpService
-                .CreateFromDomain("umbracocommunity.social");
+                .CreateFromDomain(FeedDomain);
 
             // Initialize the options for the request to the API
             MastodonGetHashtagTimelineOptions options = new()
             {
-                Hashtag = "h5yr",
+                Hashtag = FeedHashtag,
                 Limit = limit
             };
 
@@ -38,7 +63,7 @@ namespace h5yr.Core.Services {
                     .GetHashtagTimelineAsync(options);
 
                 // Return the statuses
-                return response.Body;
+                return response.Body.ToList();
 
             }
             catch (Exception ex)
@@ -49,7 +74,7 @@ namespace h5yr.Core.Services {
             }
 
 
-            return Array.Empty<MastodonStatus>();
+            return new List<MastodonStatus>();
 
         }
 
