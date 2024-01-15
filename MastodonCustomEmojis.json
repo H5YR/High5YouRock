@@ -1,0 +1,50 @@
+[
+  {
+    "shortcode": "dteam",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/957/original/41faca235db8cb87.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/957/static/41faca235db8cb87.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "h5yr",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/954/original/4d5df48132c2afec.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/954/static/4d5df48132c2afec.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "mvp",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/958/original/ad7104486df5d63c.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/958/static/ad7104486df5d63c.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "rune",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/959/original/c6339a718b34120e.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/959/static/c6339a718b34120e.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "umbraco",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/400/original/69c87d06bab42480.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/400/static/69c87d06bab42480.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "umbracoheart",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/955/original/8466492895637c14.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/955/static/8466492895637c14.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "umbracopackage",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/956/original/4e6d7e5996c5ffd4.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/956/static/4e6d7e5996c5ffd4.png",
+    "visible_in_picker": true
+  },
+  {
+    "shortcode": "umbracospark",
+    "url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/401/original/e9748ac3e45c3b4b.png",
+    "static_url": "https://cdn.masto.host/umbracocommunitysocial/custom_emojis/images/000/006/401/static/e9748ac3e45c3b4b.png",
+    "visible_in_picker": true
+  }
+]
