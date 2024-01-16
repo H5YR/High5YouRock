@@ -85,19 +85,26 @@ namespace h5yr.Core.Services {
 
         private async Task<List<MastodonCustomEmoji>> LoadCustomEmojis()
         {
-            // TODO - at the moment this is a hardcoded downloaded list based off umbracocommunity.social's API endpoint on 15/1/2024
-            // (ie https://umbracocommunity.social/api/v1/custom_emojis ) and stored in the local MastodonCustomEmojis.json file.
-            // Ideally this list would be called from the API directly to keep this always uptodate, however this would be better added in to
-            // the Skybrud.Social.Mastodon package rather than the API calls being implemented here so it can benefit all
+            // TODO - at the moment this is calling the Mastodon API endpoint directly for the list of custom emojis.
+            // (ie https://umbracocommunity.social/api/v1/custom_emojis )
+            // Ideally this would be better added in to the Skybrud.Social.Mastodon package later
+            // to keep all API calls in the external library and so it can benefit all users of the nuget package
 
-            var options = new JsonSerializerOptions
+            var customEmojis = new List<MastodonCustomEmoji>();
+            try
             {
-                PropertyNameCaseInsensitive = true,
-            };
-
-            string fileName = "MastodonCustomEmojis.json";
-            string jsonString = await System.IO.File.ReadAllTextAsync(fileName);
-            return JsonSerializer.Deserialize<List<MastodonCustomEmoji>>(jsonString, options)!;
+                using (HttpClient client = new HttpClient())
+                {
+                    var endpoint = "https://umbracocommunity.social/api/v1/custom_emojis";
+                    customEmojis = await client.GetFromJsonAsync<List<MastodonCustomEmoji>>(endpoint,
+                        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true} );
+                }            
+            }
+            catch
+            {
+                customEmojis = new List<MastodonCustomEmoji>();
+            }
+            return customEmojis!;
         }
 
 
