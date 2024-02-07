@@ -6,8 +6,12 @@ public class MastodonModel {
 
     public IReadOnlyList<MastodonStatus> Statuses { get; }
 
-    public MastodonModel(IReadOnlyList<MastodonStatus> statuses) {
+    public IReadOnlyList<MastodonCustomEmoji> CustomEmojis { get; }
+
+    public MastodonModel(IReadOnlyList<MastodonStatus> statuses, IReadOnlyList<MastodonCustomEmoji> customEmojis)
+    {
         Statuses = statuses;
+        CustomEmojis = customEmojis;
     }
 
 }
