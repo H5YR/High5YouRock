@@ -28,8 +28,11 @@ public class MastodonViewComponent : ViewComponent {
         // Get the statuses
         IReadOnlyList<MastodonStatus> statuses = await GetStatuses();
 
+        // Get the custom emojis
+        IReadOnlyList<MastodonCustomEmoji> customEmojis = await _mastodonService.GetCustomEmojis();
+
         // Initialize a new model for the view component
-        MastodonModel model = new(statuses);
+        MastodonModel model = new(statuses, customEmojis);
 
         // Return the view
         return View(model);
