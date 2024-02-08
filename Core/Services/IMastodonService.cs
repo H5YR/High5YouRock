@@ -8,5 +8,6 @@ namespace h5yr.Core.Services
         Task<List<MastodonStatus>> GetStatuses(int limit);
 
         Task<List<MastodonCustomEmoji>> GetCustomEmojis();
+
     }
 }

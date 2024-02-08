@@ -20,6 +20,8 @@ namespace h5yr.Core.Services {
         private const int FeedCacheMinutes = 15;
         private const string EmojiCacheKey = "mastodonemojis";
 
+
+
         public MastodonService(ILogger<MastodonService> logger, AppCaches appCaches)
         {
             _logger = logger;
@@ -33,6 +35,16 @@ namespace h5yr.Core.Services {
                 TimeSpan.FromMinutes(FeedCacheMinutes));
 
             return await posts!;
+
+            if (posts != null)
+            {
+                return await posts;
+            }
+            else
+            {
+                return await Task.FromResult(new List<MastodonStatus>());
+            }
+
         }
 
 
@@ -59,7 +71,6 @@ namespace h5yr.Core.Services {
 
                 // Return the statuses
                 return response.Body.ToList();
-
 
 
             }
