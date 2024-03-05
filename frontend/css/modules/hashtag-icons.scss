@@ -11,11 +11,11 @@ a[href$="/tags/csharp" i]::after{content: "🤖"}
 a[href$="/tags/Hacktoberfest" i]::after{content: "🎃"}
 a[href$="/tags/UmbracoCommunity" i]::after{content: "💙"}
 a[href$="/tags/Friendly" i]::after{content: "💙"}
-a[href$="/tags/codecabin" i]::after,a[href^="/tags/cc2" i]::after{content: "🛖"}
+a[href$="/tags/codecabin" i]::after,a[href*="/tags/cc2" i]::after{content: "🛖"}
 a[href$="/tags/24days" i]::after{content: "📅"}
 a[href$="/tags/meetup" i]::after{content: "🍕"}
 a[href$="/tags/codernails" i]::after{content: "💅🏻"}
-a[href$="/tags/df2" i]::after, a[href^="/tags/duug" i]::after{content: "🦁"}
+a[href*="/tags/df2" i]::after, a[href*="/tags/duug" i]::after{content: "🦁"}
 a[href$="/tags/umbukfest" i]::after{content: "✖️"}
 a[href$="/tags/" i][href*="SecretSanta" i]::after{content: "🧑‍🎄"}
 
