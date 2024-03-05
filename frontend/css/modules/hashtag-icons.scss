@@ -1,7 +1,7 @@
 ﻿// Based off https://umbracocommunity.social/custom.css and updated to handle URLs not being relative here.
 a[href*="/tags/" i]{white-space: nowrap}
 a[href$="/tags/H5YR" i]::after{content: "✋"}
-a[href$="/tags/Umbraco" i]::after{content: "🦄"}
+a[href*="/tags/Umbraco" i]::after{content: "🦄"}
 a[href$="/tags/UmbracoTees" i]::after{content: "👕"}
 a[href$="/tags/umbraCoffee" i]::after{content: "☕"}
 a[href$="/tags/notacult" i]::after{content: "🙅"}
