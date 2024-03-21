@@ -5,19 +5,19 @@ using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
 namespace h5yr.Data.Entities
 {
-    [TableName(TweetCounterSchemaConstants.TableName)]
-    [PrimaryKey(TweetCounterSchemaConstants.PrimaryKey, AutoIncrement = true)]
+    [TableName(PostCounterSchemaConstants.TableName)]
+    [PrimaryKey(PostCounterSchemaConstants.PrimaryKey, AutoIncrement = true)]
     [ExplicitColumns]
-    public class TweetCounter
+    public class PostCounter
     {
         [PrimaryKeyColumn(AutoIncrement = true)]
-        [Column(TweetCounterSchemaConstants.Id)]
+        [Column(PostCounterSchemaConstants.Id)]
         public int Id { get; set; }
 
-        [Column(TweetCounterSchemaConstants.Date)]
+        [Column(PostCounterSchemaConstants.Date)]
         public DateTime Date { get; set; }
         
-        [Column(TweetCounterSchemaConstants.Quantity)]
+        [Column(PostCounterSchemaConstants.Quantity)]
         public int Quantity { get; set; }
     }
 }

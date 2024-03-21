@@ -6,35 +6,35 @@ using Umbraco.Cms.Core.Scoping;
 
 namespace h5yr.Data.Stores
 {
-    public class TweetCounterStore : ITweetCounterStore
+    public class PostCounterStore : IPostCounterStore
     {
         private readonly IDatabase _db;
-        private readonly ILogger<TweetCounterStore> _logger;
+        private readonly ILogger<PostCounterStore> _logger;
         private ICoreScopeProvider _scopeProvider;
 
-        public TweetCounterStore(IDatabase db, ILogger<TweetCounterStore> logger,ICoreScopeProvider scopeProvider)
+        public PostCounterStore(IDatabase db, ILogger<PostCounterStore> logger,ICoreScopeProvider scopeProvider)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _scopeProvider = scopeProvider ?? throw new ArgumentNullException(nameof(scopeProvider));
         }
 
-        public IEnumerable<TweetCounter> GetAll()
+        public IEnumerable<PostCounter> GetAll()
         {
             using (var scope = _scopeProvider.CreateCoreScope())
             {
-                var tweetCounter = _db.Fetch<TweetCounter>();
+                var tweetCounter = _db.Fetch<PostCounter>();
                 scope.Complete();
                 return tweetCounter;   
             }
         }
 
-        public IEnumerable<TweetCounter> GetTweetCount(DateTime date)
+        public IEnumerable<PostCounter> GetTweetCount(DateTime date)
         {
             using (var scope = _scopeProvider.CreateCoreScope())
             {
                 var dateTo = date.ToString("MM/dd/yyyy");
-                var tweetCounter = _db.Fetch<TweetCounter>("where date BETWEEN '" + dateTo + "' AND '" + dateTo + "'");
+                var tweetCounter = _db.Fetch<PostCounter>("where date BETWEEN '" + dateTo + "' AND '" + dateTo + "'");
                 scope.Complete();
                 return tweetCounter;
             }
@@ -46,7 +46,7 @@ namespace h5yr.Data.Stores
             {
                 var tweetDateFrom = dateFrom.ToString("MM/dd/yyyy");
                 var tweetDateTo = dateTo.ToString("MM/dd/yyyy");
-                var tweetCounter = _db.Fetch<TweetCounter>("where date BETWEEN '" + tweetDateFrom + "' AND '" + tweetDateTo + "'");
+                var tweetCounter = _db.Fetch<PostCounter>("where date BETWEEN '" + tweetDateFrom + "' AND '" + tweetDateTo + "'");
 
                 if(tweetCounter?.Any() ?? false)
                 {
@@ -60,7 +60,7 @@ namespace h5yr.Data.Stores
             }
         }
 
-        public void Save(TweetCounter poco)
+        public void Save(PostCounter poco)
         {
             using (var scope = _scopeProvider.CreateCoreScope())
             {
@@ -69,7 +69,7 @@ namespace h5yr.Data.Stores
             }
         }
 
-        public void Update(TweetCounter poco)
+        public void Update(PostCounter poco)
         {
             using (var scope = _scopeProvider.CreateCoreScope())
             {
@@ -94,7 +94,7 @@ namespace h5yr.Data.Stores
             }
         }
 
-        public void Delete(TweetCounter poco)
+        public void Delete(PostCounter poco)
         {
             using (var scope = _scopeProvider.CreateCoreScope())
             {

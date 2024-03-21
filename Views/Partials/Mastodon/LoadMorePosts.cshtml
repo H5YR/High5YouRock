@@ -1,0 +1,30 @@
+﻿@model IEnumerable<h5yr.ViewComponents.MastodonModell>
+
+
+@if(Model != null && Model.Any())
+{
+    foreach(var tweet in Model)
+    {
+        <div class="tweet__card">
+            <div class="tweet__avatar">
+                <a href="@status.Account.Url" target="_blank" rel="noopener">
+                    <img src="@status.Account.Avatar" alt="Profile image of @status.Account.Username" width="46" />
+                </a>
+            </div>
+            <div class="tweet__info">
+                <div class="tweet__user-detail">
+                    <a href="@status.Account.Url" target="_blank" rel="noopener">@status.Account.Username</a>
+                    <time class="timeago" datetime="@status.CreatedAt.ToString()">@status.CreatedAt.ToString("dd/MM/yyyy")</time>
+                    <a href="@status.Url" target="_blank" rel="noopener">
+                        [Permalink]
+                    </a>
+                </div>
+                <div class="tweet__content">
+                    @Html.Raw(status.Content.ReplaceCustomEmojis(Model.CustomEmojis))
+                </div>
+            </div>
+            <p></p>
+        </div>
+        
+    }
+}

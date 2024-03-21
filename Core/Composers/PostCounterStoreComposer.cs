@@ -10,21 +10,21 @@ using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
 
 namespace h5yr.Core.Composers
 {
-    public class TweetCounterStoreComposer : ComponentComposer<TweetCounterStoreComponent>, IComposer
+    public class PostCounterStoreComposer : ComponentComposer<PostCounterStoreComponent>, IComposer
     {
     }
 
-    public class TweetCounterStoreComponent : IComponent
+    public class PostCounterStoreComponent : IComponent
     {
         private readonly ICoreScopeProvider _coreScopeProvider;
         private readonly IMigrationPlanExecutor _migrationPlanExecutor;
         private readonly IKeyValueService _keyValueService;
-        private readonly ILogger<TweetCounterStoreComponent> _logger;
+        private readonly ILogger<PostCounterStoreComponent> _logger;
         private readonly IRuntimeState _runtimeState;
 
-        public TweetCounterStoreComponent(ICoreScopeProvider coreScopeProvider,
+        public PostCounterStoreComponent(ICoreScopeProvider coreScopeProvider,
             IMigrationPlanExecutor migrationPlanExecutor, IKeyValueService keyValueService,
-            ILogger<TweetCounterStoreComponent> logger, IRuntimeState runtimeState)
+            ILogger<PostCounterStoreComponent> logger, IRuntimeState runtimeState)
         {
             _coreScopeProvider = coreScopeProvider ?? throw new ArgumentNullException(nameof(coreScopeProvider));
             _migrationPlanExecutor = migrationPlanExecutor ?? throw new ArgumentNullException(nameof(migrationPlanExecutor));
@@ -40,10 +40,10 @@ namespace h5yr.Core.Composers
                 return;
             }
 
-            var migrationPlan = new MigrationPlan("TweetCounterCreateTableMigrationPlan1.2");
+            var migrationPlan = new MigrationPlan("PostCounterCreateTableMigrationPlan1");
 
             migrationPlan = migrationPlan.From(string.Empty)
-                .To<TweetCounterCreateTableMigration>(nameof(TweetCounterCreateTableMigration));
+                .To<PostCounterCreateTableMigration>(nameof(PostCounterCreateTableMigration));
 
             var upgrader = new Upgrader(migrationPlan);
 

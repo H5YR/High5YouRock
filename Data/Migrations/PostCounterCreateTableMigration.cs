@@ -6,12 +6,12 @@ using Umbraco.Cms.Infrastructure.Migrations;
 
 namespace h5yr.Data.Migrations
 {
-    public class TweetCounterCreateTableMigration : MigrationBase
+    public class PostCounterCreateTableMigration : MigrationBase
     {
-        private ILogger<TweetCounterCreateTableMigration> _logger;
+        private ILogger<PostCounterCreateTableMigration> _logger;
         private ICoreScopeProvider _scopeProvider;
 
-        public TweetCounterCreateTableMigration(IMigrationContext context, ILogger<TweetCounterCreateTableMigration> logger, ICoreScopeProvider scopeProvider) : base(context)
+        public PostCounterCreateTableMigration(IMigrationContext context, ILogger<PostCounterCreateTableMigration> logger, ICoreScopeProvider scopeProvider) : base(context)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _scopeProvider = scopeProvider ?? throw new ArgumentNullException(nameof(scopeProvider));
@@ -23,9 +23,9 @@ namespace h5yr.Data.Migrations
 
             using (var scope = _scopeProvider.CreateCoreScope())
             {
-                if (!TableExists(TweetCounterSchemaConstants.TableName))
+                if (!TableExists(PostCounterSchemaConstants.TableName))
                 {
-                    Create.Table<TweetCounter>().Do();
+                    Create.Table<PostCounter>().Do();
                     scope.Complete();
                     return;
                 }
@@ -33,7 +33,7 @@ namespace h5yr.Data.Migrations
             }
 
             _logger.LogDebug(
-                $"The database table {TweetCounterSchemaConstants.TableName} already exists, skipping.");
+                $"The database table {PostCounterSchemaConstants.TableName} already exists, skipping.");
 
         }
     }

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace h5yr.ViewComponents;
 
+[Obsolete("To be replaced by class from Skybrud package in the near future")]
 public class MastodonCustomEmoji {
 
     /// <summary>
