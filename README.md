@@ -21,15 +21,17 @@ H5YR website build with Umbraco 10 - https://h5yr.com
 
 ### Mastodon integration
 
-The Mastodon API is open for reading on the Umbraco Community instance (umbracocommunity.social), so no further configuration is needed to read posts in from the API.
+The Mastodon API is open for reading on the Umbraco Community instance (umbracocommunity.social), so no further configuration or keys are needed to read posts in from the API.
 
 ### Frontend Build
 
 Vite is used on this project to automatically build assets for use with the backend when the project is run, however in most cases is unlikely a full understanding of how it functions will be required.
 
-Edits should be made to files in 'frontend' as needed, in particular within the '/frontend/all.js' files and the SASS includes underneath the /frontend/css folders.
+Edits should be made to files in 'frontend' as needed, in particular within the '/frontend/all.js' files for JavaScript and the SASS includes underneath the /frontend/css folders for CSS.
 
-When the project is run, either using Visual Studio in Debug Mode, or via the 'dotnet run' command, a console window for vite will automatically load in the background. After a few seconds, this should compile styling and apply it to the backend site in a browser. On some occasions when starting from Visual Studio it may crash. This can usually be idenfied by the styling not being auto-applied and a refresh of the browser returning a '502 the server was shut down' message. In this situation, it can usually be resolved via a restart, or if it persists by using the 'dotnet run' command line method instead.
+When the project is run, either using Visual Studio in Debug Mode, or via the `dotnet run` command, a console window for Vite will automatically load in the background. After a few seconds, this should compile styling and apply it to the backend site in a browser.
+
+On some occasions when starting from Visual Studio this may crash. This can usually be idenfied by the styling not being auto-applied and a refresh of the browser then returning a '502 the server was shut down' error message. In this case, it can often be resolved via a restart, but if it persists by using the `dotnet run` command line method instead.
 
 ## Free holopin badge
 
