@@ -1,9 +1,10 @@
-﻿@model IEnumerable<h5yr.ViewComponents.MastodonModell>
+﻿@using Skybrud.Social.Mastodon.Models.Statuses
+@model List<MastodonStatus>
 
 
 @if(Model != null && Model.Any())
 {
-    foreach(var tweet in Model)
+    foreach(var status in Model)
     {
         <div class="tweet__card">
             <div class="tweet__avatar">
@@ -20,7 +21,7 @@
                     </a>
                 </div>
                 <div class="tweet__content">
-                    @Html.Raw(status.Content.ReplaceCustomEmojis(Model.CustomEmojis))
+                    @Html.Raw(status.Content)
                 </div>
             </div>
             <p></p>

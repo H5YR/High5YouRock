@@ -46,11 +46,10 @@ import '@justinribeiro/share-to-mastodon';
   //
   // loadMoreHandler
   //
-  // Handler for the homepage Twitter feed 'load more' button
+  // Handler for the homepage Mastodon feed 'load more' button
   //
 
   document.querySelectorAll('.load-more').forEach(function (el) {
-    el.preventDefault();
     var loadMoreButton = el;
     el.addEventListener('click', function (e) {
       e.preventDefault();
@@ -59,7 +58,10 @@ import '@justinribeiro/share-to-mastodon';
       el.classList.add('loading');
       el.querySelector('.spinner').style.display = 'block';
 
-      fetch('api/loadmoretweets/').then(function (response) {
+      var startId = loadMoreButton.getAttribute('data-start-id');
+      loadMoreButton.setAttribute('data-start-id', '');
+
+      fetch('api/loadmoreposts/?startId=' + startId).then(function (response) {
         return response.text();
       }).then(function (data) {
         document.querySelector('.tweet__grid').insertAdjacentHTML('beforeend', data);
@@ -72,6 +74,8 @@ import '@justinribeiro/share-to-mastodon';
     });
   });
 
+applyTimeAgo();
+
   //
   // TimeAgo
   //
@@ -79,13 +83,16 @@ import '@justinribeiro/share-to-mastodon';
   //
 
   // TODO: if markup isn't being cached, humanizer would do a better job here
-  // (if it is, a cloudflare worker could do it better too)
-  TimeAgo.addDefaultLocale(en);
+// (if it is, a cloudflare worker could do it better too)
 
-  var timeAgo = new TimeAgo('en');
-  var timestamps = document.querySelectorAll('.timeago');
+function applyTimeAgo() {
+    TimeAgo.addDefaultLocale(en);
 
-  timestamps.forEach(function (timestamp) {
-    var date = new Date(timestamp.getAttribute('datetime'));
-    timestamp.textContent = timeAgo.format(date);
-  });
+    var timeAgo = new TimeAgo('en');
+    var timestamps = document.querySelectorAll('.timeago');
+
+    timestamps.forEach(function (timestamp) {
+        var date = new Date(timestamp.getAttribute('datetime'));
+        timestamp.textContent = timeAgo.format(date);
+    });
+}

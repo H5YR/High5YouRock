@@ -1,7 +1,10 @@
-﻿using h5yr.Settings;
+﻿using h5yr.Core.Services;
+using h5yr.Settings;
 using h5yr.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Skybrud.Essentials.Json.Newtonsoft;
+using Skybrud.Social.Mastodon.Models.Statuses;
 using Tweetinvi;
 using Tweetinvi.Models;
 
@@ -14,73 +17,54 @@ namespace h5yr.Controllers.Mastodon
     {
         private readonly ILogger<LoadMorePostsController> _logger;
         private readonly IOptions<APISettings> _apiSettings;
+        private readonly IMastodonService _mastodonService;
 
-        const string NumberOfPostsDisplayed = "NumberOfPostsDisplayed";
+        protected bool IsOffline => _apiSettings.Value.Offline == "true";
+
+        const string StartingPostId = "StartingPostId";
+        const int PageSize = 12;
 
 
-        public LoadMorePostsController(IOptions<TwitterSettings> twitterSettings, ILogger<LoadMorePostsController> logger, IOptions<APISettings> apiSettings)
+        public LoadMorePostsController(ILogger<LoadMorePostsController> logger, IOptions<APISettings> apiSettings, IMastodonService mastodonService)
         {
             _logger = logger;
             _apiSettings = apiSettings;
+            _mastodonService = mastodonService;
         }
 
         [HttpGet]
-        public IActionResult GetPosts()
+        public async Task<IActionResult> GetPosts(string startId = "")
         {
-            var postsToSkip = Convert.ToInt32(HttpContext.Session.GetInt32(NumberOfPostsDisplayed));
-            postsToSkip = postsToSkip == 0 ? 12 : postsToSkip;
+            // If we're passed in a starting ID, always start a new session otherwise returning users would start loading halfway through
+            var startingPostId = string.IsNullOrEmpty(startId) ? HttpContext.Session.GetString(StartingPostId) : startId;
 
-            List<MastodonModel> posts = new();
+            IReadOnlyList<MastodonStatus> posts = Array.Empty<MastodonStatus>();
 
-            if (_apiSettings.Value.Offline == null || _apiSettings.Value.Offline.ToLowerInvariant() != "true")
+            if (IsOffline)
             {
-                posts = GetAllPosts(postsToSkip, 12);
+                try
+                {
+                    string fileName = "TestStatuses.json";
+                    posts = JsonUtils
+                        .LoadJsonArray(fileName, MastodonStatus.Parse)
+                        .SkipWhile(p => startingPostId == "" || p.Id != startingPostId)
+                        .Skip(1)
+                        .Take(PageSize)
+                        .ToList();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error: Unable to read test statuses JSON file");
+                }
             }
             else
             {
-                string fileName = "TestTweets.json";
-                string jsonString = System.IO.File.ReadAllText(fileName);
-                posts = System.Text.Json.JsonSerializer.Deserialize<List<MastodonModel>>(jsonString)!;
+                posts = await _mastodonService.GetStatuses(PageSize, startingPostId);
             }
 
-
-
-            HttpContext.Session.SetInt32(NumberOfPostsDisplayed, postsToSkip + 12);
+            HttpContext.Session.SetString(StartingPostId, posts.LastOrDefault()?.Id ?? "");
 
             return View("Mastodon/LoadMorePosts", posts);
-        }
-
-        private List<MastodonModel> GetAllPosts(int postsToSkip, int postsToReturn)
-        {
-            // You need to make your own API keys on on dev.twitter.com if you want to pull in LIVE tweets
-            // TODO - complete replacement of Twitter implementation - stub for now
-            var creds = new TwitterCredentials("", "", "", "");
-            var userClient = new TwitterClient(creds);
-
-            var searchResults = userClient.Search.SearchTweetsAsync("#h5yr");
-
-
-            List<MastodonModel> FetchPosts = new List<MastodonModel>();
-
-
-            foreach (var post in searchResults.Result.Skip(postsToSkip).Take(postsToReturn))
-            {
-
-
-            };
-
-            return FetchPosts;
-        }
-        public List<MastodonModel> GetMorePosts()
-        {
-
-            var postsToSkip = Convert.ToInt32(HttpContext.Session.GetInt32(NumberOfPostsDisplayed));
-
-            List<MastodonModel> posts = GetAllPosts(postsToSkip, 12);
-
-            HttpContext.Session.SetInt32(NumberOfPostsDisplayed, postsToSkip + 12);
-
-            return posts;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using h5yr.Data.Entities;
 using h5yr.Data.Interfaces;
 using h5yr.ViewComponents;
+using Lucene.Net.Documents;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Skybrud.Social.Mastodon;
 using Skybrud.Social.Mastodon.Models.Statuses;
 using Skybrud.Social.Mastodon.Options.Timeline;
@@ -36,17 +38,17 @@ namespace h5yr.Core.Services {
             _postCounterStore = postCounterStore;
         }
 
-        public async Task<List<MastodonStatus>> GetStatuses(int limit)
+        public async Task<List<MastodonStatus>> GetStatuses(int limit, string? startId = null)
         {
-            var posts = _appCaches.RuntimeCache.GetCacheItem($"{FeedCacheKey}_{limit}",
-                () => LoadStatuses(limit),
+            var posts = _appCaches.RuntimeCache.GetCacheItem($"{FeedCacheKey}_{limit}_{startId}",
+                () => LoadStatuses(limit, startId),
                 TimeSpan.FromMinutes(FeedCacheMinutes));
 
             return await posts!;
         }
 
 
-        private async Task<List<MastodonStatus>> LoadStatuses(int limit)
+        private async Task<List<MastodonStatus>> LoadStatuses(int limit, string? startId)
         {
 
             // Initialize a new HTTP service (basically the API wrapper)
@@ -57,7 +59,8 @@ namespace h5yr.Core.Services {
             MastodonGetHashtagTimelineOptions options = new()
             {
                 Hashtag = FeedHashtag,
-                Limit = limit
+                Limit = limit,
+                MaxId = startId
             };
 
             try
