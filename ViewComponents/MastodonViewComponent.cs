@@ -28,11 +28,14 @@ public class MastodonViewComponent : ViewComponent {
         // Get the statuses
         IReadOnlyList<MastodonStatus> statuses = await GetStatuses();
 
-        // Get the custom emojis
+        // Get the custom emojis (will be removed in future update)
         IReadOnlyList<MastodonCustomEmoji> customEmojis = await _mastodonService.GetCustomEmojis();
 
+        // Get the total from local storage
+        int totalCount = _mastodonService.GetPostCount();
+
         // Initialize a new model for the view component
-        MastodonModel model = new(statuses, customEmojis);
+        MastodonModel model = new(statuses, customEmojis, totalCount);
 
         // Return the view
         return View(model);
@@ -45,7 +48,7 @@ public class MastodonViewComponent : ViewComponent {
 
         if (IsOffline) {
             try {
-                return JsonUtils.LoadJsonArray(fileName, MastodonStatus.Parse);
+                return JsonUtils.LoadJsonArray(fileName, MastodonStatus.Parse).Take(12).ToList();
             } catch (Exception ex) {
                 _logger.LogError(ex, "Error: Unable to read test statuses JSON file");
                 return Array.Empty<MastodonStatus>();
@@ -55,6 +58,7 @@ public class MastodonViewComponent : ViewComponent {
         IReadOnlyList<MastodonStatus> statuses = await _mastodonService.GetStatuses(12);
 
         if (CreateOfflineFile) {
+            statuses = await _mastodonService.GetStatuses(36); // If creating an offline file, get a bigger initial pull of posts to aid testing 'load more', but then discard some.
             try {
                 JsonUtils.SaveJsonArray(fileName, statuses);
             } catch (Exception ex) {
@@ -62,7 +66,7 @@ public class MastodonViewComponent : ViewComponent {
             }
         }
 
-        return statuses;
+        return statuses.Take(12).ToList();
 
     }
 

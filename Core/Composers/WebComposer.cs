@@ -10,7 +10,7 @@ namespace h5yr.Core.Composers
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            builder.Services.AddSingleton<ITweetCounterStore, TweetCounterStore>();
+            builder.Services.AddSingleton<IPostCounterStore, PostCounterStore>();
             
             const string umbracoDbDSN = Umbraco.Cms.Core.Constants.System.UmbracoConnectionName;
 

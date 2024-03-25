@@ -5,10 +5,10 @@
 
 <div class="tweets">
     <div class="tweets__header">
+        <div class="tweets__counter">
+            Total #H5YRs since July 2023: <data class="tweets__counter-data" id="tweet-count">@Model.TotalCount</data>
+        </div>
         <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
-@*        <div class="tweets__counter">
-            Total #H5YRs since October 2022: <data class="tweets__counter-data" id="tweet-count">@Model.NumberOfTweets</data>
-        </div>*@
     </div>
     <div class="tweet__grid">
         @if (Model.Statuses.Any()) {
@@ -32,35 +32,17 @@
                         </div>
                     </div>
                     <p></p>
-@*                    <ul class="tweet__actions">
-                        <li class="tweet__actions-item">
-                            <a href="https://twitter.com/intent/tweet?in_reply_to=@tweet.ReplyToTweet" target="_blank" rel="noopener">
-                                <svg class="[ icon icon--comment ]">
-                                    <use xlink:href="#sprite-icon-comment"></use>
-                                </svg>
-                                <span>reply</span>
-                            </a>
-                        </li>
-                        <li class="tweet__actions-item">
-                            <a href="https://twitter.com/intent/retweet?tweet_id=@tweet.ReplyToTweet" target="_blank" rel="noopener">
-                                <svg class="[ icon icon--retweet ]">
-                                    <use xlink:href="#sprite-icon-retweet"></use>
-                                </svg>
-                                <span>retweet</span>
-                            </a>
-                        </li>
-                        <li class="tweet__actions-item">
-                            <a href="https://twitter.com/intent/favorite?tweet_id=@tweet.ReplyToTweet" target="_blank" rel="noopener">
-                                <svg class="[ icon icon--heart ]">
-                                    <use xlink:href="#sprite-icon-heart"></use>
-                                </svg>
-                                <span>like</span>
-                            </a>
-                        </li>
-                    </ul>*@
                 </div>
 
             }
         }
     </div>
+
+    <div class="load-more-container">
+        <button class="button load-more" id="loadmore" data-start-id="@Model.Statuses.Last().Id">
+            <span>Load More</span>
+            <div class="spinner"></div>
+        </button>
+    </div>
+
 </div>
