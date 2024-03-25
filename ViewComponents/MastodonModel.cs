@@ -8,10 +8,13 @@ public class MastodonModel {
 
     public IReadOnlyList<MastodonCustomEmoji> CustomEmojis { get; }
 
-    public MastodonModel(IReadOnlyList<MastodonStatus> statuses, IReadOnlyList<MastodonCustomEmoji> customEmojis)
+    public int TotalCount { get; }
+
+    public MastodonModel(IReadOnlyList<MastodonStatus> statuses, IReadOnlyList<MastodonCustomEmoji> customEmojis, int totalCount)
     {
         Statuses = statuses;
         CustomEmojis = customEmojis;
+        TotalCount = totalCount;
     }
 
 }

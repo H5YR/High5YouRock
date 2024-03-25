@@ -1,12 +1,9 @@
 ﻿using h5yr.Core.Services;
 using h5yr.Settings;
-using h5yr.ViewComponents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Skybrud.Essentials.Json.Newtonsoft;
 using Skybrud.Social.Mastodon.Models.Statuses;
-using Tweetinvi;
-using Tweetinvi.Models;
 
 
 namespace h5yr.Controllers.Mastodon

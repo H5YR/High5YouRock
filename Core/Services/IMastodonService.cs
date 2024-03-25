@@ -6,6 +6,7 @@ namespace h5yr.Core.Services
     public interface IMastodonService
     {
         Task<List<MastodonStatus>> GetStatuses(int limit, string? startId = null);
+        int GetPostCount();
 
         Task<List<MastodonCustomEmoji>> GetCustomEmojis();
 

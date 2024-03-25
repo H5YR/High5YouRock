@@ -5,10 +5,10 @@
 
 <div class="tweets">
     <div class="tweets__header">
+        <div class="tweets__counter">
+            Total #H5YRs since July 2023: <data class="tweets__counter-data" id="tweet-count">@Model.TotalCount</data>
+        </div>
         <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
-@*        <div class="tweets__counter">
-            Total #H5YRs since October 2022: <data class="tweets__counter-data" id="tweet-count">@Model.NumberOfTweets</data>
-        </div>*@
     </div>
     <div class="tweet__grid">
         @if (Model.Statuses.Any()) {
