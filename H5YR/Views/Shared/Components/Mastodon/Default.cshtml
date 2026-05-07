@@ -1,0 +1,47 @@
+﻿@using Skybrud.Social.Mastodon.Models.Statuses
+@using H5YR.Core.Extensions
+@model H5YR.Core.ViewComponents.MastodonModel
+
+<div class="tweets">
+    <div class="tweets__header">
+        <div class="tweets__counter">
+            Total #H5YRs since July 2023: <data class="tweets__counter-data" id="tweet-count">@Model.TotalCount</data>
+        </div>
+        <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
+    </div>
+    <div class="tweet__grid">
+        @if (Model.Statuses.Any()) {
+            foreach (MastodonStatus status in Model.Statuses) {
+                <div class="tweet__card">
+                    <div class="tweet__avatar">
+                        <a href="@status.Account.Url" target="_blank" rel="noopener">
+                            <img src="@status.Account.Avatar" alt="Profile image of @status.Account.Username" width="46" />
+                        </a>
+                    </div>
+                    <div class="tweet__info">
+                        <div class="tweet__user-detail">
+                            <a href="@status.Account.Url" target="_blank" rel="noopener">@status.Account.Username</a>
+                            <time class="timeago" datetime="@status.CreatedAt.ToString()">@status.CreatedAt.ToString("dd/MM/yyyy")</time>
+                            <a href="@status.Url" target="_blank" rel="noopener">
+                                [Permalink]
+                            </a>
+                        </div>
+                        <div class="tweet__content">
+                            @Html.Raw(status.Content.ReplaceCustomEmojis(status.Emojis))
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+
+            }
+        }
+    </div>
+
+    <div class="load-more-container">
+        <button class="button load-more" id="loadmore" data-start-id="@Model.Statuses.Last().Id">
+            <span>Load More</span>
+            <div class="spinner"></div>
+        </button>
+    </div>
+
+</div>

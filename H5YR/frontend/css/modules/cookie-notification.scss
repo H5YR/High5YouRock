@@ -1,0 +1,50 @@
+/* Cookie Notification styles */
+.cookie-notification {
+  background-color: blue;
+  color: $white;
+  padding: 10px;
+  width: 100%;
+
+  &.-is-hidden {
+    display: none;
+  }
+
+  @include media($huge) {
+    padding: 10px 20px;
+  }
+
+  @include media($small) {
+    padding: 10px 15px;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5rem;
+  }
+
+  a {
+    color: $white;
+    text-decoration: underline;
+  }
+}
+
+.cookie-notification__inner {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cookie-notification__close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: blue;
+  padding: 5px;
+  margin-left: 20px;
+  transition: background-color .25s ease;
+
+  &:hover {
+    background: rgba(blue, 0.8);
+  }
+}

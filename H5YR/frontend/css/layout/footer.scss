@@ -1,0 +1,29 @@
+.footer {
+  @include font-size(13);
+  font-weight: bold;
+  height: 180px;
+  background: $purple;
+  color: $white;
+}
+
+.footer__inner {
+  padding: 2rem 0;
+}
+
+.footer__logo {
+  display: block;
+  margin-bottom: 1rem;
+  width: 92px;
+  height: 24px;
+}
+
+.footer__link {
+  color: $white;
+  font-weight: bold;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}

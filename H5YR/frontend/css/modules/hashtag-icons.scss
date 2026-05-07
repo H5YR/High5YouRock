@@ -1,0 +1,26 @@
+﻿// Based off https://umbracocommunity.social/custom.css and updated to handle URLs not being relative here.
+a[href*="/tags/" i]{white-space: nowrap}
+a[href$="/tags/H5YR" i]::after{content: "✋"}
+a[href*="/tags/Umbraco" i]::after{content: "🦄"}
+a[href$="/tags/UmbracoTees" i]::after{content: "👕"}
+a[href$="/tags/umbraCoffee" i]::after{content: "☕"}
+a[href$="/tags/notacult" i]::after{content: "🙅"}
+a[href$="/tags/codegarden" i]::after,a[href*="/tags/cg2" i]::after{content: "🌷"}
+a[href$="/tags/cgRumours" i]::after{ content: "🤫" }
+a[href$="/tags/theSecretStage" i]::after { content: "🧱" }
+a[href$="/tags/dotnet" i]::after{content: "🤖"}
+a[href$="/tags/csharp" i]::after{content: "🤖"}
+a[href$="/tags/Hacktoberfest" i]::after{content: "🎃"}
+a[href$="/tags/UmbracoCommunity" i]::after{content: "💙"}
+a[href$="/tags/Friendly" i]::after{content: "💙"}
+a[href$="/tags/codecabin" i]::after,a[href*="/tags/cc2" i]::after{content: "🛖"}
+a[href$="/tags/24days" i]::after{content: "📅"}
+a[href$="/tags/meetup" i]::after{content: "🍕"}
+a[href$="/tags/codernails" i]::after{content: "💅🏻"}
+a[href*="/tags/df2" i]::after, a[href*="/tags/duug" i]::after{content: "🦁"}
+a[href$="/tags/umbukfest" i]::after{content: "🚇"}
+a[href$="/tags/" i][href*="SecretSanta" i]::after{content: "🧑‍🎄"}
+a[href$="/tags/Sustainability" i]::after { content: "🌍" }
+a[href$="/tags/umbfyi" i]::after { content: "🚀" }
+a[href$="/tags/Contentment" i]::after { content: "😌" }
+a[href$="/tags/bellissima" i]::after { content: "👌" }

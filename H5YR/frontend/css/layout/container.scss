@@ -1,0 +1,16 @@
+//
+// .container
+//
+
+.container {
+  width: 100%;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  max-width: 1240px;
+  margin: 0 auto;
+
+  @include media($small) {
+    border-left-width: 15px;
+    border-right-width: 15px;
+  }
+}

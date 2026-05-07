@@ -1,0 +1,30 @@
+.hero {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  min-height: 400px;
+  max-height: 650px;
+  background: linear-gradient(180deg, #9D50BB, $purple);
+
+  &.-small {
+    height: 30vh;
+    min-height: 200px;
+  }
+}
+
+.hero__inner {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero__animation {
+  width: 100%;
+  max-width: 1000px;
+  min-height: 50vh;
+  z-index: 0;
+  position: relative;
+}

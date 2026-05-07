@@ -1,0 +1,169 @@
+//
+// $grid
+//
+// Generic grid for layouts.
+// If you require a more specific grid layout, create a new module
+//
+// This grid provides basic 2, 3, 4 and 6 column layouts
+//
+// IMPORTANT
+// Do not add extra code to this module. If you require background colours, margins or borders,
+// these are module amends and shouldn't affect how the grid works.
+//
+
+.grid {
+  display: flex;
+  flex-flow: row wrap;
+  margin: -15px;
+
+  @supports (display: grid) {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 15px;
+    margin: 0;
+  }
+
+  @include media($medium) {
+
+    @supports (display: grid) {
+      grid-gap: 20px;
+    }
+  }
+
+  @include media($small) {
+    display: block;
+
+    @supports (display: grid) {
+      display: grid;
+      grid-gap: 15px;
+    }
+  }
+}
+
+.grid-item {
+  background: $grey-2; // Remove this in build
+  padding: 15px; // Remove this in build
+
+  &.-full-width {
+    flex: 0 0 100%;
+
+    @supports (display: grid) {
+      grid-column: span 12;
+    }
+  }
+
+  &.-one-half {
+    flex: 0 0 50%;
+
+    @supports (display: grid) {
+      grid-column: span 6;
+    }
+
+    @include media($small) {
+      flex: 0 1 auto;
+
+      @supports (display: grid) {
+        grid-column: span 12;
+      }
+    }
+  }
+
+  &.-one-third {
+    flex: 0 0 33.3333%;
+
+    @supports (display: grid) {
+      grid-column: span 4;
+    }
+
+    @include media($large, $small) {
+      flex: 0 0 50%;
+
+      @supports (display: grid) {
+        grid-column: span 6;
+      }
+    }
+
+    @include media($small) {
+      flex: 0 1 auto;
+
+      @supports (display: grid) {
+        grid-column: span 12;
+      }
+    }
+  }
+
+  &.-one-quarter {
+    flex: 0 1 25%;
+
+    @supports (display: grid) {
+      grid-column: span 3;
+    }
+
+
+    @include media($medium, $tiny) {
+      flex: 0 1 50%;
+
+      @supports (display: grid) {
+        grid-column: span 6;
+      }
+    }
+
+    @include media($tiny) {
+      flex: 0 1 100%;
+
+      @supports (display: grid) {
+        grid-column: span 12;
+      }
+    }
+  }
+
+  &.-three-quarters {
+    flex: 0 0 75%;
+
+    @supports (display: grid) {
+      grid-column: span 9;
+    }
+
+    @include media($medium) {
+      flex: 0 0 100%;
+
+      @supports (display: grid) {
+        grid-column: span 12;
+      }
+    }
+  }
+
+  &.-two-thirds {
+    flex: 0 0 66.666%;
+
+    @supports (display: grid) {
+      grid-column: span 8;
+    }
+
+    @include media($large) {
+      flex: 0 0 100%;
+
+      @supports (display: grid) {
+        grid-column: span 12;
+      }
+    }
+  }
+
+  // To get a consistent stacking order on mobile
+  @for $i from 1 through 26 {
+
+    &.order-#{$i} {
+      order: $i;
+    }
+  }
+}
+
+.grid-item__inner {
+  padding: 15px;
+  height: 100%;
+  position: relative;
+
+  @supports (display: grid) {
+    padding: 0;
+  }
+}
