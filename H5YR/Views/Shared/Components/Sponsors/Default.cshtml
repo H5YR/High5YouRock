@@ -1,0 +1,34 @@
+﻿@inherits UmbracoViewPage<H5YR.Core.Models.ViewModels.SponsorsViewModel>
+@{
+    @if(Model.Sponsors == null || !Model.Sponsors.Any())
+    {
+        return;
+    }
+
+   
+
+    <section class="[ section -margin-top -margin-bottom ]">
+        <div class="container">
+            <div class="[ content-block -align-center ]">
+                <h2 class="h3">Friends of H5YR</h2>
+                <div class="friends">
+                    @foreach (var sponsor in Model.Sponsors)
+                    {
+
+                        var content = (Sponsor)sponsor.Content;
+
+                        <a class="friends__item" href="@content.SponsorUrl" target="_blank" rel="noopener">
+                            @if (content.SponsorImage != null)
+                            {
+                                <img src="@content.SponsorImage?.Url()" )" alt="@content.SponsorAltText ?? ''" width="100" height="100"/>
+                            }
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+}

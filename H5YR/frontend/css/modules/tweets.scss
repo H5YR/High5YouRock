@@ -132,3 +132,30 @@
   font-weight: bold;
   color: $purple;
 }
+
+// Widget h5yr card badge and styling
+.tweet__card--widget {
+  border-left: 3px solid $purple;
+}
+
+.tweet__badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 4px;
+  background: lighten($purple, 38%);
+  color: $purple;
+
+  &--github {
+    background: #f0f0f0;
+    color: #333;
+  }
+
+  &--google {
+    background: #e8f0fe;
+    color: #1a73e8;
+  }
+}

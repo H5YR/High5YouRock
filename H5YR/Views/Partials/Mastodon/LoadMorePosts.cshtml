@@ -1,32 +1,45 @@
-﻿﻿@using Skybrud.Social.Mastodon.Models.Statuses
-@using H5YR.Core.Extensions
-@model List<MastodonStatus>
+@using H5YR.Core.Models
+@model List<FeedItem>
 
 
 @if(Model != null && Model.Any())
 {
-    foreach(var status in Model)
+    foreach(var item in Model)
     {
-        <div class="tweet__card">
+        <div class="tweet__card @(item.Source == "widget" ? "tweet__card--widget" : "")">
             <div class="tweet__avatar">
-                <a href="@status.Account.Url" target="_blank" rel="noopener">
-                    <img src="@status.Account.Avatar" alt="Profile image of @status.Account.Username" width="46" />
-                </a>
+                @if (!string.IsNullOrEmpty(item.ProfileUrl)) {
+                    <a href="@item.ProfileUrl" target="_blank" rel="noopener">
+                        <img src="@item.AvatarUrl" alt="Profile image of @item.Username" width="46" />
+                    </a>
+                } else {
+                    <img src="@item.AvatarUrl" alt="Profile image of @item.Username" width="46" />
+                }
             </div>
             <div class="tweet__info">
                 <div class="tweet__user-detail">
-                    <a href="@status.Account.Url" target="_blank" rel="noopener">@status.Account.Username</a>
-                    <time class="timeago" datetime="@status.CreatedAt.ToString()">@status.CreatedAt.ToString("dd/MM/yyyy")</time>
-                    <a href="@status.Url" target="_blank" rel="noopener">
-                        [Permalink]
-                    </a>
+                    @if (!string.IsNullOrEmpty(item.ProfileUrl)) {
+                        <a href="@item.ProfileUrl" target="_blank" rel="noopener">@item.Username</a>
+                    } else {
+                        <span>@item.Username</span>
+                    }
+                    <time class="timeago" datetime="@item.CreatedAt.ToString("o")">@item.CreatedAt.ToString("dd/MM/yyyy")</time>
+                    @if (item.Source == "widget") {
+                        <span class="tweet__badge tweet__badge--@item.AuthProvider" title="via h5yr widget">
+                            🖐 widget
+                        </span>
+                    } else {
+                        <a href="@item.Permalink" target="_blank" rel="noopener">
+                            [Permalink]
+                        </a>
+                    }
                 </div>
                 <div class="tweet__content">
-                    @Html.Raw(status.Content.ReplaceCustomEmojis(status.Emojis))
+                    @Html.Raw(item.ContentHtml)
                 </div>
             </div>
             <p></p>
         </div>
-        
+
     }
 }

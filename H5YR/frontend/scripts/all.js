@@ -61,10 +61,20 @@ import '@justinribeiro/share-to-mastodon';
       var startId = loadMoreButton.getAttribute('data-start-id');
       loadMoreButton.setAttribute('data-start-id', '');
 
-      fetch('api/loadmoreposts/?startId=' + startId).then(function (response) {
+      // Get the oldest date from the last feed item for widget pagination
+      var oldestDate = loadMoreButton.getAttribute('data-oldest-date') || '';
+
+      fetch('api/loadmoreposts/?startId=' + startId + '&oldestDate=' + encodeURIComponent(oldestDate)).then(function (response) {
         return response.text();
       }).then(function (data) {
         document.querySelector('.tweet__grid').insertAdjacentHTML('beforeend', data);
+
+        // Update the oldest date from the newly loaded items
+        var allTimestamps = document.querySelectorAll('.tweet__grid .timeago');
+        if (allTimestamps.length > 0) {
+          var lastTimestamp = allTimestamps[allTimestamps.length - 1].getAttribute('datetime');
+          loadMoreButton.setAttribute('data-oldest-date', lastTimestamp);
+        }
 
         loadMoreButton.classList.remove('loading');
         loadMoreButton.querySelector('.spinner').style.display = 'none';

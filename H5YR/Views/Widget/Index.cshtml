@@ -1,0 +1,409 @@
+@{
+    Layout = null;
+    var targetUrl = ViewBag.TargetUrl as string ?? "";
+    var baseUrl = ViewBag.BaseUrl as string ?? "https://h5yr.com";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>H5YR Widget</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            background: transparent;
+            color: #333;
+        }
+        .widget {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            padding: 16px;
+            max-width: 320px;
+        }
+        .widget__header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .widget__logo {
+            font-weight: 800;
+            font-size: 16px;
+            color: #6E48AA;
+        }
+        .widget__logo span {
+            display: inline-block;
+            font-size: 20px;
+            margin-right: 2px;
+        }
+
+        /* Auth state */
+        .widget__auth {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .widget__auth-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .auth-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            text-decoration: none;
+            color: #333;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .auth-btn:hover {
+            background: #f5f5f5;
+            border-color: #bbb;
+        }
+        .auth-btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Authenticated state */
+        .widget__user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .widget__user img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+        .widget__user-name {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .widget__user-provider {
+            font-size: 11px;
+            color: #999;
+        }
+        .widget__signout {
+            margin-left: auto;
+            font-size: 11px;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-decoration: underline;
+        }
+
+        /* Submit button */
+        .widget__submit-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #6E48AA, #9D50BB);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.15s, transform 0.1s;
+        }
+        .widget__submit-btn:hover {
+            opacity: 0.9;
+        }
+        .widget__submit-btn:active {
+            transform: scale(0.98);
+        }
+        .widget__submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Remaining */
+        .widget__remaining {
+            font-size: 11px;
+            color: #999;
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        /* Success state */
+        .widget__success {
+            text-align: center;
+            padding: 8px 0;
+        }
+        .widget__success-icon {
+            font-size: 32px;
+            margin-bottom: 4px;
+        }
+        .widget__success-text {
+            font-weight: 600;
+            color: #6E48AA;
+            font-size: 15px;
+        }
+        .widget__success-sub {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        /* Rate limited */
+        .widget__limited {
+            text-align: center;
+            padding: 8px 0;
+            color: #888;
+            font-size: 13px;
+        }
+
+        /* Error */
+        .widget__error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        /* Target URL preview */
+        .widget__target {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 10px;
+            word-break: break-all;
+            line-height: 1.4;
+        }
+        .widget__target strong {
+            color: #6E48AA;
+        }
+
+        /* Hidden utility */
+        .hidden { display: none !important; }
+
+        /* Powered by */
+        .widget__footer {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 10px;
+        }
+        .widget__footer a {
+            color: #6E48AA;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget">
+        <div class="widget__header">
+            <div class="widget__logo"><span>🖐</span> #H5YR</div>
+        </div>
+
+        <!-- Target URL preview -->
+        <div class="widget__target" id="targetPreview">
+            <strong>#H5YR</strong> for this page
+        </div>
+
+        <!-- State: Unauthenticated -->
+        <div class="widget__auth" id="stateAuth">
+            <div class="widget__auth-label">Sign in to give a high five:</div>
+            <a class="auth-btn" id="btnGitHub" href="#">
+                <svg viewBox="0 0 24 24" fill="#333"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Sign in with GitHub
+            </a>
+            <a class="auth-btn" id="btnGoogle" href="#">
+                <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Sign in with Google
+            </a>
+        </div>
+
+        <!-- State: Authenticated -->
+        <div class="hidden" id="stateReady">
+            <div class="widget__user">
+                <img id="userAvatar" src="" alt="" />
+                <div>
+                    <div class="widget__user-name" id="userName"></div>
+                    <div class="widget__user-provider" id="userProvider"></div>
+                </div>
+                <button class="widget__signout" id="btnSignout">Sign out</button>
+            </div>
+            <button class="widget__submit-btn" id="btnSubmit">
+                🖐 Give a #H5YR!
+            </button>
+            <div class="widget__remaining" id="remainingText"></div>
+            <div class="widget__error hidden" id="errorText"></div>
+        </div>
+
+        <!-- State: Success -->
+        <div class="hidden" id="stateSuccess">
+            <div class="widget__success">
+                <div class="widget__success-icon">✋</div>
+                <div class="widget__success-text">You gave a #H5YR!</div>
+                <div class="widget__success-sub">It'll appear on h5yr.com shortly.</div>
+            </div>
+        </div>
+
+        <!-- State: Rate Limited -->
+        <div class="hidden" id="stateLimited">
+            <div class="widget__limited">
+                You've used all your #H5YR submissions for this site today. Come back tomorrow! 🙌
+            </div>
+        </div>
+
+        <div class="widget__footer">
+            Powered by <a href="https://h5yr.com" target="_blank" rel="noopener">h5yr.com</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var BASE_URL = '@Html.Raw(baseUrl)';
+            var TARGET_URL = '@Html.Raw(targetUrl)';
+            var TOKEN_KEY = 'h5yr_widget_token';
+
+            // DOM refs
+            var stateAuth = document.getElementById('stateAuth');
+            var stateReady = document.getElementById('stateReady');
+            var stateSuccess = document.getElementById('stateSuccess');
+            var stateLimited = document.getElementById('stateLimited');
+            var btnGitHub = document.getElementById('btnGitHub');
+            var btnGoogle = document.getElementById('btnGoogle');
+            var btnSubmit = document.getElementById('btnSubmit');
+            var btnSignout = document.getElementById('btnSignout');
+            var userAvatar = document.getElementById('userAvatar');
+            var userName = document.getElementById('userName');
+            var userProvider = document.getElementById('userProvider');
+            var remainingText = document.getElementById('remainingText');
+            var errorText = document.getElementById('errorText');
+            var targetPreview = document.getElementById('targetPreview');
+
+            // Show target URL
+            if (TARGET_URL) {
+                try {
+                    var urlObj = new URL(TARGET_URL);
+                    targetPreview.innerHTML = '<strong>#H5YR</strong> for ' + urlObj.hostname + urlObj.pathname;
+                } catch(e) {
+                    targetPreview.innerHTML = '<strong>#H5YR</strong> for this page';
+                }
+            }
+
+            // Check for token in URL params (from OAuth callback)
+            var params = new URLSearchParams(window.location.search);
+            var tokenFromUrl = params.get('h5yr_token');
+            if (tokenFromUrl) {
+                localStorage.setItem(TOKEN_KEY, tokenFromUrl);
+                // Clean URL
+                var cleanUrl = window.location.pathname + '?url=' + encodeURIComponent(TARGET_URL);
+                window.history.replaceState({}, '', cleanUrl);
+            }
+
+            var token = localStorage.getItem(TOKEN_KEY);
+
+            // Set up OAuth URLs
+            var widgetReturnUrl = BASE_URL + '/widget?url=' + encodeURIComponent(TARGET_URL);
+            btnGitHub.href = BASE_URL + '/api/widget/auth/github?returnUrl=' + encodeURIComponent(widgetReturnUrl);
+            btnGoogle.href = BASE_URL + '/api/widget/auth/google?returnUrl=' + encodeURIComponent(widgetReturnUrl);
+
+            function showState(state) {
+                stateAuth.classList.add('hidden');
+                stateReady.classList.add('hidden');
+                stateSuccess.classList.add('hidden');
+                stateLimited.classList.add('hidden');
+                state.classList.remove('hidden');
+            }
+
+            function checkAuth() {
+                if (!token) {
+                    showState(stateAuth);
+                    return;
+                }
+
+                fetch(BASE_URL + '/api/widget/h5yr/status?token=' + encodeURIComponent(token) + '&url=' + encodeURIComponent(TARGET_URL))
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (!data.authenticated) {
+                            localStorage.removeItem(TOKEN_KEY);
+                            token = null;
+                            showState(stateAuth);
+                            return;
+                        }
+
+                        userName.textContent = data.displayName;
+                        userProvider.textContent = 'via ' + data.authProvider;
+                        userAvatar.src = data.avatarUrl;
+                        userAvatar.alt = data.displayName;
+
+                        if (data.remaining <= 0) {
+                            showState(stateLimited);
+                        } else {
+                            remainingText.textContent = data.remaining + ' remaining today for this site';
+                            showState(stateReady);
+                        }
+                    })
+                    .catch(function() {
+                        showState(stateAuth);
+                    });
+            }
+
+            // Submit h5yr
+            btnSubmit.addEventListener('click', function() {
+                btnSubmit.disabled = true;
+                btnSubmit.textContent = 'Submitting...';
+                errorText.classList.add('hidden');
+
+                fetch(BASE_URL + '/api/widget/h5yr', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: token,
+                        targetUrl: TARGET_URL
+                    })
+                })
+                .then(function(r) {
+                    if (r.status === 429) {
+                        showState(stateLimited);
+                        return;
+                    }
+                    return r.json().then(function(data) {
+                        if (r.ok) {
+                            showState(stateSuccess);
+                        } else {
+                            errorText.textContent = data.error || 'Something went wrong.';
+                            errorText.classList.remove('hidden');
+                            btnSubmit.disabled = false;
+                            btnSubmit.textContent = '🖐 Give a #H5YR!';
+                        }
+                    });
+                })
+                .catch(function() {
+                    errorText.textContent = 'Network error. Please try again.';
+                    errorText.classList.remove('hidden');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = '🖐 Give a #H5YR!';
+                });
+            });
+
+            // Sign out
+            btnSignout.addEventListener('click', function() {
+                localStorage.removeItem(TOKEN_KEY);
+                token = null;
+                showState(stateAuth);
+            });
+
+            // Init
+            checkAuth();
+        })();
+    </script>
+</body>
+</html>

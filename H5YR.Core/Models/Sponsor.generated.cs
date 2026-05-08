@@ -50,6 +50,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Sponsor Alt Text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sponsorAltText")]
+		public virtual string SponsorAltText => this.Value<string>(_publishedValueFallback, "sponsorAltText");
+
+		///<summary>
 		/// Sponsor Image
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
@@ -64,5 +72,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("sponsorTitle")]
 		public virtual string SponsorTitle => this.Value<string>(_publishedValueFallback, "sponsorTitle");
+
+		///<summary>
+		/// Sponsor Url
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sponsorUrl")]
+		public virtual string SponsorUrl => this.Value<string>(_publishedValueFallback, "sponsorUrl");
 	}
 }

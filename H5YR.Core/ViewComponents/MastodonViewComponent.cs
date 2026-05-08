@@ -1,4 +1,6 @@
-﻿using H5YR.Core.Services;
+﻿using H5YR.Core.Extensions;
+using H5YR.Core.Models;
+using H5YR.Core.Services;
 using H5YR.Core.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,33 +16,69 @@ namespace H5YR.Core.ViewComponents
         private readonly ILogger<MastodonViewComponent> _logger;
         private readonly IOptions<APISettings> _apiSettings;
         private readonly IMastodonService _mastodonService;
+        private readonly IWidgetH5yrService _widgetH5yrService;
 
         protected bool IsOffline => _apiSettings.Value.Offline == "true";
 
         protected bool CreateOfflineFile => _apiSettings.Value.CreateOfflineFile == "true";
 
-        public MastodonViewComponent(ILogger<MastodonViewComponent> logger, IOptions<APISettings> apiSettings, IMastodonService mastodonService)
+        public MastodonViewComponent(
+            ILogger<MastodonViewComponent> logger,
+            IOptions<APISettings> apiSettings,
+            IMastodonService mastodonService,
+            IWidgetH5yrService widgetH5yrService)
         {
             _logger = logger;
             _apiSettings = apiSettings;
             _mastodonService = mastodonService;
+            _widgetH5yrService = widgetH5yrService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
 
-            // Get the statuses
+            // Get the Mastodon statuses
             IReadOnlyList<MastodonStatus> statuses = await GetStatuses();
 
-            // Get the total from local storage
-            int totalCount = _mastodonService.GetPostCount();
+            // Get the total from local storage (Mastodon + widget)
+            int mastodonCount = _mastodonService.GetPostCount();
+            int widgetCount = _widgetH5yrService.GetTotalCount();
+            int totalCount = mastodonCount + widgetCount;
+
+            // Build unified feed: merge Mastodon posts + widget h5yrs sorted by date
+            var feedItems = BuildUnifiedFeed(statuses);
 
             // Initialize a new model for the view component
-            MastodonModel model = new(statuses, totalCount);
+            MastodonModel model = new(statuses, totalCount, feedItems);
 
             // Return the view
             return View(model);
 
+        }
+
+        private IReadOnlyList<FeedItem> BuildUnifiedFeed(IReadOnlyList<MastodonStatus> mastodonStatuses)
+        {
+            // Convert Mastodon statuses to FeedItems
+            var mastodonItems = mastodonStatuses.Select(s => new FeedItem
+            {
+                Id = $"mastodon_{s.Id}",
+                Source = "mastodon",
+                AvatarUrl = s.Account.Avatar,
+                Username = s.Account.Username,
+                ProfileUrl = s.Account.Url,
+                ContentHtml = s.Content.ReplaceCustomEmojis(s.Emojis),
+                Permalink = s.Url,
+                CreatedAt = s.CreatedAt.DateTimeOffset.DateTime
+            });
+
+            // Get recent widget h5yr items (same count as Mastodon to have a good mix)
+            var widgetItems = _widgetH5yrService.GetRecentFeedItems(12);
+
+            // Merge and sort by date descending
+            return mastodonItems
+                .Concat(widgetItems)
+                .OrderByDescending(f => f.CreatedAt)
+                .ToList();
         }
 
         private async Task<IReadOnlyList<MastodonStatus>> GetStatuses()

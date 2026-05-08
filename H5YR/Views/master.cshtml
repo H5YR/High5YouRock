@@ -91,21 +91,12 @@
     @* end: main *@
 
     @* start: friends *@
-    <section class="[ section -margin-top -margin-bottom ]">
-        <div class="container">
-            <div class="[ content-block -align-center ]">
-                <h2 class="h3">Friends of H5YR</h2>
-                <div class="friends">
-                    <a class="friends__item" href="https://www.umbraco.com" target="_blank" rel="noopener">
-                        <img src="//images.weserv.nl/?url=https://h5yr.com/assets/images/umbraco_logo.png&w=150&h=150" )" alt="Umbraco" />
-                    </a>
-                    <a class="friends__item" href="https://my.umbhost.net/aff.php?aff=1536">
-                        <img src="https://umbhost.net/media/3fvalp2g/umbhost-new-logo-eco-colour.svg" alt="UmbHost Limited" width="300" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+
+
+    @await Component.InvokeAsync("Sponsors")
+
+
+    
     @* end: friends *@
 
     @* start: footer *@
