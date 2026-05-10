@@ -28,20 +28,20 @@ namespace H5YR.Core.Data.Stores
         public IEnumerable<WidgetH5yr> GetRecent(int count)
         {
             using var scope = _scopeProvider.CreateScope();
-            var items = scope.Database.Fetch<WidgetH5yr>(
-                "SELECT TOP (@0) * FROM WidgetH5yr ORDER BY CreatedAt DESC", count);
+            // Use NPoco's Page() so it generates the correct LIMIT/TOP syntax per database dialect
+            var page = scope.Database.Page<WidgetH5yr>(1, count,
+                "SELECT * FROM WidgetH5yr ORDER BY CreatedAt DESC");
             scope.Complete();
-            return items;
+            return page.Items;
         }
 
         public IEnumerable<WidgetH5yr> GetRecentBefore(DateTime before, int count)
         {
             using var scope = _scopeProvider.CreateScope();
-            var items = scope.Database.Fetch<WidgetH5yr>(
-                "SELECT TOP (@0) * FROM WidgetH5yr WHERE CreatedAt < @1 ORDER BY CreatedAt DESC",
-                count, before);
+            var page = scope.Database.Page<WidgetH5yr>(1, count,
+                "SELECT * FROM WidgetH5yr WHERE CreatedAt < @0 ORDER BY CreatedAt DESC", before);
             scope.Complete();
-            return items;
+            return page.Items;
         }
 
         public int GetSubmissionCountToday(string externalUserId, string authProvider, string targetSiteHost)

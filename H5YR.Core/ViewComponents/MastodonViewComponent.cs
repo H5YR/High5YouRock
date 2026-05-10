@@ -68,7 +68,8 @@ namespace H5YR.Core.ViewComponents
                 ProfileUrl = s.Account.Url,
                 ContentHtml = s.Content.ReplaceCustomEmojis(s.Emojis),
                 Permalink = s.Url,
-                CreatedAt = s.CreatedAt.DateTimeOffset.DateTime
+                // Use UtcDateTime so DateTimeKind is Utc — ensures .ToString("o") emits a Z suffix for timeago
+                CreatedAt = s.CreatedAt.DateTimeOffset.UtcDateTime
             });
 
             // Get recent widget h5yr items (same count as Mastodon to have a good mix)

@@ -32,26 +32,24 @@ namespace H5YR.Core.Controllers.API
         // ─── GitHub OAuth ───────────────────────────────────────────
 
         [HttpGet("github")]
-        public IActionResult GitHubLogin([FromQuery] string returnUrl)
+        public IActionResult GitHubLogin()
         {
             var clientId = _widgetSettings.Value.GitHubClientId;
             var redirectUri = $"{BaseUrl}/api/widget/auth/github/callback";
-
-            // Store the widget return URL in a cookie so we can redirect back after OAuth
-            HttpContext.Response.Cookies.Append("h5yr_widget_return", returnUrl ?? "/",
-                new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Lax, MaxAge = TimeSpan.FromMinutes(10) });
-
             var authUrl = $"https://github.com/login/oauth/authorize?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&scope=read:user";
-
             return Redirect(authUrl);
         }
 
         [HttpGet("github/callback")]
-        public async Task<IActionResult> GitHubCallback([FromQuery] string code)
+        public async Task<IActionResult> GitHubCallback([FromQuery] string code, [FromQuery] string? error)
         {
+            if (!string.IsNullOrEmpty(error))
+            {
+                return PostMessageAndClose(null, "GitHub sign-in was cancelled.");
+            }
+
             try
             {
-                // Exchange code for access token
                 var tokenRequest = new HttpRequestMessage(HttpMethod.Post, "https://github.com/login/oauth/access_token");
                 tokenRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 tokenRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -64,15 +62,17 @@ namespace H5YR.Core.Controllers.API
                 var tokenResponse = await _httpClient.SendAsync(tokenRequest);
                 var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
                 var tokenData = JsonDocument.Parse(tokenJson);
-                var accessToken = tokenData.RootElement.GetProperty("access_token").GetString();
 
-                if (string.IsNullOrEmpty(accessToken))
+                if (!tokenData.RootElement.TryGetProperty("access_token", out var accessTokenEl))
                 {
-                    _logger.LogWarning("GitHub OAuth: failed to get access token");
-                    return BadRequest("Failed to authenticate with GitHub.");
+                    _logger.LogWarning("GitHub OAuth: no access_token in response: {Json}", tokenJson);
+                    return PostMessageAndClose(null, "Failed to authenticate with GitHub.");
                 }
 
-                // Get user info
+                var accessToken = accessTokenEl.GetString();
+                if (string.IsNullOrEmpty(accessToken))
+                    return PostMessageAndClose(null, "Failed to authenticate with GitHub.");
+
                 var userRequest = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/user");
                 userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 userRequest.Headers.UserAgent.ParseAdd("H5YR-Widget/1.0");
@@ -85,49 +85,41 @@ namespace H5YR.Core.Controllers.API
                 var displayName = userData.RootElement.TryGetProperty("name", out var nameEl) && nameEl.ValueKind != JsonValueKind.Null
                     ? nameEl.GetString() ?? ""
                     : userData.RootElement.GetProperty("login").GetString() ?? "";
-                var login = userData.RootElement.GetProperty("login").GetString() ?? "";
                 var avatarUrl = userData.RootElement.GetProperty("avatar_url").GetString() ?? "";
                 var profileUrl = userData.RootElement.GetProperty("html_url").GetString() ?? "";
 
-                // Generate JWT
                 var jwt = _jwtService.GenerateToken("github", userId, displayName, avatarUrl, profileUrl);
 
-                // Redirect back to widget with token
-                var returnUrl = HttpContext.Request.Cookies["h5yr_widget_return"] ?? "/";
-                HttpContext.Response.Cookies.Delete("h5yr_widget_return");
-
-                // Redirect to widget page with token as fragment (not query param, for security)
-                return Redirect($"{returnUrl}{(returnUrl.Contains('?') ? '&' : '?')}h5yr_token={jwt}");
+                return PostMessageAndClose(jwt, null);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "GitHub OAuth callback failed");
-                return BadRequest("Authentication failed.");
+                return PostMessageAndClose(null, "Authentication failed.");
             }
         }
 
         // ─── Google OAuth ───────────────────────────────────────────
 
         [HttpGet("google")]
-        public IActionResult GoogleLogin([FromQuery] string returnUrl)
+        public IActionResult GoogleLogin()
         {
             var clientId = _widgetSettings.Value.GoogleClientId;
             var redirectUri = $"{BaseUrl}/api/widget/auth/google/callback";
-
-            HttpContext.Response.Cookies.Append("h5yr_widget_return", returnUrl ?? "/",
-                new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Lax, MaxAge = TimeSpan.FromMinutes(10) });
-
             var authUrl = $"https://accounts.google.com/o/oauth2/v2/auth?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code&scope=openid%20profile&access_type=online";
-
             return Redirect(authUrl);
         }
 
         [HttpGet("google/callback")]
-        public async Task<IActionResult> GoogleCallback([FromQuery] string code)
+        public async Task<IActionResult> GoogleCallback([FromQuery] string? code, [FromQuery] string? error)
         {
+            if (!string.IsNullOrEmpty(error) || string.IsNullOrEmpty(code))
+            {
+                return PostMessageAndClose(null, "Google sign-in was cancelled.");
+            }
+
             try
             {
-                // Exchange code for tokens
                 var tokenRequest = new HttpRequestMessage(HttpMethod.Post, "https://oauth2.googleapis.com/token");
                 tokenRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
@@ -141,15 +133,14 @@ namespace H5YR.Core.Controllers.API
                 var tokenResponse = await _httpClient.SendAsync(tokenRequest);
                 var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
                 var tokenData = JsonDocument.Parse(tokenJson);
-                var accessToken = tokenData.RootElement.GetProperty("access_token").GetString();
 
+                if (!tokenData.RootElement.TryGetProperty("access_token", out var accessTokenEl))
+                    return PostMessageAndClose(null, "Failed to authenticate with Google.");
+
+                var accessToken = accessTokenEl.GetString();
                 if (string.IsNullOrEmpty(accessToken))
-                {
-                    _logger.LogWarning("Google OAuth: failed to get access token");
-                    return BadRequest("Failed to authenticate with Google.");
-                }
+                    return PostMessageAndClose(null, "Failed to authenticate with Google.");
 
-                // Get user info
                 var userRequest = new HttpRequestMessage(HttpMethod.Get, "https://www.googleapis.com/oauth2/v2/userinfo");
                 userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -158,29 +149,49 @@ namespace H5YR.Core.Controllers.API
                 var userData = JsonDocument.Parse(userJson);
 
                 var userId = userData.RootElement.GetProperty("id").GetString() ?? "";
-                var displayName = userData.RootElement.TryGetProperty("name", out var nameEl)
-                    ? nameEl.GetString() ?? ""
-                    : "";
-                var avatarUrl = userData.RootElement.TryGetProperty("picture", out var picEl)
-                    ? picEl.GetString() ?? ""
-                    : "";
-                // Google doesn't have a public profile URL like GitHub, so we'll use an empty string
-                var profileUrl = "";
+                var displayName = userData.RootElement.TryGetProperty("name", out var nameEl) ? nameEl.GetString() ?? "" : "";
+                var avatarUrl = userData.RootElement.TryGetProperty("picture", out var picEl) ? picEl.GetString() ?? "" : "";
 
-                // Generate JWT
-                var jwt = _jwtService.GenerateToken("google", userId, displayName, avatarUrl, profileUrl);
+                var jwt = _jwtService.GenerateToken("google", userId, displayName, avatarUrl, "");
 
-                // Redirect back to widget
-                var returnUrl = HttpContext.Request.Cookies["h5yr_widget_return"] ?? "/";
-                HttpContext.Response.Cookies.Delete("h5yr_widget_return");
-
-                return Redirect($"{returnUrl}{(returnUrl.Contains('?') ? '&' : '?')}h5yr_token={jwt}");
+                return PostMessageAndClose(jwt, null);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Google OAuth callback failed");
-                return BadRequest("Authentication failed.");
+                return PostMessageAndClose(null, "Authentication failed.");
             }
+        }
+
+        // ─── Shared helper ──────────────────────────────────────────
+
+        /// <summary>
+        /// Returns a minimal HTML page that sends the token (or error) back to the
+        /// widget iframe via postMessage, then closes the popup.
+        /// </summary>
+        private ContentResult PostMessageAndClose(string? token, string? errorMessage)
+        {
+            var payload = token != null
+                ? $"{{ type: 'h5yr_auth', token: {JsonSerializer.Serialize(token)} }}"
+                : $"{{ type: 'h5yr_auth', error: {JsonSerializer.Serialize(errorMessage ?? "Unknown error")} }}";
+
+            var html = $@"<!DOCTYPE html>
+<html>
+<head><title>Signing in...</title></head>
+<body>
+<script>
+  try {{
+    if (window.opener) {{
+      window.opener.postMessage({payload}, '*');
+    }}
+  }} catch(e) {{}}
+  window.close();
+</script>
+<p>Signing in, please wait&hellip;</p>
+</body>
+</html>";
+
+            return Content(html, "text/html");
         }
     }
 }

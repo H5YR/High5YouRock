@@ -80,7 +80,7 @@ namespace H5YR.Core.Controllers.API
                 ProfileUrl = s.Account.Url,
                 ContentHtml = s.Content.ReplaceCustomEmojis(s.Emojis),
                 Permalink = s.Url,
-                CreatedAt = s.CreatedAt.DateTimeOffset.DateTime
+                CreatedAt = s.CreatedAt.DateTimeOffset.UtcDateTime
             }).ToList();
 
             // Get widget h5yr items from before the oldest date shown

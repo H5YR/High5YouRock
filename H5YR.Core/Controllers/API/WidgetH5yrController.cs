@@ -28,7 +28,7 @@ namespace H5YR.Core.Controllers.API
             var principal = _jwtService.ValidateToken(request.Token);
             if (principal == null)
             {
-                return Unauthorized(new { error = "Invalid or expired token. Please sign in again." });
+                return StatusCode(401, new { error = "Invalid or expired token. Please sign in again." });
             }
 
             var authProvider = principal.FindFirst("auth_provider")?.Value ?? "";

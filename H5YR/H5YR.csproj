@@ -32,6 +32,7 @@
     <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
     <RazorCompileOnBuild>false</RazorCompileOnBuild>
     <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <UserSecretsId>b03b35a6-fde1-434d-ba3c-758a3ec7956d</UserSecretsId>
   </PropertyGroup>
 
   <!-- Removed BuildFrontend target - run npm run dev manually -->

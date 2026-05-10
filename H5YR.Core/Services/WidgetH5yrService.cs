@@ -1,10 +1,10 @@
-using System.Web;
 using H5YR.Core.Data.Entities;
 using H5YR.Core.Data.Interfaces;
 using H5YR.Core.Models;
 using H5YR.Core.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Web;
 
 namespace H5YR.Core.Services
 {
@@ -106,7 +106,7 @@ namespace H5YR.Core.Services
                 ProfileUrl = entity.ProfileUrl,
                 ContentHtml = entity.Content,
                 Permalink = entity.TargetUrl,
-                CreatedAt = entity.CreatedAt,
+                CreatedAt = DateTime.SpecifyKind(entity.CreatedAt, DateTimeKind.Utc),
                 AuthProvider = entity.AuthProvider
             };
         }
