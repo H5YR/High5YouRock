@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -35,6 +35,9 @@
     <UserSecretsId>b03b35a6-fde1-434d-ba3c-758a3ec7956d</UserSecretsId>
   </PropertyGroup>
 
-  <!-- Removed BuildFrontend target - run npm run dev manually -->
-
+  <ItemGroup>
+    <Content Include="wwwroot\frontend\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
