@@ -61,12 +61,12 @@ jobs:
           env:
             ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
             ConnectionStrings.umbracoDbDSN_ProviderName: "Microsoft.Data.SqlClient"
-            Twitter.ConsumerKey: ${{secrets.TWITTER_CONSUMER_KEY}}
-            Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
-            Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
-            Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
-            API.Offline: "true"
-            API.CreateOfflineFile: "false"
+            #Twitter.ConsumerKey: ${{secrets.TWITTER_CONSUMER_KEY}}
+            #Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
+           # Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
+            #Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
+            #API.Offline: "true"
+            #API.CreateOfflineFile: "false"
             
         - name: Build Solution
           run: | 
