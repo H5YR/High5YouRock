@@ -57,7 +57,7 @@ jobs:
           uses: microsoft/variable-substitution@v1
           with:
               #comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-            files: 'appsettings.json'
+            files: 'H5YR/appsettings.json'
           env:
             ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
             ConnectionStrings.umbracoDbDSN_ProviderName: "Microsoft.Data.SqlClient"
