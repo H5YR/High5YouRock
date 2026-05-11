@@ -1,14 +1,18 @@
 name: Build, publish and deploy STAGING project to UmbHost
+
 on:
   workflow_dispatch: 
+
 env:
     SolutionName: ${{ secrets.SOLUTION_NAME }}
     BuildPlatform: Any CPU
     BuildConfiguration: Release
     NodeVersion: 18
     FrontendDir: H5YR/frontend
+
 jobs:
   build:
+
     runs-on: windows-latest
     environment: DEV
     
@@ -18,6 +22,7 @@ jobs:
           uses: Kaven-Universe/github-action-current-date-time@v1.1.0
           with:
             format: "YYYY_MM_DD HH_mm_ss_SSS"
+
         - name: Use Node.js ${{env.NodeVersion}}
           uses: actions/setup-node@v3
           with:
@@ -27,6 +32,7 @@ jobs:
           uses: actions/checkout@v3.0.0
           with:
             submodules: 'true'
+
         - uses: actions/cache@v3
           id: cache-nuget-h5yr
           with:
@@ -35,6 +41,7 @@ jobs:
             key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
             restore-keys: |
               ${{ runner.os }}-nuget-h5yr
+
         - name: Install NPM dependencies
           run: npm ci
           working-directory: ${{env.FrontendDir}}
@@ -43,9 +50,13 @@ jobs:
           run: npm run build
           working-directory: ${{env.FrontendDir}}
 
-        - name: Variable Substitution
+        - name: Create Build Directory
+          run: mkdir _build
+
+        - name: Variable Substitution
           uses: microsoft/variable-substitution@v1
           with:
+              #comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
             files: 'H5YR/appsettings.json'
           env:
             ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
@@ -55,14 +66,12 @@ jobs:
             WidgetSettings.GoogleClientId: ${{secrets.WIDGET_GOOGLE_CLIENT_ID}}
             WidgetSettings.GoogleClientSecret: ${{secrets.WIDGET_GOOGLE_CLIENT_SECRET}}
             WidgetSettings.JwtSigningKey: ${{secrets.WIDGET_JWT_SIGNING_KEY}}
-
-        - name: Publish Solution
-          run: |
-            dotnet publish ${{env.SolutionName}} --configuration ${{env.BuildConfiguration}} --output "_publish" /p:platform="${{env.BuildPlatform}}" /p:SkipInvalidConfigurations=true /p:AutoParameterizationWebConfigConnectionStrings=False
-
-        - name: Zip publish output
-          run: Compress-Archive -Path "_publish\*" -DestinationPath "_publish\H5YR.zip"
-          shell: pwsh
+            
+            
+            
+        - name: Build Solution
+          run: | 
+            dotnet build ${{env.SolutionName}} /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:DeleteExistingFiles=True /p:SkipInvalidConfigurations=true /p:IncludeSetAclProviderOnDestination=False /p:AutoParameterizationWebConfigConnectionStrings=False /p:platform="${{env.BuildPlatform}}" /p:configuration="${{env.BuildConfiguration}}" /p:PackageLocation="_build"
             
         - name: Deploy to UmbHost EU
           uses: UmbHost/umbhost-web-deploy@v1.0.1
@@ -71,7 +80,7 @@ jobs:
             server-computer-name: ${{ secrets.UMBHOST_SERVER_COMPUTER_NAME }}
             server-username: ${{ secrets.UMBHOST_USERNAME }}
             server-password: ${{ secrets.UMBHOST_PASSWORD }}
-            source-path: '_publish'
+            source-path: 'H5YR/_build'
             source-fileName: H5YR.zip
             
         - name: Tag Build
@@ -79,3 +88,4 @@ jobs:
           with:
             repo-token: ${{ secrets.GITHUB_TOKEN }}
             tag: StagingBuild-${{ steps.date.outputs.year }}${{ steps.date.outputs.month }}${{ steps.date.outputs.day }}-${{ github.run_number }}
+
