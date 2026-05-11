@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿    <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -35,8 +35,11 @@
     <UserSecretsId>b03b35a6-fde1-434d-ba3c-758a3ec7956d</UserSecretsId>
   </PropertyGroup>
 
+
+
   <ItemGroup>
-    <Content Include="wwwroot\frontend\**\*.*">
+    <!-- Explicitly include the Vite manifest file -->
+    <Content Include="wwwroot\frontend\.vite\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
