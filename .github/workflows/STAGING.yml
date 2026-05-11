@@ -8,7 +8,7 @@ env:
     BuildPlatform: Any CPU
     BuildConfiguration: Release
     NodeVersion: 18
-    FrontendDir: frontend
+    FrontendDir: H5YR/frontend
 
 jobs:
   build:
