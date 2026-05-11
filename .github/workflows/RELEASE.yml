@@ -8,7 +8,7 @@ env:
     BuildPlatform: Any CPU
     BuildConfiguration: Release
     NodeVersion: 18
-    FrontendDir: ./frontend
+    FrontendDir: H5YR/frontend
 
 jobs:
   build:
@@ -57,16 +57,21 @@ jobs:
           uses: microsoft/variable-substitution@v1
           with:
               #comma separated list of XML/JSON/YAML files in which tokens are to be substituted. Files names must be specified relative to the folder-path.
-            files: 'appsettings.json'
+            files: 'H5YR/appsettings.json'
           env:
             ConnectionStrings.umbracoDbDSN: ${{ secrets.UMBHOST_DATABASE_CONNECTION_STRING }}
             ConnectionStrings.umbracoDbDSN_ProviderName: "Microsoft.Data.SqlClient"
-            Twitter.ConsumerKey: ${{secrets.TWITTER_CONSUMER_KEY}}
-            Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
-            Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
-            Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
-            API.Offline: "false"
-            API.CreateOfflineFile: "false"
+            #Twitter.ConsumerKey: ${{secrets.TWITTER_CONSUMER_KEY}}
+            #Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
+            #Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
+            #Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
+            #API.Offline: "true"
+            #API.CreateOfflineFile: "false"
+            WidgetSettings.GitHubClientId: ${{secrets.WIDGET_GITHUB_CLIENT_ID}}
+            WidgetSettings.GitHubClientSecret: ${{secrets.WIDGET_GITHUB_CLIENT_SECRET}}
+            WidgetSettings.GoogleClientId: ${{secrets.WIDGET_GOOGLE_CLIENT_ID}}
+            WidgetSettings.GoogleClientSecret: ${{secrets.WIDGET_GOOGLE_CLIENT_SECRET}}
+            WidgetSettings.JwtSigningKey: ${{secrets.WIDGET_JWT_SIGNING_KEY}}
             
         - name: Build Solution
           run: | 
@@ -79,8 +84,8 @@ jobs:
             server-computer-name: ${{ secrets.UMBHOST_SERVER_COMPUTER_NAME }}
             server-username: ${{ secrets.UMBHOST_USERNAME }}
             server-password: ${{ secrets.UMBHOST_PASSWORD }}
-            source-path: '_build'
-            source-fileName: h5yr.zip
+            source-path: 'H5YR/_build'
+            source-fileName: H5YR.zip
             
         - name: Tag Build
           uses: tvdias/github-tagger@v0.0.1
