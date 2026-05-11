@@ -63,10 +63,17 @@ jobs:
             ConnectionStrings.umbracoDbDSN_ProviderName: "Microsoft.Data.SqlClient"
             #Twitter.ConsumerKey: ${{secrets.TWITTER_CONSUMER_KEY}}
             #Twitter.ConsumerSecret: ${{secrets.TWITTER_CONSUMER_SECRET}}
-           # Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
+            #Twitter.AccessToken: ${{secrets.TWITTER_ACCESS_TOKEN}}
             #Twitter.AccessTokenSecret: ${{secrets.TWITTER_ACCESS_TOKEN_SECRET}}
             #API.Offline: "true"
             #API.CreateOfflineFile: "false"
+            WidgetSettings.GitHubClientId: ${{secrets.WIDGET_GITHUB_CLIENT_ID}}
+            WidgetSettings.GitHubClientSecret: ${{secrets.WIDGET_GITHUB_CLIENT_SECRET}}
+            WidgetSettings.GoogleClientId: ${{secrets.WIDGET_GOOGLE_CLIENT_ID}}
+            WidgetSettings.GoogleClientSecret: ${{secrets.WIDGET_GOOGLE_CLIENT_SECRET}}
+            WidgetSettings.JwtSigningKey: ${{secrets.WIDGET_JWT_SIGNING_KEY}}
+            
+            
             
         - name: Build Solution
           run: | 
