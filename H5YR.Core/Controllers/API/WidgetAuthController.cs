@@ -1,11 +1,10 @@
-using System.Net.Http.Headers;
-using System.Text.Json;
 using H5YR.Core.Services;
 using H5YR.Core.Settings;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace H5YR.Core.Controllers.API
 {
@@ -35,7 +34,8 @@ namespace H5YR.Core.Controllers.API
         public IActionResult GitHubLogin()
         {
             var clientId = _widgetSettings.Value.GitHubClientId;
-            var redirectUri = $"{BaseUrl}/api/widget/auth/github/callback";
+            // Always use the main H5YR domain for OAuth callbacks
+            var redirectUri = "https://h5yr.com/api/widget/auth/github/callback";
             var authUrl = $"https://github.com/login/oauth/authorize?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&scope=read:user";
             return Redirect(authUrl);
         }
@@ -105,7 +105,7 @@ namespace H5YR.Core.Controllers.API
         public IActionResult GoogleLogin()
         {
             var clientId = _widgetSettings.Value.GoogleClientId;
-            var redirectUri = $"{BaseUrl}/api/widget/auth/google/callback";
+            var redirectUri = "https://h5yr.com/api/widget/auth/google/callback";
             var authUrl = $"https://accounts.google.com/o/oauth2/v2/auth?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code&scope=openid%20profile&access_type=online";
             return Redirect(authUrl);
         }
@@ -127,7 +127,7 @@ namespace H5YR.Core.Controllers.API
                     ["client_secret"] = _widgetSettings.Value.GoogleClientSecret!,
                     ["code"] = code,
                     ["grant_type"] = "authorization_code",
-                    ["redirect_uri"] = $"{BaseUrl}/api/widget/auth/google/callback"
+                    ["redirect_uri"] = "https://h5yr.com/api/widget/auth/google/callback" // Must match above
                 });
 
                 var tokenResponse = await _httpClient.SendAsync(tokenRequest);
