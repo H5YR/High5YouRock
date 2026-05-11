@@ -86,8 +86,8 @@ jobs:
             server-computer-name: ${{ secrets.UMBHOST_SERVER_COMPUTER_NAME }}
             server-username: ${{ secrets.UMBHOST_USERNAME }}
             server-password: ${{ secrets.UMBHOST_PASSWORD }}
-            source-path: '_build'
-            source-fileName: h5yr.zip
+            source-path: 'H5YR/_build'
+            source-fileName: H5YR.zip
             
         - name: Tag Build
           uses: tvdias/github-tagger@v0.0.1
