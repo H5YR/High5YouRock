@@ -36,7 +36,8 @@ namespace H5YR.Core.Controllers.API
         public IActionResult GitHubLogin()
         {
             var clientId = _widgetSettings.Value.GitHubClientId;
-            var redirectUri = $"{BaseUrl}/api/widget/auth/github/callback";
+            // Always use the main H5YR domain for OAuth callbacks
+            var redirectUri = "https://h5yr.com/api/widget/auth/github/callback";
             var authUrl = $"https://github.com/login/oauth/authorize?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&scope=read:user";
             return Redirect(authUrl);
         }
@@ -107,7 +108,7 @@ namespace H5YR.Core.Controllers.API
         public IActionResult GoogleLogin()
         {
             var clientId = _widgetSettings.Value.GoogleClientId;
-            var redirectUri = $"{BaseUrl}/api/widget/auth/google/callback";
+            var redirectUri = "https://h5yr.com/api/widget/auth/google/callback";
             var authUrl = $"https://accounts.google.com/o/oauth2/v2/auth?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code&scope=openid%20profile&access_type=online";
             return Redirect(authUrl);
         }
