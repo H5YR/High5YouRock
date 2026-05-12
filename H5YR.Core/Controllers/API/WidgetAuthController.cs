@@ -14,16 +14,18 @@ namespace H5YR.Core.Controllers.API
         private readonly ILogger<WidgetAuthController> _logger;
         private readonly IOptions<WidgetSettings> _widgetSettings;
         private readonly IWidgetJwtService _jwtService;
-        private static readonly HttpClient _httpClient = new();
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public WidgetAuthController(
             ILogger<WidgetAuthController> logger,
             IOptions<WidgetSettings> widgetSettings,
-            IWidgetJwtService jwtService)
+            IWidgetJwtService jwtService,
+            IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _widgetSettings = widgetSettings;
             _jwtService = jwtService;
+            _httpClientFactory = httpClientFactory;
         }
 
         private string BaseUrl => _widgetSettings.Value.SiteBaseUrl?.TrimEnd('/') ?? "https://h5yr.com";
@@ -34,8 +36,7 @@ namespace H5YR.Core.Controllers.API
         public IActionResult GitHubLogin()
         {
             var clientId = _widgetSettings.Value.GitHubClientId;
-            // Always use the main H5YR domain for OAuth callbacks
-            var redirectUri = "https://h5yr.com/api/widget/auth/github/callback";
+            var redirectUri = $"{BaseUrl}/api/widget/auth/github/callback";
             var authUrl = $"https://github.com/login/oauth/authorize?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&scope=read:user";
             return Redirect(authUrl);
         }
@@ -50,6 +51,7 @@ namespace H5YR.Core.Controllers.API
 
             try
             {
+                var httpClient = _httpClientFactory.CreateClient();
                 var tokenRequest = new HttpRequestMessage(HttpMethod.Post, "https://github.com/login/oauth/access_token");
                 tokenRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 tokenRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
@@ -59,7 +61,7 @@ namespace H5YR.Core.Controllers.API
                     ["code"] = code
                 });
 
-                var tokenResponse = await _httpClient.SendAsync(tokenRequest);
+                var tokenResponse = await httpClient.SendAsync(tokenRequest);
                 var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
                 var tokenData = JsonDocument.Parse(tokenJson);
 
@@ -77,7 +79,7 @@ namespace H5YR.Core.Controllers.API
                 userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 userRequest.Headers.UserAgent.ParseAdd("H5YR-Widget/1.0");
 
-                var userResponse = await _httpClient.SendAsync(userRequest);
+                var userResponse = await httpClient.SendAsync(userRequest);
                 var userJson = await userResponse.Content.ReadAsStringAsync();
                 var userData = JsonDocument.Parse(userJson);
 
@@ -105,7 +107,7 @@ namespace H5YR.Core.Controllers.API
         public IActionResult GoogleLogin()
         {
             var clientId = _widgetSettings.Value.GoogleClientId;
-            var redirectUri = "https://h5yr.com/api/widget/auth/google/callback";
+            var redirectUri = $"{BaseUrl}/api/widget/auth/google/callback";
             var authUrl = $"https://accounts.google.com/o/oauth2/v2/auth?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code&scope=openid%20profile&access_type=online";
             return Redirect(authUrl);
         }
@@ -120,6 +122,8 @@ namespace H5YR.Core.Controllers.API
 
             try
             {
+                var httpClient = _httpClientFactory.CreateClient();
+                var redirectUri = $"{BaseUrl}/api/widget/auth/google/callback";
                 var tokenRequest = new HttpRequestMessage(HttpMethod.Post, "https://oauth2.googleapis.com/token");
                 tokenRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
@@ -127,10 +131,10 @@ namespace H5YR.Core.Controllers.API
                     ["client_secret"] = _widgetSettings.Value.GoogleClientSecret!,
                     ["code"] = code,
                     ["grant_type"] = "authorization_code",
-                    ["redirect_uri"] = "https://h5yr.com/api/widget/auth/google/callback" // Must match above
+                    ["redirect_uri"] = redirectUri
                 });
 
-                var tokenResponse = await _httpClient.SendAsync(tokenRequest);
+                var tokenResponse = await httpClient.SendAsync(tokenRequest);
                 var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
                 var tokenData = JsonDocument.Parse(tokenJson);
 
@@ -144,7 +148,7 @@ namespace H5YR.Core.Controllers.API
                 var userRequest = new HttpRequestMessage(HttpMethod.Get, "https://www.googleapis.com/oauth2/v2/userinfo");
                 userRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                var userResponse = await _httpClient.SendAsync(userRequest);
+                var userResponse = await httpClient.SendAsync(userRequest);
                 var userJson = await userResponse.Content.ReadAsStringAsync();
                 var userData = JsonDocument.Parse(userJson);
 
@@ -175,6 +179,9 @@ namespace H5YR.Core.Controllers.API
                 ? $"{{ type: 'h5yr_auth', token: {JsonSerializer.Serialize(token)} }}"
                 : $"{{ type: 'h5yr_auth', error: {JsonSerializer.Serialize(errorMessage ?? "Unknown error")} }}";
 
+            // Send postMessage to the configured base URL origin for security
+            var targetOrigin = BaseUrl;
+
             var html = $@"<!DOCTYPE html>
 <html>
 <head><title>Signing in...</title></head>
@@ -182,10 +189,12 @@ namespace H5YR.Core.Controllers.API
 <script>
   try {{
     if (window.opener) {{
-      window.opener.postMessage({payload}, '*');
+      window.opener.postMessage({payload}, {JsonSerializer.Serialize(targetOrigin)});
     }}
-  }} catch(e) {{}}
-  window.close();
+  }} catch(e) {{
+    console.error('Failed to send auth result:', e);
+  }}
+  setTimeout(function() {{ window.close(); }}, 500);
 </script>
 <p>Signing in, please wait&hellip;</p>
 </body>

@@ -33,6 +33,9 @@ namespace H5YR.Core.Composers
             builder.Services.Configure<APISettings>(builder.Config.GetSection("APISettings"));
             builder.Services.AddSingleton<HomeSettingsService>();
 
+            // Register HttpClient factory for OAuth controllers
+            builder.Services.AddHttpClient();
+
             // Widget H5YR services
             builder.Services.AddSingleton<IWidgetH5yrStore, WidgetH5yrStore>();
             builder.Services.AddSingleton<IWidgetH5yrService, WidgetH5yrService>();
