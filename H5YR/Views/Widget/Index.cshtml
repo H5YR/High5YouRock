@@ -430,8 +430,8 @@
 
                 // Listen for the postMessage from the callback page
                 function onMessage(event) {
-                    // Only accept messages from our own origin
-                    if (event.origin !== BASE_URL) return;
+                    // Only accept messages from our OAuth callback origin
+                    if (event.origin !== 'https://h5yr.com') return;
                     if (!event.data || event.data.type !== 'h5yr_auth') return;
 
                     window.removeEventListener('message', onMessage);
