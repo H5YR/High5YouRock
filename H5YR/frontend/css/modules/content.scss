@@ -5,6 +5,10 @@
   padding: 2rem 2rem 2.5rem;
   position: relative;
 
+  @include media($small) {
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
   &.-align-center {
     text-align: center;
   }

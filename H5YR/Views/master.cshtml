@@ -68,6 +68,10 @@
                         </svg>
                     </a>
                 </div>
+                <input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />
+                <label for="nav-toggle" class="navigation__toggle-label" aria-label="Toggle navigation">
+                    <span class="navigation__toggle-icon"></span>
+                </label>
                 <nav class="navigation" role="navigation">
                     @{
                         var selection = Umbraco.ContentAtRoot().FirstOrDefault()
