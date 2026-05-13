@@ -12,4 +12,9 @@
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+
+  @include media($small) {
+    flex-flow: row wrap;
+  }
 }
