@@ -1,0 +1,36 @@
+@* Community Stats Dashboard *@
+<section class="[ section -margin-top -margin-bottom ]">
+  <div class="container">
+    <div class="stats-dashboard">
+      <h2 class="stats-dashboard__title">Community Impact</h2>
+
+      @* Summary cards *@
+      <div class="stats-dashboard__summary" id="js-stats-summary">
+        <div class="stats-card">
+          <span class="stats-card__number" id="js-stat-total">--</span>
+          <span class="stats-card__label">Total #H5YRs</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card__number" id="js-stat-widget">--</span>
+          <span class="stats-card__label">Widget High Fives</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card__number" id="js-stat-today">--</span>
+          <span class="stats-card__label">Today</span>
+        </div>
+      </div>
+
+      @* Charts *@
+      <div class="stats-dashboard__charts">
+        <div class="stats-chart">
+          <h3 class="stats-chart__title">Activity Over Time</h3>
+          <canvas id="js-activity-chart"></canvas>
+        </div>
+        <div class="stats-chart">
+          <h3 class="stats-chart__title">Top Contributors</h3>
+          <div id="js-contributors-chart" class="stats-contributors"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

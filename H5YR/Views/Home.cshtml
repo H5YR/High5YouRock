@@ -65,6 +65,10 @@
 </section>
 @* end: intro content block *@
 
+@* start: community stats dashboard *@
+@await Html.PartialAsync("Partials/CommunityStats")
+@* end: community stats dashboard *@
+
 <section class="[ section -margin-top -margin-bottom ]">
 	<div class="container">
 		@await Component.InvokeAsync("Mastodon")
