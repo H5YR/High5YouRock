@@ -1,15 +1,15 @@
 import {
-  BarController,
-  BarElement,
-  CategoryScale,
-  Chart,
-  Filler,
-  Legend,
-  LinearScale,
-  LineController,
-  LineElement,
-  PointElement,
-  Tooltip,
+	BarController,
+	BarElement,
+	CategoryScale,
+	Chart,
+	Filler,
+	Legend,
+	LinearScale,
+	LineController,
+	LineElement,
+	PointElement,
+	Tooltip,
 } from 'chart.js'
 
 Chart.register(
@@ -30,7 +30,10 @@ const PURPLE_LIGHT = 'rgba(107, 47, 160, 0.2)'
 
 export function initCommunityStats() {
 	const summaryEl = document.getElementById('js-stats-summary')
-	if (!summaryEl) return
+	const activityEl = document.getElementById('js-activity-chart')
+	const contributorsEl = document.getElementById('js-contributors-chart')
+
+	if (!summaryEl && !activityEl && !contributorsEl) return
 
 	fetch('/api/communitystats')
 		.then((response) => {
@@ -39,11 +42,19 @@ export function initCommunityStats() {
 		})
 		.then((data) => {
 			console.log('Community stats loaded:', data)
-			renderSummary(data)
+			if (summaryEl) renderSummary(data)
 			renderActivityChart(data.activityTimeline || [])
 			renderContributorsChart(data.topContributors || [])
 		})
-		.catch((err) => console.error('Failed to load community stats:', err))
+		.catch((err) => {
+			console.error('Failed to load community stats:', err)
+			if (activityEl)
+				activityEl.parentElement.innerHTML +=
+					'<p class="stats-chart__empty">Unable to load data</p>'
+			if (contributorsEl)
+				contributorsEl.innerHTML =
+					'<p class="stats-chart__empty">Unable to load data</p>'
+		})
 }
 
 function renderSummary(data) {
