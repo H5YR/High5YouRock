@@ -1,0 +1,34 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+  var engagementPage = Umbraco.ContentAtRoot()
+      .SelectMany(x => x.DescendantsOrSelf())
+      .FirstOrDefault(x => x.ContentType.Alias == "page" && x.Name == "Community Engagement");
+}
+@* Community Stats Cards - Homepage *@
+<section class="[ section -margin-top -margin-bottom ]">
+  <div class="container">
+    <div class="stats-dashboard">
+      <h2 class="stats-dashboard__title">@Umbraco.GetDictionaryValue("CommunityStats.Title")</h2>
+
+      <div class="stats-dashboard__summary" id="js-stats-summary">
+        <div class="stats-card">
+          <span class="stats-card__number" id="js-stat-total">--</span>
+          <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.TotalLabel")</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card__number" id="js-stat-widget">--</span>
+          <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.WidgetLabel")</span>
+        </div>
+        <div class="stats-card">
+          <span class="stats-card__number" id="js-stat-today">--</span>
+          <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.TodayLabel")</span>
+        </div>
+      </div>
+     
+      @if (engagementPage != null)
+      {
+          <a href="@engagementPage.Url()" class="stats-dashboard__link">See more stats &rarr;</a>
+      }
+    </div>
+  </div>
+</section>

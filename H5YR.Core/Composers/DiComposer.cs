@@ -41,6 +41,9 @@ namespace H5YR.Core.Composers
             builder.Services.AddSingleton<IWidgetH5yrService, WidgetH5yrService>();
             builder.Services.AddSingleton<IWidgetJwtService, WidgetJwtService>();
             builder.Services.Configure<WidgetSettings>(builder.Config.GetSection("WidgetSettings"));
+
+            // Community stats
+            builder.Services.AddSingleton<ICommunityStatsService, CommunityStatsService>();
         }
     }
 }

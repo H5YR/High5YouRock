@@ -1,6 +1,10 @@
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
 import '@justinribeiro/share-to-mastodon';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+import { initCommunityStats } from './community-stats';
+
+// Initialize community stats dashboard
+initCommunityStats();
 
   //
   // heroAnimation
