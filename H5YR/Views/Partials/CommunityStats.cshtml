@@ -1,4 +1,9 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+  var engagementPage = Umbraco.ContentAtRoot()
+      .SelectMany(x => x.DescendantsOrSelf())
+      .FirstOrDefault(x => x.ContentType.Alias == "page" && x.Name == "Community Engagement");
+}
 @* Community Stats Cards - Homepage *@
 <section class="[ section -margin-top -margin-bottom ]">
   <div class="container">
@@ -19,6 +24,11 @@
           <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.TodayLabel")</span>
         </div>
       </div>
+     
+      @if (engagementPage != null)
+      {
+          <a href="@engagementPage.Url()" class="stats-dashboard__link">See more stats &rarr;</a>
+      }
     </div>
   </div>
 </section>
