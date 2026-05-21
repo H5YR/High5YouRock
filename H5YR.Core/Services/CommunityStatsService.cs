@@ -8,80 +8,43 @@ namespace H5YR.Core.Services
   public class CommunityStatsService : ICommunityStatsService
   {
     private readonly ILogger<CommunityStatsService> _logger;
-    private readonly IPostCounterStore _postCounterStore;
+    private readonly IFeedItemLogStore _feedItemLogStore;
     private readonly IWidgetH5yrStore _widgetH5yrStore;
     private readonly IMastodonService _mastodonService;
 
     public CommunityStatsService(
         ILogger<CommunityStatsService> logger,
-        IPostCounterStore postCounterStore,
+        IFeedItemLogStore feedItemLogStore,
         IWidgetH5yrStore widgetH5yrStore,
         IMastodonService mastodonService)
     {
       _logger = logger;
-      _postCounterStore = postCounterStore;
+      _feedItemLogStore = feedItemLogStore;
       _widgetH5yrStore = widgetH5yrStore;
       _mastodonService = mastodonService;
     }
 
     public async Task<CommunityStatsViewModel> GetStats()
     {
-      var totalMastodon = _postCounterStore.GetPostCount();
-      var totalWidget = _widgetH5yrStore.GetTotalCount();
+      // Use FeedItemLog as the single source of truth for all counts and timeline data
+      var allLogItems = _feedItemLogStore.GetAll().ToList();
 
-      var postCounters = _postCounterStore.GetAll()
-          .OrderBy(p => p.Date)
+      var totalH5yrs = allLogItems.Count;
+      var totalWidget = allLogItems.Count(x => x.Source == "widget");
+
+      // Build activity timeline by grouping log items by month, sorted chronologically
+      var activityTimeline = allLogItems
+          .GroupBy(x => new DateTime(x.CreatedAt.Year, x.CreatedAt.Month, 1))
+          .OrderBy(g => g.Key)
+          .Select(g => new ActivityDataPoint
+          {
+            Label = g.Key.ToString("MMM yyyy"),
+            Count = g.Count()
+          })
           .ToList();
 
-      var activityTimeline = new List<ActivityDataPoint>();
-
-      if (postCounters.Count > 0)
-      {
-        var monthlySnapshots = postCounters
-            .GroupBy(p => new { p.Date.Year, p.Date.Month })
-            .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
-            .Select(g => new
-            {
-              Label = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
-              g.OrderByDescending(x => x.Date).First().Quantity
-            })
-            .ToList();
-
-        for (int i = 0; i < monthlySnapshots.Count; i++)
-        {
-          var count = i == 0
-              ? monthlySnapshots[i].Quantity
-              : monthlySnapshots[i].Quantity - monthlySnapshots[i - 1].Quantity;
-
-          activityTimeline.Add(new ActivityDataPoint
-          {
-            Label = monthlySnapshots[i].Label,
-            Count = Math.Max(0, count)
-          });
-        }
-      }
-
-      // Merge widget submissions into the timeline
-      var allWidgets = _widgetH5yrStore.GetAll();
-      var widgetByMonth = allWidgets
-          .GroupBy(w => new { w.CreatedAt.Year, w.CreatedAt.Month })
-          .ToDictionary(
-              g => new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy"),
-              g => g.Count());
-
-      foreach (var point in activityTimeline)
-      {
-        if (widgetByMonth.TryGetValue(point.Label, out var widgetCount))
-        {
-          point.Count += widgetCount;
-          widgetByMonth.Remove(point.Label);
-        }
-      }
-
-      foreach (var kvp in widgetByMonth.OrderBy(k => k.Key))
-      {
-        activityTimeline.Add(new ActivityDataPoint { Label = kvp.Key, Count = kvp.Value });
-      }
+      var todayStart = DateTime.UtcNow.Date;
+      var todayCount = allLogItems.Count(x => x.CreatedAt >= todayStart);
 
       var topContributors = new List<ContributorDataPoint>();
 
@@ -107,6 +70,7 @@ namespace H5YR.Core.Services
         _logger.LogWarning(ex, "Failed to fetch Mastodon posts for stats");
       }
 
+      var allWidgets = _widgetH5yrStore.GetAll();
       var widgetContributors = allWidgets
           .GroupBy(w => new { w.ExternalUserId, w.AuthProvider })
           .OrderByDescending(g => g.Count())
@@ -129,12 +93,9 @@ namespace H5YR.Core.Services
           .Take(10)
           .ToList();
 
-      var todayStart = DateTime.UtcNow.Date;
-      var todayCount = allWidgets.Count(w => w.CreatedAt >= todayStart);
-
       return new CommunityStatsViewModel
       {
-        TotalH5yrs = totalMastodon + totalWidget,
+        TotalH5yrs = totalH5yrs,
         TotalWidgetSubmissions = totalWidget,
         TodayCount = todayCount,
         ActivityTimeline = activityTimeline,
