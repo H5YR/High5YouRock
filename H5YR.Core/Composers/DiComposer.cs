@@ -42,6 +42,10 @@ namespace H5YR.Core.Composers
             builder.Services.AddSingleton<IWidgetJwtService, WidgetJwtService>();
             builder.Services.Configure<WidgetSettings>(builder.Config.GetSection("WidgetSettings"));
 
+            // Feed item log
+            builder.Services.AddSingleton<IFeedItemLogStore, FeedItemLogStore>();
+            builder.Services.AddSingleton<FeedItemLogBackfillService>();
+
             // Community stats
             builder.Services.AddSingleton<ICommunityStatsService, CommunityStatsService>();
         }

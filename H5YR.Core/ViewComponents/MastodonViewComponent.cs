@@ -1,4 +1,6 @@
-﻿using H5YR.Core.Extensions;
+﻿using H5YR.Core.Data.Entities;
+using H5YR.Core.Data.Interfaces;
+using H5YR.Core.Extensions;
 using H5YR.Core.Models;
 using H5YR.Core.Services;
 using H5YR.Core.Settings;
@@ -17,6 +19,7 @@ namespace H5YR.Core.ViewComponents
         private readonly IOptions<APISettings> _apiSettings;
         private readonly IMastodonService _mastodonService;
         private readonly IWidgetH5yrService _widgetH5yrService;
+        private readonly IFeedItemLogStore _feedItemLogStore;
 
         protected bool IsOffline => _apiSettings.Value.Offline == "true";
 
@@ -26,12 +29,14 @@ namespace H5YR.Core.ViewComponents
             ILogger<MastodonViewComponent> logger,
             IOptions<APISettings> apiSettings,
             IMastodonService mastodonService,
-            IWidgetH5yrService widgetH5yrService)
+            IWidgetH5yrService widgetH5yrService,
+            IFeedItemLogStore feedItemLogStore)
         {
             _logger = logger;
             _apiSettings = apiSettings;
             _mastodonService = mastodonService;
             _widgetH5yrService = widgetH5yrService;
+            _feedItemLogStore = feedItemLogStore;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -47,6 +52,9 @@ namespace H5YR.Core.ViewComponents
 
             // Build unified feed: merge Mastodon posts + widget h5yrs sorted by date
             var feedItems = BuildUnifiedFeed(statuses);
+
+            // Persist any new feed items to the log table for accurate date-based stats
+            LogNewFeedItems(feedItems);
 
             // Initialize a new model for the view component
             MastodonModel model = new(statuses, totalCount, feedItems);
@@ -80,6 +88,29 @@ namespace H5YR.Core.ViewComponents
                 .Concat(widgetItems)
                 .OrderByDescending(f => f.CreatedAt)
                 .ToList();
+        }
+
+        private void LogNewFeedItems(IReadOnlyList<FeedItem> feedItems)
+        {
+            foreach (var item in feedItems)
+            {
+                try
+                {
+                    if (!_feedItemLogStore.Exists(item.Id))
+                    {
+                        _feedItemLogStore.Save(new FeedItemLog
+                        {
+                            ExternalId = item.Id,
+                            Source = item.Source,
+                            CreatedAt = item.CreatedAt
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error logging feed item {Id}", item.Id);
+                }
+            }
         }
 
         private async Task<IReadOnlyList<MastodonStatus>> GetStatuses()

@@ -41,6 +41,29 @@ namespace H5YR.Core.Services
             return await posts!;
         }
 
+        public async Task<List<MastodonStatus>> GetStatusesPageAsync(int limit, string? maxId)
+        {
+            MastodonHttpService mastodon = MastodonHttpService.CreateFromDomain(FeedDomain);
+
+            MastodonGetHashtagTimelineOptions options = new()
+            {
+                Hashtag = FeedHashtag,
+                Limit = limit,
+                MaxId = maxId
+            };
+
+            try
+            {
+                MastodonStatusListResponse response = await mastodon.Timelines.GetHashtagTimelineAsync(options);
+                return response.Body.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed fetching paginated statuses from the Mastodon API (maxId={MaxId}).", maxId);
+                return new List<MastodonStatus>();
+            }
+        }
+
 
         private async Task<List<MastodonStatus>> LoadStatuses(int limit, string? startId)
         {
