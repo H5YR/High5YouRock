@@ -18,31 +18,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Model.Value("pageTitle", fallback: Fallback.ToAncestors)</title>
-    @{
-        var socialImage = Model.Value<IPublishedContent>("socialImage", fallback: Fallback.ToAncestors);
-        var metaDescription = Model.Value<string>("metaDescription");
-        if (string.IsNullOrWhiteSpace(metaDescription) == false)
-        {
-            <meta name="description" content="@metaDescription" />
-            <meta property="og:description" content="@metaDescription" />
-        }
-    }
-
+ 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="@Model.Value("websiteTitle", fallback: Fallback.ToAncestors)" />
     <meta property="og:url" content="@Model.Url(mode: UrlMode.Absolute)" />
+    <meta name="description" content="Tell someone they rock with a simple friendly hashtag #h5yr" />
 
-    @if (socialImage != null)
-    {
-        var url = Context.Request.PathBase.ToString();
-
-        var socialUrl = url + socialImage.Url();
-        <meta property="og:image" content="@socialUrl" />
-    }
-    <meta property="og:site_name" content="#H5YR High Five You Rock" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@("@h5yr")" />
+    
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
+
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://h5yr.com" />
+    <meta property="og:title" content="High Five, You Rock! #h5yr" />
+    <meta property="og:description" content="Tell someone they rock with a simple friendly hashtag #h5yr" />
+    <meta property="og:image" content="https://h5yr.com/assets/images/h5yr.png" />
+
+    <!-- X (Twitter) -->
+    <meta property="og:site_name" content="High Five, You Rock! #h5yr" />
+    <meta name="twitter:site" content="@("@h5yr")" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://h5yr.com" />
+    <meta property="twitter:title" content="High Five, You Rock! #h5yr" />
+    <meta property="twitter:description" content="Tell someone they rock with a simple friendly hashtag #h5yr" />
+    <meta property="twitter:image" content="https://h5yr.com/assets/images/h5yr.png" />
+
 
     @* Vite assets - works in both dev and production *@
     <link rel="stylesheet" vite-href="~/app.js" />
@@ -68,6 +69,10 @@
                         </svg>
                     </a>
                 </div>
+                <input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />
+                <label for="nav-toggle" class="navigation__toggle-label" aria-label="Toggle navigation">
+                    <span class="navigation__toggle-icon"></span>
+                </label>
                 <nav class="navigation" role="navigation">
                     @{
                         var selection = Umbraco.ContentAtRoot().FirstOrDefault()
@@ -91,21 +96,12 @@
     @* end: main *@
 
     @* start: friends *@
-    <section class="[ section -margin-top -margin-bottom ]">
-        <div class="container">
-            <div class="[ content-block -align-center ]">
-                <h2 class="h3">Friends of H5YR</h2>
-                <div class="friends">
-                    <a class="friends__item" href="https://www.umbraco.com" target="_blank" rel="noopener">
-                        <img src="//images.weserv.nl/?url=https://h5yr.com/assets/images/umbraco_logo.png&w=150&h=150" )" alt="Umbraco" />
-                    </a>
-                    <a class="friends__item" href="https://my.umbhost.net/aff.php?aff=1536">
-                        <img src="https://umbhost.net/media/3fvalp2g/umbhost-new-logo-eco-colour.svg" alt="UmbHost Limited" width="300" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+
+
+    @await Component.InvokeAsync("Sponsors")
+
+
+    
     @* end: friends *@
 
     @* start: footer *@

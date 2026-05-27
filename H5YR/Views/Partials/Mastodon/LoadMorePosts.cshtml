@@ -1,0 +1,45 @@
+@using H5YR.Core.Models
+@model List<FeedItem>
+
+
+@if(Model != null && Model.Any())
+{
+    foreach(var item in Model)
+    {
+        <div class="tweet__card @(item.Source == "widget" ? "tweet__card--widget" : "")">
+            <div class="tweet__avatar">
+                @if (!string.IsNullOrEmpty(item.ProfileUrl)) {
+                    <a href="@item.ProfileUrl" target="_blank" rel="noopener">
+                        <img src="@item.AvatarUrl" alt="Profile image of @item.Username" width="46" />
+                    </a>
+                } else {
+                    <img src="@item.AvatarUrl" alt="Profile image of @item.Username" width="46" />
+                }
+            </div>
+            <div class="tweet__info">
+                <div class="tweet__user-detail">
+                    @if (!string.IsNullOrEmpty(item.ProfileUrl)) {
+                        <a href="@item.ProfileUrl" target="_blank" rel="noopener">@item.Username</a>
+                    } else {
+                        <span>@item.Username</span>
+                    }
+                    <time class="timeago" datetime="@item.CreatedAt.ToString("o")">@item.CreatedAt.ToString("dd/MM/yyyy")</time>
+                    @if (item.Source == "widget") {
+                        <span class="tweet__badge tweet__badge--@item.AuthProvider" title="via h5yr widget">
+                            🖐 widget
+                        </span>
+                    } else {
+                        <a href="@item.Permalink" target="_blank" rel="noopener">
+                            [Permalink]
+                        </a>
+                    }
+                </div>
+                <div class="tweet__content">
+                    @Html.Raw(item.ContentHtml)
+                </div>
+            </div>
+            <p></p>
+        </div>
+
+    }
+}

@@ -1,4 +1,4 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
@@ -65,42 +65,12 @@
 </section>
 @* end: intro content block *@
 
+@* start: community stats dashboard *@
+@await Html.PartialAsync("Partials/CommunityStats/CommunityStats")
+@* end: community stats dashboard *@
+
 <section class="[ section -margin-top -margin-bottom ]">
     <div class="container">
         @await Component.InvokeAsync("UnifiedFeed", new { count = 12 })
     </div>
 </section>
-
-<style>
-.source-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    margin-left: 8px;
-}
-
-.source-badge.discourse {
-    background-color: #e6f3ff;
-    color: #0066cc;
-}
-
-.source-badge.mastodon {
-    background-color: #f0e6ff;
-    color: #6b46c1;
-}
-
-.tweet__topic {
-    font-style: italic;
-    margin-bottom: 8px;
-    color: #666;
-}
-
-.tweet__card[data-source="discourse"] {
-    border-left: 3px solid #0066cc;
-}
-
-.tweet__card[data-source="mastodon"] {
-    border-left: 3px solid #6b46c1;
-}
-</style>

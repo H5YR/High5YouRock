@@ -6,6 +6,8 @@
   <ItemGroup>
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.9" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.14.0" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
     <PackageVersion Include="Skybrud.Social.Mastodon" Version="1.0.0-alpha005" />
     <PackageVersion Include="Umbraco.Cms" Version="17.3.5" />
     <PackageVersion Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.3.5" />

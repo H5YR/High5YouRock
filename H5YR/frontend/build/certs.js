@@ -25,7 +25,44 @@ export function getAspDotNetCertificate() {
 
 	// check if the cert and key already exist
 	if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+		console.log('🔒 Setting up HTTPS certificate for Vite dev server...');
+		
+		// check if ASP.NET Core dev certificate exists and is trusted
+		const checkCert = child_process.spawnSync('dotnet', [
+			'dev-certs',
+			'https',
+			'--check',
+			'--trust'
+		], { stdio: 'pipe' });
+
+		// if cert doesn't exist or isn't trusted, create and trust it
+		if (checkCert.status !== 0) {
+			console.log('📝 Creating and trusting ASP.NET Core development certificate...');
+			console.log('   (You may be prompted to allow certificate installation)');
+			
+			const trustCert = child_process.spawnSync('dotnet', [
+				'dev-certs',
+				'https',
+				'--trust'
+			], { stdio: 'inherit' });
+
+			if (trustCert.status !== 0) {
+				console.error('❌ Failed to create/trust the development certificate.');
+				console.error('   Please run manually: dotnet dev-certs https --trust');
+				process.exit(trustCert.status ?? -1);
+			}
+			
+			console.log('✅ Certificate created and trusted successfully!');
+		}
+
+		// ensure the directory exists before exporting the certificate
+		if (!fs.existsSync(baseFolder)) {
+			console.log(`📁 Creating certificate directory: ${baseFolder}`);
+			fs.mkdirSync(baseFolder, { recursive: true });
+		}
+
 		// export a new copy of the cert and key from .NET
+		console.log('📤 Exporting certificate for Vite...');
 		const fetchCert = child_process.spawnSync('dotnet', [
 			'dev-certs',
 			'https',
@@ -38,8 +75,11 @@ export function getAspDotNetCertificate() {
 
 		const exitCode = fetchCert.status ?? 0;
 		if (exitCode !== 0) {
+			console.error('❌ Failed to export certificate.');
 			process.exit(exitCode)
 		}
+		
+		console.log('✅ Certificate setup complete!');
 	}
 
 	// read the cert and key as UTF8 strings

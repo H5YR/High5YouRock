@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home</summary>
 	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel, IPageInformation
+	public partial class Home : PublishedContentModel, IMetaData, IPageInformation
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,6 +48,30 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Sponsors
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sponsors")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel Sponsors => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "sponsors");
+
+		///<summary>
+		/// Descriptions: These are brief summaries of your web page that appear under the meta title in search results. They give users a sneak peek into what your page offers.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("descriptions")]
+		public virtual string Descriptions => global::Umbraco.Cms.Web.Common.PublishedModels.MetaData.GetDescriptions(this, _publishedValueFallback);
+
+		///<summary>
+		/// Titles: These are the clickable headlines you see in search engine results. They should be concise yet descriptive to entice users to click.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "17.3.5+1486121")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("titles")]
+		public virtual string Titles => global::Umbraco.Cms.Web.Common.PublishedModels.MetaData.GetTitles(this, _publishedValueFallback);
 
 		///<summary>
 		/// Body Text

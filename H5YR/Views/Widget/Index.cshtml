@@ -1,0 +1,558 @@
+@{
+    Layout = null;
+    var targetUrl = ViewBag.TargetUrl as string ?? "";
+    var baseUrl = ViewBag.BaseUrl as string ?? "https://h5yr.com";
+    var bgColor = ViewBag.BgColor as string;
+    var textColor = ViewBag.Color as string;
+    var accentColor = ViewBag.Accent as string;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>H5YR Widget</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            background: transparent;
+            color: var(--widget-color, #333);
+            overflow: hidden;
+            height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .widget {
+            background: var(--widget-bg, linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%));
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(110, 72, 170, 0.15), 0 1px 3px rgba(0,0,0,0.08);
+            border: 2px solid rgba(110, 72, 170, 0.1);
+            padding: 20px;
+            max-width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative accent */
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--widget-accent, linear-gradient(90deg, #6E48AA, #9D50BB, #6E48AA));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        @@keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .widget__header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .widget__logo {
+            font-weight: 800;
+            font-size: 18px;
+            background: var(--widget-accent, linear-gradient(135deg, #6E48AA, #9D50BB));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .widget__logo span {
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(110, 72, 170, 0.3));
+        }
+
+        /* Horizontal layout support */
+        .widget__content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+        
+        .widget__content > * {
+            flex: 1 1 auto;
+            min-width: 200px;
+        }
+
+        /* Auth state */
+        .widget__auth {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .widget__auth-label {
+            font-size: 14px;
+            color: #555;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+        .auth-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+            flex: 1 1 auto;
+            min-width: 160px;
+        }
+        .auth-btn:hover {
+            background: #fff;
+            border-color: #6E48AA;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(110, 72, 170, 0.2);
+        }
+        .auth-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Authenticated state */
+        .widget__user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(110, 72, 170, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(110, 72, 170, 0.1);
+        }
+        .widget__user img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #6E48AA;
+        }
+        .widget__user-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: #333;
+        }
+        .widget__user-provider {
+            font-size: 11px;
+            color: #888;
+        }
+        .widget__signout {
+            margin-left: auto;
+            font-size: 12px;
+            color: #6E48AA;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .widget__signout:hover {
+            color: #9D50BB;
+        }
+
+        /* Submit button */
+        .widget__submit-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--widget-accent, linear-gradient(135deg, #6E48AA, #9D50BB));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(110, 72, 170, 0.3);
+        }
+        .widget__submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(110, 72, 170, 0.4);
+        }
+        .widget__submit-btn:active {
+            transform: scale(0.98);
+        }
+        .widget__submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Remaining */
+        .widget__remaining {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Success state */
+        .widget__success {
+            text-align: center;
+            padding: 12px 0;
+        }
+        .widget__success-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+            animation: bounce 0.6s ease;
+        }
+        @@keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .widget__success-text {
+            font-weight: 700;
+            background: linear-gradient(135deg, #6E48AA, #9D50BB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 18px;
+        }
+        .widget__success-sub {
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        /* Rate limited */
+        .widget__limited {
+            text-align: center;
+            padding: 12px 16px;
+            color: #555;
+            font-size: 14px;
+            background: rgba(255, 193, 7, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            font-weight: 500;
+        }
+
+        /* Error */
+        .widget__error {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-top: 8px;
+            text-align: center;
+            padding: 8px;
+            background: rgba(211, 47, 47, 0.1);
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        /* Target URL preview */
+        .widget__target {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            word-break: break-all;
+            line-height: 1.5;
+            padding: 8px 12px;
+            background: rgba(110, 72, 170, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid #6E48AA;
+        }
+        .widget__target strong {
+            color: #6E48AA;
+            font-weight: 700;
+        }
+
+        /* Hidden utility */
+        .hidden { display: none !important; }
+
+        /* Powered by */
+        .widget__footer {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(110, 72, 170, 0.1);
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+        }
+        .widget__footer a {
+            color: #6E48AA;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+        .widget__footer a:hover {
+            color: #9D50BB;
+        }
+        
+        /* Responsive: Better horizontal on wider screens */
+        @@media (min-width: 600px) {
+            .widget {
+                max-width: none;
+            }
+            .widget__auth {
+                flex-direction: row;
+            }
+            .widget__auth-label {
+                width: auto;
+                margin-bottom: 0;
+                margin-right: 4px;
+            }
+        }
+    </style>
+</head>
+<body style="@Html.Raw((bgColor != null ? $"--widget-bg:{bgColor};" : "") + (textColor != null ? $"--widget-color:{textColor};" : "") + (accentColor != null ? $"--widget-accent:{accentColor};" : ""))">
+    <div class="widget">
+        <div class="widget__header">
+            <div class="widget__logo"><span>🖐</span>#H5YR</div>
+        </div>
+
+        <!-- Target URL preview -->
+        <div class="widget__target" id="targetPreview">
+            <strong>#H5YR</strong> for this page
+        </div>
+
+        <div class="widget__content">
+            <!-- State: Unauthenticated -->
+            <div class="widget__auth" id="stateAuth">
+                <div class="widget__auth-label">Sign in to give a high five:</div>
+                <a class="auth-btn" id="btnGitHub" href="#">
+                    <svg viewBox="0 0 24 24" fill="#333"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+                <a class="auth-btn" id="btnGoogle" href="#">
+                    <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    Google
+                </a>
+            </div>
+
+            <!-- State: Authenticated -->
+            <div class="hidden" id="stateReady">
+                <div class="widget__user">
+                    <img id="userAvatar" src="" alt="" />
+                    <div>
+                        <div class="widget__user-name" id="userName"></div>
+                        <div class="widget__user-provider" id="userProvider"></div>
+                    </div>
+                    <button class="widget__signout" id="btnSignout">Sign out</button>
+                </div>
+                <button class="widget__submit-btn" id="btnSubmit">
+                    🖐 Give a #H5YR!
+                </button>
+                <div class="widget__remaining" id="remainingText"></div>
+                <div class="widget__error hidden" id="errorText"></div>
+            </div>
+
+            <!-- State: Success -->
+            <div class="hidden" id="stateSuccess">
+                <div class="widget__success">
+                    <div class="widget__success-icon">✋</div>
+                    <div class="widget__success-text">You gave a #H5YR!</div>
+                    <div class="widget__success-sub">It'll appear on h5yr.com shortly.</div>
+                </div>
+            </div>
+
+            <!-- State: Rate Limited -->
+            <div class="hidden" id="stateLimited">
+                <div class="widget__limited">
+                    You've used all your #H5YR submissions for this site today. Come back tomorrow! 🙌
+                </div>
+            </div>
+        </div>
+
+        <div class="widget__footer">
+            Powered by <a href="https://h5yr.com" target="_blank" rel="noopener">h5yr.com</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var BASE_URL = '@Html.Raw(baseUrl)';
+            var TARGET_URL = '@Html.Raw(targetUrl)';
+            var TOKEN_KEY = 'h5yr_widget_token';
+
+            // DOM refs
+            var stateAuth = document.getElementById('stateAuth');
+            var stateReady = document.getElementById('stateReady');
+            var stateSuccess = document.getElementById('stateSuccess');
+            var stateLimited = document.getElementById('stateLimited');
+            var btnGitHub = document.getElementById('btnGitHub');
+            var btnGoogle = document.getElementById('btnGoogle');
+            var btnSubmit = document.getElementById('btnSubmit');
+            var btnSignout = document.getElementById('btnSignout');
+            var userAvatar = document.getElementById('userAvatar');
+            var userName = document.getElementById('userName');
+            var userProvider = document.getElementById('userProvider');
+            var remainingText = document.getElementById('remainingText');
+            var errorText = document.getElementById('errorText');
+            var targetPreview = document.getElementById('targetPreview');
+
+            // Show target URL
+            if (TARGET_URL) {
+                try {
+                    var urlObj = new URL(TARGET_URL);
+                    targetPreview.innerHTML = '<strong>#H5YR</strong> for ' + urlObj.hostname + urlObj.pathname;
+                } catch(e) {
+                    targetPreview.innerHTML = '<strong>#H5YR</strong> for this page';
+                }
+            }
+
+            var token = localStorage.getItem(TOKEN_KEY);
+
+            // ── OAuth via popup ──────────────────────────────────────
+            // OAuth providers (GitHub, Google) block being loaded inside iframes.
+            // Instead we open a small popup window. The callback page uses postMessage
+            // to hand the JWT back to this widget, then closes itself.
+
+            function openAuthPopup(provider) {
+                var url = BASE_URL + '/api/widget/auth/' + provider;
+                var popup = window.open(url, 'h5yr_auth',
+                    'width=520,height=620,resizable=yes,scrollbars=yes');
+
+                if (!popup) {
+                    showError('Pop-up blocked — please allow pop-ups for this site.');
+                    return;
+                }
+
+                // Listen for the postMessage from the callback page
+                function onMessage(event) {
+                    // Only accept messages from our OAuth callback origin
+                    if (event.origin !== 'https://h5yr.com') return;
+                    if (!event.data || event.data.type !== 'h5yr_auth') return;
+
+                    window.removeEventListener('message', onMessage);
+
+                    if (event.data.token) {
+                        token = event.data.token;
+                        localStorage.setItem(TOKEN_KEY, token);
+                        checkAuth();
+                    } else {
+                        showError(event.data.error || 'Sign-in failed.');
+                    }
+                }
+
+                window.addEventListener('message', onMessage);
+            }
+
+            btnGitHub.addEventListener('click', function(e) {
+                e.preventDefault();
+                openAuthPopup('github');
+            });
+
+            btnGoogle.addEventListener('click', function(e) {
+                e.preventDefault();
+                openAuthPopup('google');
+            });
+
+            // ── State helpers ────────────────────────────────────────
+
+            function showState(state) {
+                stateAuth.classList.add('hidden');
+                stateReady.classList.add('hidden');
+                stateSuccess.classList.add('hidden');
+                stateLimited.classList.add('hidden');
+                state.classList.remove('hidden');
+            }
+
+            function showError(msg) {
+                errorText.textContent = msg;
+                errorText.classList.remove('hidden');
+            }
+
+            // ── Auth check ───────────────────────────────────────────
+
+            function checkAuth() {
+                if (!token) {
+                    showState(stateAuth);
+                    return;
+                }
+
+                fetch(BASE_URL + '/api/widget/h5yr/status?token=' + encodeURIComponent(token) + '&url=' + encodeURIComponent(TARGET_URL))
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (!data.authenticated) {
+                            localStorage.removeItem(TOKEN_KEY);
+                            token = null;
+                            showState(stateAuth);
+                            return;
+                        }
+
+                        userName.textContent = data.displayName;
+                        userProvider.textContent = 'via ' + data.authProvider;
+                        userAvatar.src = data.avatarUrl;
+                        userAvatar.alt = data.displayName;
+
+                        if (data.remaining <= 0) {
+                            showState(stateLimited);
+                        } else {
+                            remainingText.textContent = data.remaining + ' remaining today for this site';
+                            showState(stateReady);
+                        }
+                    })
+                    .catch(function() {
+                        showState(stateAuth);
+                    });
+            }
+
+            // ── Submit h5yr ──────────────────────────────────────────
+
+            btnSubmit.addEventListener('click', function() {
+                btnSubmit.disabled = true;
+                btnSubmit.textContent = 'Submitting...';
+                errorText.classList.add('hidden');
+
+                fetch(BASE_URL + '/api/widget/h5yr', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: token, targetUrl: TARGET_URL })
+                })
+                .then(function(r) {
+                    if (r.status === 429) { showState(stateLimited); return; }
+                    return r.json().then(function(data) {
+                        if (r.ok) {
+                            showState(stateSuccess);
+                        } else {
+                            showError(data.error || 'Something went wrong.');
+                            btnSubmit.disabled = false;
+                            btnSubmit.textContent = '🖐 Give a #H5YR!';
+                        }
+                    });
+                })
+                .catch(function() {
+                    showError('Network error. Please try again.');
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = '🖐 Give a #H5YR!';
+                });
+            });
+
+            // ── Sign out ─────────────────────────────────────────────
+
+            btnSignout.addEventListener('click', function() {
+                localStorage.removeItem(TOKEN_KEY);
+                token = null;
+                showState(stateAuth);
+            });
+
+            // ── Init ─────────────────────────────────────────────────
+            checkAuth();
+        })();
+    </script>
+</body>
+</html>

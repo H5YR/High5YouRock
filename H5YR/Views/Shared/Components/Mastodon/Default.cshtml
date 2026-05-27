@@ -1,47 +1,58 @@
-﻿@using Skybrud.Social.Mastodon.Models.Statuses
-@using H5YR.Core.Extensions
+@using H5YR.Core.Models
 @model H5YR.Core.ViewComponents.MastodonModel
 
 <div class="tweets">
     <div class="tweets__header">
-        <div class="tweets__counter">
-            Total #H5YRs since July 2023: <data class="tweets__counter-data" id="tweet-count">@Model.TotalCount</data>
-        </div>
         <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
     </div>
     <div class="tweet__grid">
-        @if (Model.Statuses.Any()) {
-            foreach (MastodonStatus status in Model.Statuses) {
-                <div class="tweet__card">
+        @if (Model.FeedItems.Any()) {
+            foreach (FeedItem item in Model.FeedItems) {
+                <div class="tweet__card @(item.Source == "widget" ? "tweet__card--widget" : "")">
                     <div class="tweet__avatar">
-                        <a href="@status.Account.Url" target="_blank" rel="noopener">
-                            <img src="@status.Account.Avatar" alt="Profile image of @status.Account.Username" width="46" />
-                        </a>
+                        @if (!string.IsNullOrEmpty(item.ProfileUrl)) {
+                            <a href="@item.ProfileUrl" target="_blank" rel="noopener">
+                                <img src="@item.AvatarUrl" alt="Profile image of @item.Username" width="46" />
+                            </a>
+                        } else {
+                            <img src="@item.AvatarUrl" alt="Profile image of @item.Username" width="46" />
+                        }
                     </div>
                     <div class="tweet__info">
                         <div class="tweet__user-detail">
-                            <a href="@status.Account.Url" target="_blank" rel="noopener">@status.Account.Username</a>
-                            <time class="timeago" datetime="@status.CreatedAt.ToString()">@status.CreatedAt.ToString("dd/MM/yyyy")</time>
-                            <a href="@status.Url" target="_blank" rel="noopener">
-                                [Permalink]
-                            </a>
+                            @if (!string.IsNullOrEmpty(item.ProfileUrl)) {
+                                <a href="@item.ProfileUrl" target="_blank" rel="noopener">@item.Username</a>
+                            } else {
+                                <span>@item.Username</span>
+                            }
+                            <time class="timeago" datetime="@item.CreatedAt.ToString("o")">@item.CreatedAt.ToString("dd/MM/yyyy")</time>
+                            @if (item.Source == "widget") {
+                                <span class="tweet__badge tweet__badge--@item.AuthProvider" title="via h5yr widget">
+                                    🖐 widget
+                                </span>
+                            } else {
+                                <a href="@item.Permalink" target="_blank" rel="noopener">
+                                    [Permalink]
+                                </a>
+                            }
                         </div>
                         <div class="tweet__content">
-                            @Html.Raw(status.Content.ReplaceCustomEmojis(status.Emojis))
+                            @Html.Raw(item.ContentHtml)
                         </div>
                     </div>
                     <p></p>
                 </div>
-
             }
         }
     </div>
 
-    <div class="load-more-container">
-        <button class="button load-more" id="loadmore" data-start-id="@Model.Statuses.Last().Id">
-            <span>Load More</span>
-            <div class="spinner"></div>
-        </button>
-    </div>
+    @if (Model.FeedItems.Any()) {
+        <div class="load-more-container">
+            <button class="button load-more" id="loadmore" data-start-id="@Model.Statuses.Last().Id" data-oldest-date="@Model.FeedItems.Last().CreatedAt.ToString("o")">
+                <span>Load More</span>
+                <div class="spinner"></div>
+            </button>
+        </div>
+    }
 
 </div>

@@ -6,11 +6,28 @@
   height: 80vh;
   min-height: 400px;
   max-height: 650px;
-  background: linear-gradient(180deg, #9D50BB, $purple);
+  background: linear-gradient(180deg, #9d50bb, $purple);
+
+  @include media($medium) {
+    height: 60vh;
+    min-height: 300px;
+    max-height: 500px;
+  }
+
+  @include media($small) {
+    height: 50vh;
+    min-height: 250px;
+    max-height: 400px;
+  }
 
   &.-small {
     height: 30vh;
     min-height: 200px;
+
+    @include media($small) {
+      height: 25vh;
+      min-height: 150px;
+    }
   }
 }
 
@@ -19,6 +36,8 @@
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 .hero__animation {
@@ -27,4 +46,12 @@
   min-height: 50vh;
   z-index: 0;
   position: relative;
+
+  @include media($medium) {
+    min-height: 35vh;
+  }
+
+  @include media($small) {
+    min-height: 25vh;
+  }
 }

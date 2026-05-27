@@ -1,3 +1,4 @@
+
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -10,6 +11,7 @@
     <AdditionalFiles Remove="Views\Shared\Components\UnifiedFeed\Default.cshtml" />
   </ItemGroup>
 
+
   <ItemGroup>
     <PackageReference Include="Skybrud.Social.Mastodon" />
     <PackageReference Include="Umbraco.Cms" />
@@ -18,13 +20,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" />
     <PackageReference Include="uSync" />
     <ProjectReference Include="..\H5YR.Core\H5YR.Core.csproj" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
   </ItemGroup>
 
+
+  <!-- Explicitly include .vite folder (excluded by default because it starts with .) -->
+  <ItemGroup>
+    <Content Include="wwwroot\frontend\.vite\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\assets\images\h5yr.png" />
+  </ItemGroup>
 
   <PropertyGroup>
     <!-- Razor files are needed for the backoffice to work correctly -->
@@ -35,8 +46,6 @@
     <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
     <RazorCompileOnBuild>false</RazorCompileOnBuild>
     <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <UserSecretsId>b03b35a6-fde1-434d-ba3c-758a3ec7956d</UserSecretsId>
   </PropertyGroup>
-
-  <!-- Removed BuildFrontend target - run npm run dev manually -->
-
 </Project>

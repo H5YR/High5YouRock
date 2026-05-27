@@ -1,6 +1,3 @@
-using H5YR.Core.Data.Interfaces;
-using H5YR.Core.Data.Stores;
-using H5YR.Core.Services;
 using Vite.AspNetCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -8,8 +5,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add Vite services
 builder.Services.AddViteServices();
 
-builder.Services.AddSingleton<IMastodonService, MastodonService>();
-builder.Services.AddSingleton<IPostCounterStore, PostCounterStore>();
+// Note: Service registrations (MastodonService, WidgetH5yrService, etc.) are handled in DiComposer
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()

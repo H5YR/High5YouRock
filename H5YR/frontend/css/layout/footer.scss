@@ -1,13 +1,23 @@
 .footer {
   @include font-size(13);
   font-weight: bold;
-  height: 180px;
+  min-height: 180px;
   background: $purple;
   color: $white;
+  padding: 2rem 0;
+
+  @include media($small) {
+    @include font-size(12);
+    padding: 1.5rem 0;
+  }
 }
 
 .footer__inner {
   padding: 2rem 0;
+
+  @include media($small) {
+    padding: 1rem 0;
+  }
 }
 
 .footer__logo {
