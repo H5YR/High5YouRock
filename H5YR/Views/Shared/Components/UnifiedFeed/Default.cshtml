@@ -1,0 +1,83 @@
+@using H5YR.Core.Models
+@using H5YR.Core.ViewComponents
+@model UnifiedFeedModel
+
+<div class="tweets">
+    <div class="tweets__header">
+        <div class="tweets__counter">
+            Total #H5YRs since July 2023: <data class="tweets__counter-data" id="tweet-count">@Model.TotalCount</data>
+        </div>
+        <h2 class="tweets__title h4 [ title -grey ]">Most recent <span class="purple">#H5YRs</span></h2>
+    </div>
+
+    <div class="tweet__grid">
+        @if (Model.FeedItems.Any())
+        {
+            foreach (var item in Model.FeedItems)
+            {
+                <div class="tweet__card" data-source="@item.SourceType.ToString().ToLower()">
+                    <div class="tweet__avatar">
+                        <a href="@item.Url" target="_blank" rel="noopener">
+                            <img src="@item.UserAvatar" alt="Profile image of @item.UserName" width="46" />
+                        </a>
+                    </div>
+                    <div class="tweet__info">
+                        <div class="tweet__user-detail">
+                            <a href="@item.Url" target="_blank" rel="noopener">
+                                @item.UserDisplayName
+                            </a>
+                            <time class="timeago" datetime="@item.CreatedAt.ToString("o")">
+                                @item.CreatedAt.ToString("dd/MM/yyyy")
+                            </time>
+
+                            @* Source badge *@
+                            @if (item.SourceType == FeedSourceType.Discourse)
+                            {
+                                <span class="source-badge discourse">
+                                    💬 Forum @if (item.ReactionCount > 0) { <span>🖐️ @item.ReactionCount</span> }
+                                </span>
+                            }
+                            else if (item.SourceType == FeedSourceType.Mastodon)
+                            {
+                                <span class="source-badge mastodon">🐘 Mastodon</span>
+                            }
+
+                            <a href="@item.Url" target="_blank" rel="noopener">
+                                [Permalink]
+                            </a>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.TopicTitle))
+                        {
+                            <div class="tweet__topic">
+                                <strong>@item.TopicTitle</strong>
+                            </div>
+                        }
+
+                        <div class="tweet__content">
+                            @if (item.SourceType == FeedSourceType.Discourse)
+                            {
+                                <p>@item.Content.Substring(0, Math.Min(200, item.Content.Length))@(item.Content.Length > 200 ? "..." : "")</p>
+                            }
+                            else
+                            {
+                                @Html.Raw(item.Content)
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No high fives yet. Be the first! 🖐️</p>
+        }
+    </div>
+
+    <div class="load-more-container">
+        <button class="button load-more" id="loadmore" data-start-id="@Model.FeedItems.LastOrDefault()?.Id">
+            <span>Load More</span>
+            <div class="spinner"></div>
+        </button>
+    </div>
+</div>

@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <CompressionEnabled>false</CompressionEnabled> <!-- Disable compression. E.g. for umbraco backoffice files. These files should be precompressed by node and not let dotnet handle it -->
   </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Remove="Views\Shared\Components\DiscourseReactions\Default.cshtml" />
+    <AdditionalFiles Remove="Views\Shared\Components\UnifiedFeed\Default.cshtml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Skybrud.Social.Mastodon" />
