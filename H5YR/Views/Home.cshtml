@@ -1,4 +1,4 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
@@ -70,7 +70,7 @@
 @* end: community stats dashboard *@
 
 <section class="[ section -margin-top -margin-bottom ]">
-	<div class="container">
-		@await Component.InvokeAsync("Mastodon")
-	</div>
+    <div class="container">
+        @await Component.InvokeAsync("UnifiedFeed", new { count = 12 })
+    </div>
 </section>

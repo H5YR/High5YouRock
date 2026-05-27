@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../../Downloads/forum.json" />
+  </Folder>
   <Project Path="H5YR.Core/H5YR.Core.csproj" Id="f9e09ffb-4f92-4901-85b8-0b2ba429d235" />
   <Project Path="H5YR/H5YR.csproj" />
 </Solution>

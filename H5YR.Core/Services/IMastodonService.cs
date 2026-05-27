@@ -1,4 +1,5 @@
-﻿using H5YR.Core.ViewComponents;
+using H5YR.Core.Models;
+using H5YR.Core.ViewComponents;
 using Skybrud.Social.Mastodon.Models.Statuses;
 
 namespace H5YR.Core.Services
@@ -8,5 +9,6 @@ namespace H5YR.Core.Services
         Task<List<MastodonStatus>> GetStatuses(int limit, string? startId = null);
         Task<List<MastodonStatus>> GetStatusesPageAsync(int limit, string? maxId);
         int GetPostCount();
+        IEnumerable<UnifiedFeedItem> GetStatusesAsFeedItems(int limit);
     }
 }
