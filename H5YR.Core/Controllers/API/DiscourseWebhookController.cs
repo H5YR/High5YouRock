@@ -1,5 +1,4 @@
 using H5YR.Core.Data.Constants;
-using H5YR.Core.Data.Entities;
 using H5YR.Core.Models.Discourse;
 using H5YR.Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +29,23 @@ namespace H5YR.Core.Controllers.API
         /// Webhook endpoint for Discourse to send like notifications
         /// POST: /api/discourse/webhook
         /// </summary>
+        /// <summary>
+        /// Webhook endpoint for Discourse to send like notifications
+        /// POST: /api/discourse/webhook
+        /// </summary>
         [HttpPost("webhook")]
         public async Task<IActionResult> ReceiveWebhook([FromBody] DiscourseWebhookPayload payload)
         {
-            _logger.LogInformation("Received Discourse webhook");
+            var eventType = Request.Headers["X-Discourse-Event-Type"].FirstOrDefault();
+            var eventName = Request.Headers["X-Discourse-Event"].FirstOrDefault();
+
+            _logger.LogInformation("Received Discourse webhook: {EventType}/{Event}", eventType, eventName);
+
+            // Handle ping events used by Discourse to verify webhook connectivity
+            if (string.Equals(eventType, "ping", StringComparison.OrdinalIgnoreCase))
+            {
+                return Ok(new { ping = "OK" });
+            }
 
             if (payload == null)
             {
@@ -85,11 +97,11 @@ namespace H5YR.Core.Controllers.API
         [HttpGet("health")]
         public IActionResult Health()
         {
-            return Ok(new 
-            { 
+            return Ok(new
+            {
                 status = "healthy",
                 service = "Discourse Webhook API",
-                timestamp = DateTime.UtcNow 
+                timestamp = DateTime.UtcNow
             });
         }
 
@@ -113,8 +125,8 @@ namespace H5YR.Core.Controllers.API
                 {
                     tableName = DiscourseReactionSchemaConstants.TableName,
                     exists = tableExists,
-                    message = tableExists 
-                        ? "Table exists" 
+                    message = tableExists
+                        ? "Table exists"
                         : "Table does NOT exist. Please restart the application to trigger the migration, or check the logs for migration errors."
                 });
             }
