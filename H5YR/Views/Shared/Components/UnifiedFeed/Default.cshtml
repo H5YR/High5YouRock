@@ -41,6 +41,10 @@
                             {
                                 <span class="source-badge mastodon">🐘 Mastodon</span>
                             }
+                            else if (item.SourceType == FeedSourceType.Widget)
+                            {
+                                <span class="source-badge widget">🖐️ Widget</span>
+                            }
 
                             <a href="@item.Url" target="_blank" rel="noopener">
                                 [Permalink]
