@@ -1,0 +1,35 @@
+@model IEnumerable<H5YR.Core.Data.Entities.DiscourseReaction>
+
+<div class="discourse-reactions">
+    <h2>Recent Discourse High Fives 🖐️</h2>
+
+    @if (Model.Any())
+    {
+        <div class="reactions-list">
+            @foreach (var reaction in Model)
+            {
+                <div class="reaction-item">
+                    <div class="reaction-header">
+                        <img src="@reaction.UserAvatar" alt="@reaction.UserDisplayName" class="avatar" />
+                        <div class="user-info">
+                            <strong>@reaction.UserDisplayName</strong>
+                            <span class="username">@@@reaction.UserName</span>
+                        </div>
+                        <span class="reaction-badge">🖐️ @reaction.ReactionCount</span>
+                    </div>
+                    <div class="reaction-content">
+                        <p>@reaction.PostContent.Substring(0, Math.Min(150, reaction.PostContent.Length))@(reaction.PostContent.Length > 150 ? "..." : "")</p>
+                        <div class="reaction-meta">
+                            <a href="@reaction.PostUrl" target="_blank">@reaction.TopicTitle</a>
+                            <span class="date">@reaction.CreatedAt.ToString("MMM dd, yyyy")</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No Discourse reactions yet. Be the first to high five on the forum! 🖐️</p>
+    }
+</div>

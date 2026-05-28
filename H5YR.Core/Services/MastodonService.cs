@@ -1,5 +1,6 @@
 ﻿using H5YR.Core.Data.Entities;
 using H5YR.Core.Data.Interfaces;
+using H5YR.Core.Models;
 using H5YR.Core.ViewComponents;
 using Microsoft.Extensions.Logging;
 using Skybrud.Social.Mastodon;
@@ -146,6 +147,24 @@ namespace H5YR.Core.Services
                 };
                 _postCounterStore.Update(postCountModel);
             }
+        }
+
+        public IEnumerable<UnifiedFeedItem> GetStatusesAsFeedItems(int limit)
+        {
+            var statuses = GetStatuses(limit).GetAwaiter().GetResult();
+            
+            return statuses.Select(s => new UnifiedFeedItem
+            {
+                Id = s.Id,
+                SourceType = FeedSourceType.Mastodon,
+                CreatedAt = s.CreatedAt.DateTimeOffset.DateTime,
+                UserName = s.Account.Username,
+                UserDisplayName = s.Account.DisplayName,
+                UserAvatar = s.Account.Avatar,
+                Content = s.Content,
+                RawContent = s.Content,
+                Url = s.Url
+            });
         }
 
     }
