@@ -4,6 +4,7 @@ This README is a work in progress, if anything is unclear or you have suggestion
 
 A community recognition platform built with **Umbraco 17** on **.NET 10**, featuring Mastodon social integration, a widget system, and a Vite-powered frontend.
 
+LIVE site: https://h5yr.com
 ---
 
 ## Prerequisites
