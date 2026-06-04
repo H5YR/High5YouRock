@@ -3,6 +3,7 @@ using H5YR.Core.Models.Discourse;
 using H5YR.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using Umbraco.Cms.Infrastructure.Scoping;
 
 namespace H5YR.Core.Controllers.API
@@ -34,7 +35,7 @@ namespace H5YR.Core.Controllers.API
         /// POST: /api/discourse/webhook
         /// </summary>
         [HttpPost("webhook")]
-        public async Task<IActionResult> ReceiveWebhook([FromBody] DiscourseWebhookPayload payload)
+        public async Task<IActionResult> ReceiveWebhook()
         {
             var eventType = Request.Headers["X-Discourse-Event-Type"].FirstOrDefault();
             var eventName = Request.Headers["X-Discourse-Event"].FirstOrDefault();
@@ -47,10 +48,23 @@ namespace H5YR.Core.Controllers.API
                 return Ok(new { ping = "OK" });
             }
 
+            DiscourseWebhookPayload payload;
+            try
+            {
+                payload = await JsonSerializer.DeserializeAsync<DiscourseWebhookPayload>(
+                    Request.Body,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogWarning(ex, "Could not parse webhook payload; ignoring.");
+                return Ok(new { message = "Unrecognised payload ignored" });
+            }
+
             if (payload == null)
             {
                 _logger.LogWarning("Received null payload");
-                return BadRequest(new { error = "Invalid payload" });
+                return Ok(new { message = "Unrecognised payload ignored" });
             }
 
             var success = await _discourseService.ProcessWebhookAsync(payload);
