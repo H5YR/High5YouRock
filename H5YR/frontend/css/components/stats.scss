@@ -1,24 +1,24 @@
 .stats-dashboard {
-	padding: calculateRem(32) 0;
+	padding: 2rem 0;
 	text-align: center;
 
 	&__title {
-		color: var(--clr-brand);
-		margin-bottom: calculateRem(24);
+		color: var(--clr-grey);
+		margin-bottom: 1.5rem;
 	}
 
 	&__summary {
 		display: flex;
 		justify-content: center;
-		gap: calculateRem(24);
+		gap: 1.5rem;
 		flex-wrap: wrap;
-		margin-bottom: calculateRem(40);
+		margin-bottom: 2.5rem;
 	}
 
 	&__charts {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: calculateRem(32);
+		gap: 2rem;
 
 		@include media($medium) {
 			grid-template-columns: 1fr;
@@ -29,22 +29,24 @@
 .stats-card {
 	background: var(--clr-white);
 	border-radius: var(--radius-base);
-	padding: calculateRem(24) calculateRem(32);
+	padding: 1.5rem 2rem;
 	box-shadow: var(--shadow-base);
 	flex: 1;
 
 	&__number {
 		display: block;
-		@include font-size(38, 44);
-		font-weight: var(--font-weight-bold);
+		font-size: var(--text-3xl);
+		line-height: var(--line-height-tight);
+		font-weight: var(--font-weight-extrabold);
 		color: var(--clr-brand);
 	}
 
 	&__label {
 		display: block;
-		@include font-size(14, 20);
+		font-size: var(--text-sm);
+		line-height: var(--line-height-tight);
 		color: var(--clr-grey);
-		margin-top: calculateRem(5);
+		margin-top: 0.5rem;
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
 	}
@@ -53,21 +55,21 @@
 .stats-chart {
 	background: var(--clr-white);
 	border-radius: var(--radius-base);
-	padding: calculateRem(24);
+	padding: 1.5rem;
 	box-shadow: var(--shadow-sm);
 
 	&__title {
-		@include font-size(16, 22);
+		font-size: var(--text-base);
 		color: var(--clr-brand);
-		margin-bottom: calculateRem(16);
+		margin-bottom: 1rem;
 		text-align: left;
 	}
 
 	&__empty {
 		color: var(--clr-grey);
-		@include font-size(14, 20);
+		font-size: var(--text-base);
 		text-align: center;
-		padding: calculateRem(32) 0;
+		padding: 2rem 0;
 	}
 
 	canvas {
@@ -79,13 +81,13 @@
 .stats-contributor {
 	display: flex;
 	align-items: center;
-	gap: calculateRem(12);
-	margin-bottom: calculateRem(10);
+	gap: 0.75rem;
+	margin-bottom: 0.625rem;
 
 	&__info {
 		display: flex;
 		align-items: center;
-		gap: calculateRem(8);
+		gap: 0.5rem;
 		min-width: 140px;
 		text-decoration: none;
 		color: inherit;
@@ -102,8 +104,7 @@
 	}
 
 	&__name {
-		@include font-size(14, 18);
-		font-weight: var(--font-weight-bold);
+		font-size: var(--text-sm);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -113,7 +114,7 @@
 		flex: 1;
 		display: flex;
 		align-items: center;
-		gap: calculateRem(8);
+		gap: 0.5rem;
 	}
 
 	&__bar {
@@ -124,9 +125,9 @@
 	}
 
 	&__count {
-		@include font-size(13, 18);
+		font-size: var(--text-xs);
 		font-weight: var(--font-weight-bold);
 		color: var(--clr-brand);
-		min-width: calculateRem(24);
+		min-width: 1.5rem;
 	}
 }
