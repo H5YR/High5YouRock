@@ -1,29 +1,9 @@
-// Hide SVG Sprite
-.svg-sprite {
-    display: none;
-}
+
 
 .center,
 .align-center {
     text-align: center;
 }
-
-.margin-top {
-    margin-top: 3rem;
-
-    @include media($small) {
-        margin-top: 2rem;
-    }
-}
-
-.margin-bottom {
-    margin-bottom: 3rem;
-
-    @include media($small) {
-        margin-bottom: 2rem;
-    }
-}
-
 
 .spinner {
     display: none;
