@@ -2,15 +2,15 @@ share-to-mastodon {
     //--wc-stm-color: black; //the host text color, default #000
     //--wc-stm-dialog-border-color: transparent; // the dialog border color
     //--wc-stm-dialog-background-color: white; // the dialog background color
-    --wc-stm-dialog-border-radius: 0; // this dialogs border radius
+    --wc-stm-dialog-border-radius: var(--radius-none); // this dialogs border radius
     //--wc-stm-dialog-padding: 1rem; // the dialogs inner padding
-    --wc-stm-font-family: $font; // the host font family, default sans-serif
+    --wc-stm-font-family: var(--font-family-base); // the host font family, default sans-serif
     //--wc-stm-form-button-background-color: #eee;
-    --wc-stm-form-button-background-color-hover: #{$purple2};
+    --wc-stm-form-button-background-color-hover: var(--bg-btn-hover);
     //--wc-stm-form-button-border: none;
     //--wc-stm-form-button-border-radius: 0.25rem;
     //--wc-stm-form-button-color: inherit;
-    --wc-stm-form-button-color-hover: #{$white};
+    --wc-stm-form-button-color-hover: var(--clr-white);
     //--wc-stm-form-button-font-size: 1em;
     //--wc-stm-form-button-padding: 0.5rem 0;
     //--wc-stm-form-input-border: 1px solid #ccc;
@@ -21,10 +21,10 @@ share-to-mastodon {
     --wc-stm-link-color-initial: white; // the link text color if no slot structures overwrite
     --wc-stm-link-color-visited: white; // the link text color visited
     --wc-stm-link-text-decoration: none; // the link text decoration if no slot structures overwrite
-    --wc-stm-form-submit-background-color: #{$purple};
-    --wc-stm-form-cancel-background-color: #{$grey};
-    --wc-stm-submit-button-color: #{$white};
-    --wc-stm-cancel-button-color: #{$white};
+    --wc-stm-form-submit-background-color: var(--clr-brand);
+    --wc-stm-form-cancel-background-color: var(--clr-grey);
+    --wc-stm-submit-button-color: var(--clr-white);
+    --wc-stm-cancel-button-color: var(--clr-white);
 
     .share-to-mastodon-flex-wrapper {
         display: inline-flex;

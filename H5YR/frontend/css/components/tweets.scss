@@ -33,34 +33,18 @@
   display: inline-block;
 }
 
-.spinner {
-  display: none;
-  border: 3px solid rgba(255, 255, 255, 0.4);
-  border-top-color: $white;
-  border-radius: 50%;
-  width: 1.25rem;
-  height: 1.25rem;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .tweets__title {
   margin-bottom: 2rem;
 }
 
 .tweets__counter {
-  @include font-size(18);
-  font-weight: bold;
-  margin-bottom: 2rem;
+    @include font-size(18);
+    font-weight: var(--font-weight-extrabold);
+    margin-bottom: 2rem;
 }
 
 .tweets__counter-data {
-  color: $purple;
+  color: var(--clr-brand);
 }
 
 .tweet__grid {
@@ -77,9 +61,9 @@
 
 .tweet__card {
   @include font-size(14);
-  background: $white;
-  box-shadow: 0 3px 6px rgba($black, 0.2);
-  border-radius: 3px;
+  background: var(--clr-white);
+  box-shadow: var(--shadow-base);
+  border-radius: var(--radius-base);
   padding: 1.5rem 1.5rem 1.5rem 1.25rem;
 }
 
@@ -93,35 +77,35 @@
 }
 
 .tweet__info {
-  font-weight: bold;
-  margin-left: 4rem;
+    font-weight: var(--font-weight-extrabold);
+    margin-left: 4rem;
 }
 
 .tweet__user-detail {
-  font-weight: bold;
+    font-weight: var(--font-weight-extrabold);
 
-  a,
-  time {
-    font-weight: bold;
-  }
+    a,
+    time {
+        font-weight: var(--font-weight-extrabold);
+    }
 
-  a {
-    color: $purple;
-    text-decoration: none;
-  }
+    a {
+        color: var(--clr-brand);
+        text-decoration: none;
+    }
 
-  time {
-    color: $grey;
-  }
+    time {
+        color: var(--clr-grey);
+    }
 }
 
 .tweet__content {
   margin-top: 1rem;
-  font-weight: normal;
+  font-weight: var(--font-weight-normal);
 
   a {
-    font-weight: bold;
-    color: $grey;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--clr-grey);
     word-break: break-word;
     text-decoration: none;
   }
@@ -152,25 +136,25 @@
 }
 
 .h5yr {
-  font-weight: bold;
-  color: $purple;
+  font-weight: var(--font-weight-bold);
+  color: var(--clr-brand);
 }
 
 // Widget h5yr card badge and styling
 .tweet__card--widget {
-  border-left: 3px solid $purple;
+  border-left: 3px solid var(--clr-brand);
 }
 
 .tweet__badge {
   display: inline-block;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-extrabold);
   padding: 2px 6px;
-  border-radius: 3px;
+  border-radius: var(--radius-base);
   vertical-align: middle;
   margin-left: 4px;
-  background: lighten($purple, 38%);
-  color: $purple;
+  background: var(--clr-brand-light);
+  color: var(--clr-brand);
 
   &--github {
     background: #f0f0f0;

@@ -1,49 +1,22 @@
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
 body {
-  background: #faedff;
+  background: var(--bg-body);
   overflow-x: hidden;
-
-  &.breakpoint-indicators {
-
-    &:after {
-      content: 'Mega';
-      position: fixed;
-      font-size: 12px;
-      background: grey;
-      color: $white;
-      bottom: 0;
-      left: 0;
-      padding: 5px 10px;
-      letter-spacing: 1px;
-      z-index: 3000;
-
-      @include media($huge) {
-        content: 'Huge';
-      }
-
-      @include media($large) {
-        content: 'Large';
-      }
-
-      @include media($medium) {
-        content: 'Medium';
-      }
-
-      @include media($small) {
-        content: 'Small';
-      }
-
-      @include media($tiny) {
-        content: 'Tiny';
-      }
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
-* {
-  box-sizing: border-box;
+main {
+  flex: 1 0 auto;
 }
 
-// Hide SVG Sprite
-.svg-sprite {
-  display: none;
+footer {
+  flex-shrink: 0;
 }
+
+

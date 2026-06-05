@@ -3,8 +3,7 @@
 	text-align: center;
 
 	&__title {
-		color: $purple;
-		@include font-size(28, 34);
+		color: var(--clr-brand);
 		margin-bottom: calculateRem(24);
 	}
 
@@ -28,23 +27,23 @@
 }
 
 .stats-card {
-	background: $white;
-	border-radius: 3px;
+	background: var(--clr-white);
+	border-radius: var(--radius-base);
 	padding: calculateRem(24) calculateRem(32);
-	box-shadow: 0 2px 12px rgba($black, 0.08);
+	box-shadow: var(--shadow-base);
 	flex: 1;
 
 	&__number {
 		display: block;
 		@include font-size(38, 44);
-		font-weight: 700;
-		color: $purple;
+		font-weight: var(--font-weight-bold);
+		color: var(--clr-brand);
 	}
 
 	&__label {
 		display: block;
 		@include font-size(14, 20);
-		color: $grey;
+		color: var(--clr-grey);
 		margin-top: calculateRem(5);
 		text-transform: uppercase;
 		letter-spacing: 0.03em;
@@ -52,20 +51,20 @@
 }
 
 .stats-chart {
-	background: $white;
-	border-radius: 3px;
+	background: var(--clr-white);
+	border-radius: var(--radius-base);
 	padding: calculateRem(24);
-	box-shadow: 0 2px 12px rgba($black, 0.08);
+	box-shadow: var(--shadow-sm);
 
 	&__title {
 		@include font-size(16, 22);
-		color: $purple;
+		color: var(--clr-brand);
 		margin-bottom: calculateRem(16);
 		text-align: left;
 	}
 
 	&__empty {
-		color: $grey;
+		color: var(--clr-grey);
 		@include font-size(14, 20);
 		text-align: center;
 		padding: calculateRem(32) 0;
@@ -92,7 +91,7 @@
 		color: inherit;
 
 		&:hover .stats-contributor__name {
-			color: $purple;
+			color: var(--clr-brand);
 			text-decoration: underline;
 		}
 	}
@@ -104,7 +103,7 @@
 
 	&__name {
 		@include font-size(14, 18);
-		font-weight: 500;
+		font-weight: var(--font-weight-bold);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -119,15 +118,15 @@
 
 	&__bar {
 		height: 20px;
-		background: $purple;
-		border-radius: 3px;
+		background: var(--clr-brand);
+		border-radius: var(--radius-base);
 		min-width: 4px;
 	}
 
 	&__count {
 		@include font-size(13, 18);
-		font-weight: 600;
-		color: $purple;
+		font-weight: var(--font-weight-bold);
+		color: var(--clr-brand);
 		min-width: calculateRem(24);
 	}
 }

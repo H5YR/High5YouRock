@@ -1,0 +1,42 @@
+// Hide SVG Sprite
+.svg-sprite {
+    display: none;
+}
+
+.center,
+.align-center {
+    text-align: center;
+}
+
+.margin-top {
+    margin-top: 3rem;
+
+    @include media($small) {
+        margin-top: 2rem;
+    }
+}
+
+.margin-bottom {
+    margin-bottom: 3rem;
+
+    @include media($small) {
+        margin-bottom: 2rem;
+    }
+}
+
+
+.spinner {
+    display: none;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-top-color: var(--clr-white);
+    border-radius: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -2,71 +2,60 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
     Layout = null;
+
+    var navigation = Umbraco.ContentAtRoot().FirstOrDefault()!
+                    .Children()
+                    .Where(x => x.IsVisible());
+             
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @*Global site tag (gtag.js) - Google Analytics*@
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135183194-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'UA-135183194-1');
-    </script>
+
+
+
+    @await Html.PartialAsync("~/Views/Partials/MetaTags.cshtml")
+
+    <environment exclude="Development">
+        @*Global site tag (gtag.js) - Google Analytics*@
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135183194-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'UA-135183194-1');
+        </script>
+    </environment>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.2/lottie.min.js" integrity="sha256-G8zbnVrieJloV/OI6KCIpVKvP5uWGxqJ59/Z7w/MhAA=" crossorigin="anonymous"></script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@Model.Value("pageTitle", fallback: Fallback.ToAncestors)</title>
- 
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="@Model.Value("websiteTitle", fallback: Fallback.ToAncestors)" />
-    <meta property="og:url" content="@Model.Url(mode: UrlMode.Absolute)" />
-    <meta name="description" content="Tell someone they rock with a simple friendly hashtag #h5yr" />
 
-    
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800&display=swap" rel="stylesheet">
 
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://h5yr.com" />
-    <meta property="og:title" content="High Five, You Rock! #h5yr" />
-    <meta property="og:description" content="Tell someone they rock with a simple friendly hashtag #h5yr" />
-    <meta property="og:image" content="https://h5yr.com/assets/images/h5yr.png" />
-
-    <!-- X (Twitter) -->
-    <meta property="og:site_name" content="High Five, You Rock! #h5yr" />
-    <meta name="twitter:site" content="@("@h5yr")" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://h5yr.com" />
-    <meta property="twitter:title" content="High Five, You Rock! #h5yr" />
-    <meta property="twitter:description" content="Tell someone they rock with a simple friendly hashtag #h5yr" />
-    <meta property="twitter:image" content="https://h5yr.com/assets/images/h5yr.png" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     @* Vite assets - works in both dev and production *@
     <link rel="stylesheet" vite-href="~/app.js" />
     <script type="module" vite-src="~/app.js"></script>
 
 </head>
-<body data-layout="">
 
-    @*Google Tag Manager (noscript)*@
+<body class="template-@Model.ContentType.Alias node-@Model.Id" data-layout="">
+
+    <environment exclude="Development">
+
     <noscript>
         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PM6879J" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
-    @*End Google Tag Manager (noscript)*@
 
-    @* start: header *@
-    <header class="header">
+    </environment>
+
+
+    <header class="@(Model is Page ? "header header-short" : "header")">
         <div class="container">
             <div class="header__inner">
                 <div class="header__logo">
                     <a href="/">
-                        <svg class="[ icon icon--header-logo ]">
-                            <use xlink:href="#sprite-logo"></use>
-                        </svg>
+                        <img src="/assets/images/logo.svg" alt="High Five, You Rock!" />
                     </a>
                 </div>
                 <input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />
@@ -74,12 +63,7 @@
                     <span class="navigation__toggle-icon"></span>
                 </label>
                 <nav class="navigation" role="navigation">
-                    @{
-                        var selection = Umbraco.ContentAtRoot().FirstOrDefault()
-                        .Children()
-                        .Where(x => x.IsVisible());
-                    }
-                    @foreach (var item in selection)
+                    @foreach (var item in navigation)
                     {
                         <a href="@item.Url()" class="navigation__item">@item.Name</a>
                     }
@@ -87,39 +71,23 @@
             </div>
         </div>
     </header>
-    @* end: header *@
 
-    @* start: main *@
+
     <main role="main">
         @RenderBody()
     </main>
-    @* end: main *@
 
-    @* start: friends *@
-
-
-    @await Component.InvokeAsync("Sponsors")
-
-
-    
-    @* end: friends *@
-
-    @* start: footer *@
     <footer class="footer">
-        <div class="container">
-            <footer__inner">
-                <svg class="footer__logo">
-                    <use xlink:href="#sprite-logo"></use>
-                </svg>
+        @await Component.InvokeAsync("Sponsors")
+
+
+        <section class="footer__credits">
+            <div class="container">    
+                <img class="footer__logo" src="/assets/images/logo.svg" alt="High Five, You Rock!" />
                 <p>Hosted on <a href="https://my.umbhost.net/aff.php?aff=1536" target="_blank" rel="noopener" class="footer__link">UmbHost</a>, built by the <a href="https://our.umbraco.com" target="_blank" rel="noopener" class="footer__link">Umbraco Community</a></p>
             </div>
-        </footer>
-        @* end: footer *@
-
-        @* start: SVG Sprite *@
-        <div class="svg-sprite">
-            @await Html.PartialAsync("~/Views/Shared/SVG_Sprite.cshtml")
-        </div>
-        @* end: SVG Sprite *@
+        </section>
+    </footer>
+    
     </body>
 </html>

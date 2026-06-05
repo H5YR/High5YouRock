@@ -131,7 +131,7 @@ function renderContributorsChart(contributors) {
 			return `
             <div class="stats-contributor">
                 <a href="${profileUrl}" target="_blank" rel="noopener" class="stats-contributor__info">
-                    <img src="${c.avatarUrl}" alt="" class="stats-contributor__avatar" width="24" height="24" />
+                    <img src="${c.avatarUrl}" alt="${c.displayName}" class="stats-contributor__avatar" width="24" height="24" />
                     <span class="stats-contributor__name">${c.displayName}</span>
                 </a>
                 <div class="stats-contributor__bar-wrap">

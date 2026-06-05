@@ -1,23 +1,44 @@
 @charset "utf-8";
 
-//
 // Config
-//
-@import "config/variables";  // Widths, heights etc all re-usable
-@import "config/mixins";   // Re-usable mixins - CSS3 etc..
+@import "config/variables";  
+@import "config/mixins";   
 
-//
-// Layout
-//
-@import "layout/footer";    // Site footer
+@layer reset, base, shared, components, utils;
 
-//
-// Components
-//
-@import "modules/richtext";		// Richtext formatting styles
-@import "modules/tweets";    // Example icon styling
-@import "modules/friends";    // Example icon styling
-@import "modules/title";    // Example icon styling
-@import "modules/share-to-mastodon";
-@import "modules/hashtag-icons.scss";
-@import "modules/stats";
+@layer reset {
+    @import "reset/reset"; 
+}
+
+@layer base {
+    @import "base/base";
+    @import "base/typography"; 
+}
+
+@layer shared {
+    @import "shared/container";
+    @import "shared/footer";
+    @import "shared/header";
+    @import "shared/navigation";
+    @import "shared/section"; 
+}
+
+@layer components {
+    @import "components/buttons"; 
+    @import "components/content";
+    @import "components/emoji-tags";
+    @import "components/hero"; 
+    @import "components/share-to-mastodon";
+    @import "components/sponsors";
+    @import "components/stats";
+    @import "components/title";
+    @import "components/tweets"; 
+}
+
+
+@layer utils {
+    @import "utils/utils";
+    @import "utils/spacing";
+}
+
+
