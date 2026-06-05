@@ -38,7 +38,7 @@
 }
 
 .tweets__counter {
-    @include font-size(18);
+    font-size: var(--text-md);
     font-weight: var(--font-weight-extrabold);
     margin-bottom: 2rem;
 }
@@ -60,11 +60,11 @@
 }
 
 .tweet__card {
-  @include font-size(14);
-  background: var(--clr-white);
-  box-shadow: var(--shadow-base);
-  border-radius: var(--radius-base);
-  padding: 1.5rem 1.5rem 1.5rem 1.25rem;
+    font-size: var(--text-sm);
+    background: var(--clr-white);
+    box-shadow: var(--shadow-base);
+    border-radius: var(--radius-base);
+    padding: 1.5rem 1.5rem 1.5rem 1.25rem;
 }
 
 .tweet__avatar {

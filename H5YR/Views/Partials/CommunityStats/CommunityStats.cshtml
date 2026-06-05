@@ -12,19 +12,19 @@
 
       <div class="stats-dashboard__summary" id="js-stats-summary">
         <div class="stats-card">
-          <span class="stats-card__number" id="js-stat-total">--</span>
+          <span class="stats-card__number" id="js-stat-total">0</span>
           <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.TotalLabel")</span>
         </div>
         <div class="stats-card">
-          <span class="stats-card__number" id="js-stat-widget">--</span>
+          <span class="stats-card__number" id="js-stat-widget">0</span>
           <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.WidgetLabel")</span>
         </div>
         <div class="stats-card">
-          <span class="stats-card__number" id="js-stat-today">--</span>
+          <span class="stats-card__number" id="js-stat-today">0</span>
           <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.TodayLabel")</span>
         </div>
       </div>
-     
+
       @if (engagementPage != null)
       {
           <a href="@engagementPage.Url()" class="stats-dashboard__link">See more stats &rarr;</a>

@@ -96,7 +96,7 @@
 }
 
 .navigation__item {
-  @include font-size(16);
+  font-size:var(--text-base);
   color: var(--clr-white);
   text-decoration: none;
   font-weight: var(--font-weight-extrabold);
