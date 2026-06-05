@@ -2,10 +2,7 @@
 
 User-agent: *
 Allow: /
-
-# Disallow admin and API endpoints
 Disallow: /umbraco/
-Disallow: /api/admin/
 
 # Sitemaps
 Sitemap: https://h5yr.com/sitemap.xml
