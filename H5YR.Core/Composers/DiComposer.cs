@@ -48,6 +48,9 @@ namespace H5YR.Core.Composers
 
             // Community stats
             builder.Services.AddSingleton<ICommunityStatsService, CommunityStatsService>();
+
+            // Sitemap service - scoped because it uses IPublishedContentQuery
+            builder.Services.AddScoped<ISitemapService, SitemapService>();
         }
     }
 }

@@ -32,6 +32,7 @@
   <ItemGroup>
     <AdditionalFiles Remove="Views\Partials\MetaTags.cshtml" />
     <AdditionalFiles Remove="Views\Partials\Navigation.cshtml" />
+    <AdditionalFiles Remove="Views\Sitemap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\assets\images\h5yr.png" />

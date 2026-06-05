@@ -1,0 +1,16 @@
+@model IEnumerable<H5YR.Core.Models.ViewModels.SitemapUrlViewModel>
+@{
+    Context.Response.ContentType = "application/xml";
+    Layout = null;
+}<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+@foreach (var item in Model)
+{
+    @:  <url>
+    @:    <loc>@item.Url</loc>
+    @:    <lastmod>@item.LastModified</lastmod>
+    @:    <changefreq>@item.ChangeFrequency</changefreq>
+    @:    <priority>@item.Priority</priority>
+    @:  </url>
+}
+</urlset>
