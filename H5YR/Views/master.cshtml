@@ -2,17 +2,10 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
     Layout = null;
-
-    var navigation = Umbraco.ContentAtRoot().FirstOrDefault()!
-                    .Children()
-                    .Where(x => x.IsVisible());
-             
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
 
     @await Html.PartialAsync("~/Views/Partials/MetaTags.cshtml")
 
@@ -58,16 +51,7 @@
                         <img src="/assets/images/logo.svg" alt="High Five, You Rock!" />
                     </a>
                 </div>
-                <input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />
-                <label for="nav-toggle" class="navigation__toggle-label" aria-label="Toggle navigation">
-                    <span class="navigation__toggle-icon"></span>
-                </label>
-                <nav class="navigation" role="navigation">
-                    @foreach (var item in navigation)
-                    {
-                        <a href="@item.Url()" class="navigation__item">@item.Name</a>
-                    }
-                </nav>
+                @await Html.PartialAsync("~/Views/Partials/Navigation.cshtml")
             </div>
         </div>
     </header>
@@ -75,12 +59,11 @@
 
     <main role="main">
         @RenderBody()
+        @await Component.InvokeAsync("Sponsors")
     </main>
+    
 
     <footer class="footer">
-        @await Component.InvokeAsync("Sponsors")
-
-
         <section class="footer__credits">
             <div class="container">    
                 <img class="footer__logo" src="/assets/images/logo.svg" alt="High Five, You Rock!" />

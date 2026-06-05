@@ -1,0 +1,18 @@
+@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    var navigation = Umbraco.ContentAtRoot().FirstOrDefault()!
+                    .Children()
+                    .Where(x => x.IsVisible());
+}
+
+<input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />
+<label for="nav-toggle" class="navigation__toggle-label" aria-label="Toggle navigation">
+    <span class="navigation__toggle-icon"></span>
+</label>
+<nav class="navigation" role="navigation">
+    @foreach (var item in navigation)
+    {
+        <a href="@item.Url()" class="navigation__item">@item.Name</a>
+    }
+</nav>
