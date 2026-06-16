@@ -53,7 +53,7 @@ namespace H5YR.Core.Controllers.API
     [HttpGet]
     public async Task<IActionResult> GetStats()
     {
-      if (IsOffline)
+      if (IsOffline && !string.Equals(Request.Host.Host, "h5yr.com", StringComparison.OrdinalIgnoreCase))
       {
         try
         {
