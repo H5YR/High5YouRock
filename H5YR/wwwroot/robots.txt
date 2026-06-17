@@ -1,0 +1,8 @@
+# robots.txt for h5yr.com
+
+User-agent: *
+Allow: /
+Disallow: /umbraco/
+
+# Sitemaps
+Sitemap: https://h5yr.com/sitemap.xml

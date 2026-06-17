@@ -5,25 +5,9 @@
     Layout = "Master.cshtml";
 }
 
-<div class="hero">
-
-  <div class="container">
-
-    <div class="hero__inner">
-
-      <div class="hero__animation" id="js-hero-animation"></div>
-      <noscript>Enable JavaScript to view our high 5 animation!</noscript>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<section class="[ section -overhang-large -margin-bottom ]">
+<section class="section section--top mb-2xl">
     <div class="container">
-        <div class="[ content-block -align-center ]">
+        <div class="content-block align-center">
             @if (Model.PageTitle != null)
             {
                 <h1>@Model.PageTitle</h1>

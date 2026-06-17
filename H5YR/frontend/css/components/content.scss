@@ -1,0 +1,17 @@
+.content-block {
+    position: relative;
+    box-shadow: var(--shadow-base);
+    border-radius: var(--radius-base);
+    background-color: var(--clr-white);
+    padding: 2rem;
+
+    @include media($small) {
+        padding: 1.25rem;
+    }
+
+    &__inner {
+        max-width: 780px;
+        margin-block: 0;
+        margin-inline: auto;
+    }
+}

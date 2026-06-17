@@ -1,0 +1,39 @@
+/*** BUTTON Styles ***/
+
+.button {
+    font-size: var(--text-sm);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-base);
+    color: var(--clr-white);
+    background: var(--bg-btn);
+    font-weight: var(--font-weight-extrabold);
+    text-decoration: none;
+    transition: background .2s ease;
+    border: 0;
+    vertical-align: bottom;
+    margin-block-start: 0.5rem;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        background: var(--bg-btn-hover);
+
+        span {
+            text-decoration: underline;
+        }
+    }
+
+    &.icon-left {
+
+        .icon {
+            margin-inline-end: 1rem;
+            font-size: 1.45rem;
+        }
+    }
+}
+
+.button-group {
+    margin-block-start: 1rem;
+}

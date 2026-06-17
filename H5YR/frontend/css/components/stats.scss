@@ -1,0 +1,133 @@
+.stats-dashboard {
+	padding: 2rem 0;
+	text-align: center;
+
+	&__title {
+		color: var(--clr-brand);
+		margin-bottom: 1.5rem;
+	}
+
+	&__summary {
+		display: flex;
+		justify-content: center;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 2.5rem;
+	}
+
+	&__charts {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem;
+
+		@include media($medium) {
+			grid-template-columns: 1fr;
+		}
+	}
+}
+
+.stats-card {
+	background: var(--clr-white);
+	border-radius: var(--radius-base);
+	padding: 1.5rem 2rem;
+	box-shadow: var(--shadow-base);
+	flex: 1;
+
+	&__number {
+		display: block;
+		font-size: var(--text-3xl);
+		line-height: var(--line-height-tight);
+		font-weight: var(--font-weight-extrabold);
+		color: var(--clr-brand);
+	}
+
+	&__label {
+		display: block;
+		font-size: var(--text-sm);
+		line-height: var(--line-height-tight);
+		color: var(--clr-grey);
+		margin-top: 0.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+}
+
+.stats-chart {
+	background: var(--clr-white);
+	border-radius: var(--radius-base);
+	padding: 1.5rem;
+	box-shadow: var(--shadow-base);
+
+	&__title {
+		font-size: var(--text-base);
+		color: var(--clr-brand);
+		margin-bottom: 1rem;
+		text-align: left;
+	}
+
+	&__empty {
+		color: var(--clr-grey);
+		font-size: var(--text-base);
+		text-align: center;
+		padding: 2rem 0;
+	}
+
+	canvas {
+		width: 100% !important;
+		height: 350px !important;
+	}
+}
+
+.stats-contributor {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 0.625rem;
+
+	&__info {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		min-width: 140px;
+		text-decoration: none;
+		color: inherit;
+
+		&:hover .stats-contributor__name {
+			color: var(--clr-brand);
+			text-decoration: underline;
+		}
+	}
+
+	&__avatar {
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	&__name {
+		font-size: var(--text-sm);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__bar-wrap {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	&__bar {
+		height: 20px;
+		background: var(--clr-brand);
+		border-radius: var(--radius-base);
+		min-width: 4px;
+	}
+
+	&__count {
+		font-size: var(--text-xs);
+		font-weight: var(--font-weight-bold);
+		color: var(--clr-brand);
+		min-width: 1.5rem;
+	}
+}

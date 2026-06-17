@@ -1,0 +1,168 @@
+.tweetgrid-panel {
+  -webkit-column-width: 366px;
+  column-width: 366px;
+  -webkit-column-gap: 30px;
+  column-gap: 30px;
+
+  @include media($small) {
+    -webkit-column-width: auto;
+    column-width: auto;
+    -webkit-column-count: 1;
+    column-count: 1;
+  }
+}
+.tweetgrid-panel .tweetcard {
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid-column;
+}
+.tweetgrid-panel .tweetcard + .tweetcard {
+  margin-top: 30px;
+}
+
+.tweets .pagination {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.load-more-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.load-more {
+  display: inline-block;
+}
+
+.tweets__title {
+  margin-bottom: 2rem;
+}
+
+.tweets__counter {
+    font-size: var(--text-md);
+    font-weight: var(--font-weight-extrabold);
+    margin-bottom: 2rem;
+}
+
+.tweets__counter-data {
+  color: var(--clr-brand);
+}
+
+.tweet__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-gap: 30px;
+  grid-auto-flow: dense;
+
+  @include media($small) {
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+}
+
+.tweet__card {
+    font-size: var(--text-sm);
+    background: var(--clr-white);
+    box-shadow: var(--shadow-base);
+    border-radius: var(--radius-base);
+    padding: 1.5rem 1.5rem 1.5rem 1.25rem;
+}
+
+.tweet__avatar {
+  width: 2.5rem;
+  float: left;
+
+  img {
+    border-radius: 50%;
+  }
+}
+
+.tweet__info {
+    font-weight: var(--font-weight-extrabold);
+    margin-left: 4rem;
+}
+
+.tweet__user-detail {
+    font-weight: var(--font-weight-extrabold);
+
+    a,
+    time {
+        font-weight: var(--font-weight-extrabold);
+    }
+
+    a {
+        color: var(--clr-brand);
+        text-decoration: none;
+    }
+
+    time {
+        color: var(--clr-grey);
+    }
+}
+
+.tweet__content {
+  margin-top: 1rem;
+  font-weight: var(--font-weight-normal);
+
+  a {
+    font-weight: var(--font-weight-extrabold);
+    color: var(--clr-grey);
+    word-break: break-word;
+    text-decoration: none;
+  }
+
+  .inline_emoji {
+    height: 1.3rem;
+    vertical-align: middle;
+  }
+}
+
+.tweet__actions {
+  margin-left: 4rem;
+  padding: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  list-style-type: none;
+}
+
+.tweet__actions-item {
+  margin-right: 1rem;
+
+  span {
+    position: absolute;
+    left: -9999px;
+    clip: rect(1px, 1px, 1px, 1px);
+  }
+}
+
+.h5yr {
+  font-weight: var(--font-weight-bold);
+  color: var(--clr-brand);
+}
+
+// Widget h5yr card badge and styling
+.tweet__card--widget {
+  border-left: 3px solid var(--clr-brand);
+}
+
+.tweet__badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-extrabold);
+  padding: 2px 6px;
+  border-radius: var(--radius-base);
+  vertical-align: middle;
+  margin-left: 4px;
+  background: var(--clr-brand-light);
+  color: var(--clr-brand);
+
+  &--github {
+    background: #f0f0f0;
+    color: #333;
+  }
+
+  &--google {
+    background: #e8f0fe;
+    color: #1a73e8;
+  }
+}

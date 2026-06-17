@@ -1,0 +1,16 @@
+.title {
+
+  // Title colour variation
+  &.grey {
+    color: var(--clr-grey);
+  }
+
+  &.white {
+    color: var(--clr-white);
+  }
+
+  // Used for emphasising parts of title in different colour
+  .purple {
+    color: var(--clr-brand);
+  }
+}

@@ -14,35 +14,38 @@ initCommunityStats();
 
   // Define hero animation element
   var $animationContainer = document.getElementById('js-hero-animation');
-  var lottie = window.lottie;
 
-  // Set up animation parameters
-  var params = {
-    container: $animationContainer,
-    renderer: 'svg',
-    loop: 1,
-    autoplay: true,
-    path: '/h5yrAnimation/data.json'
-  };
+  if ($animationContainer) {
+    var lottie = window.lottie;
 
-  // Load animation parameters into lottie
-  var anim = lottie.loadAnimation(params);
+    // Set up animation parameters
+    var params = {
+      container: $animationContainer,
+      renderer: 'svg',
+      loop: 1,
+      autoplay: true,
+      path: '/h5yrAnimation/data.json'
+    };
 
-  // On mouseover, play animation
-  $animationContainer.addEventListener('mouseover', function () {
-    playit()
-  });
+    // Load animation parameters into lottie
+    var anim = lottie.loadAnimation(params);
 
-  // On complete event, set anim.finished to true
-  anim.addEventListener('complete', function () {
-    anim.finished = true
-  });
+    // On mouseover, play animation
+    $animationContainer.addEventListener('mouseover', function () {
+      playit()
+    });
 
-  // If animation isn't running, start animating
-  function playit() {
-    if (anim.finished) {
-      anim.finished = false;
-      anim.goToAndPlay(1, true);
+    // On complete event, set anim.finished to true
+    anim.addEventListener('complete', function () {
+      anim.finished = true
+    });
+
+    // If animation isn't running, start animating
+    function playit() {
+      if (anim.finished) {
+        anim.finished = false;
+        anim.goToAndPlay(1, true);
+      }
     }
   }
 
