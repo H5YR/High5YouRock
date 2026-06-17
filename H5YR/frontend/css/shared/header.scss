@@ -4,7 +4,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
 
 
     &__inner {
@@ -35,5 +34,5 @@
     top:auto;
     position:relative;
     background: var(--bg-hero);
-    z-index:0;
+
 }
