@@ -1,9 +1,8 @@
 @using Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
-    var navigation = Umbraco.ContentAtRoot().FirstOrDefault()!
-                    .Children()
-                    .Where(x => x.IsVisible());
+    var root = Umbraco.ContentAtRoot().FirstOrDefault();
+    var navigation = root?.Children().Where(x => x.IsVisible()) ?? Enumerable.Empty<IPublishedContent>();
 }
 
 <input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />

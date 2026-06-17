@@ -5,12 +5,13 @@
     --clr-grey: #747474;
     --clr-brand: #6E48AA;
 
-    // Accent HSL
+    // Accent HSL - Get HSL values to create relative colors for backgrounds and other elements
     --accent-h: 283;
     --accent-s: 42%;
     --accent-l: 52%;
     --clr-brand-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
-
+    --clr-brand-light: color-mix(in srgb, var(--clr-brand) 20%, white);
+    
     // Backgrounds - Creates relative colors derived from --clr-brand and --clr-brand-accent
     --bg-body: hsl(var(--accent-h) 100% 97%);
     --bg-hero: linear-gradient(180deg, var(--clr-brand-accent), var(--clr-brand));
@@ -31,7 +32,6 @@
     --font-weight-normal: 400;
     --font-weight-bold: 700;
     --font-weight-extrabold: 800;
-
     --line-height-none: 1;
     --line-height-tight: 1.2;
     --line-height-base: 1.6;
@@ -41,7 +41,7 @@
     --radius-none: 0;
     --radius-base: 0.25rem; // 4px - Used by cards
     --radius-full: 9999px; // For circular elements
-
+    
     // Spacing
     --spacing-sm: 0.75rem; // 12px
     --spacing-md: 1rem; // 16px
