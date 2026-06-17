@@ -1,3 +1,59 @@
+:root {
+    // Palette
+    --clr-black: #000000;
+    --clr-white: #ffffff;
+    --clr-grey: #747474;
+    --clr-brand: #6E48AA;
+
+    // Accent HSL - Get HSL values to create relative colors for backgrounds and other elements
+    --accent-h: 283;
+    --accent-s: 42%;
+    --accent-l: 52%;
+    --clr-brand-accent: hsl(var(--accent-h) var(--accent-s) var(--accent-l));
+    --clr-brand-light: color-mix(in srgb, var(--clr-brand) 20%, white);
+    
+    // Backgrounds - Creates relative colors derived from --clr-brand and --clr-brand-accent
+    --bg-body: hsl(var(--accent-h) 100% 97%);
+    --bg-hero: linear-gradient(180deg, var(--clr-brand-accent), var(--clr-brand));
+    --bg-btn: var(--bg-hero);
+    --bg-btn-hover: linear-gradient(180deg, color-mix(in srgb, var(--clr-brand-accent) 80%, white), var(--clr-brand));
+
+    // Typography
+    --font-family-base: 'Montserrat', Helvetica, sans-serif;
+    --text-xs: 0.75rem; // 12px
+    --text-sm: 0.875rem; // 14px
+    --text-base: 1rem; // 16px
+    --text-md: 1.125rem; // 18px
+    --text-lg: 1.25rem; // 20px
+    --text-xl: 1.5rem; // 24px
+    --text-2xl: 1.75rem; // 32px
+    --text-3xl: 2.5rem; // 40px
+
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --line-height-none: 1;
+    --line-height-tight: 1.2;
+    --line-height-base: 1.6;
+    --line-height-loose: 1.9;
+
+    // Border-Radius
+    --radius-none: 0;
+    --radius-base: 0.25rem; // 4px - Used by cards
+    --radius-full: 9999px; // For circular elements
+    
+    // Spacing
+    --spacing-sm: 0.75rem; // 12px
+    --spacing-md: 1rem; // 16px
+    --spacing-lg: 1.5rem; // 24px
+    --spacing-xl: 2rem; // 32px
+    --spacing-2xl: 3rem; // 48px
+    
+    // Shadows
+    --shadow-base: 0 3px 6px color-mix(in srgb, var(--clr-black) 12%, transparent);
+}
+
+
 // Breakpoints
 $tiny: 420px;
 $small: 568px;
@@ -8,11 +64,5 @@ $mega: 1400px;
 
 $base-font-size: 16;
 
-// Colours
-$white: #FFFFFF;
-$black: #000000;
-$purple: #6E48AA;
-$purple2: #9D50BB;
-$grey: #747474;
 
-$font: 'Montserrat', Helvetica, sans-serif;
+

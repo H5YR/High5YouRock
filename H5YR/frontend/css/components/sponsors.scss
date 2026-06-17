@@ -1,0 +1,16 @@
+.sponsors {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+
+    @include media($small) {
+        gap: 1rem;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}

@@ -61,10 +61,54 @@ function renderSummary(data) {
 	const total = data.totalH5yrs ?? data.totalH5Yrs ?? 0
 	const widget = data.totalWidgetSubmissions ?? 0
 	const today = data.todayCount ?? 0
-	document.getElementById('js-stat-total').textContent = total.toLocaleString()
-	document.getElementById('js-stat-widget').textContent =
-		widget.toLocaleString()
-	document.getElementById('js-stat-today').textContent = today.toLocaleString()
+
+	const totalEl = document.getElementById('js-stat-total')
+	const widgetEl = document.getElementById('js-stat-widget')
+	const todayEl = document.getElementById('js-stat-today')
+
+	// Animate counters when they come into view
+	animateCounterOnScroll(totalEl, total)
+	animateCounterOnScroll(widgetEl, widget)
+	animateCounterOnScroll(todayEl, today)
+}
+
+function animateCounterOnScroll(element, target) {
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting && !element.dataset.animated) {
+				animateCounter(element, target)
+				element.dataset.animated = 'true'
+				observer.disconnect()
+			}
+		})
+	}, { 
+		threshold: 0
+	})
+
+	observer.observe(element)
+}
+
+function animateCounter(element, target) {
+	const duration = 1500 // 1.5 seconds
+	const startTime = performance.now()
+
+	function update(currentTime) {
+		const elapsed = currentTime - startTime
+		const progress = Math.min(elapsed / duration, 1)
+
+		// Linear progress (no easing)
+		const current = Math.floor(progress * target)
+
+		element.textContent = current.toLocaleString()
+
+		if (progress < 1) {
+			requestAnimationFrame(update)
+		} else {
+			element.textContent = target.toLocaleString()
+		}
+	}
+
+	requestAnimationFrame(update)
 }
 
 function renderActivityChart(timeline) {
@@ -131,7 +175,7 @@ function renderContributorsChart(contributors) {
 			return `
             <div class="stats-contributor">
                 <a href="${profileUrl}" target="_blank" rel="noopener" class="stats-contributor__info">
-                    <img src="${c.avatarUrl}" alt="" class="stats-contributor__avatar" width="24" height="24" />
+                    <img src="${c.avatarUrl}" alt="${c.displayName}" class="stats-contributor__avatar" width="24" height="24" />
                     <span class="stats-contributor__name">${c.displayName}</span>
                 </a>
                 <div class="stats-contributor__bar-wrap">

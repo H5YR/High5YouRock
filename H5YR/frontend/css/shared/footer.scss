@@ -1,0 +1,33 @@
+.footer {
+
+    &__sponsors {
+
+    }
+
+    &__credits {
+        font-size: var(--text-sm);
+        font-weight: var(--font-weight-bold);
+        min-height: 180px;
+        background: var(--clr-brand);
+        color: var(--clr-white);
+        padding: 2rem 0;
+    }
+
+    &__logo {
+        display: block;
+        margin-bottom: 1rem;
+        width: 92px;
+        height: 24px;
+    }
+
+    &__link {
+        color: var(--clr-white);
+        font-weight: var(--font-weight-bold);
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+}

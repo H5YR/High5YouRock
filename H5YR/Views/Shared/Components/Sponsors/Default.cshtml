@@ -6,17 +6,15 @@
     }
 
    
-
-    <section class="[ section -margin-top -margin-bottom ]">
+    <section class="section mt-2xl mb-2xl">
         <div class="container">
-            <div class="[ content-block -align-center ]">
+            <div class="content-block align-center">
                 <h2 class="h3">Friends of H5YR</h2>
-                <div class="friends">
+                <div class="sponsors">
                     @foreach (var sponsor in Model.Sponsors)
                     {
-
                         var content = (Sponsor)sponsor.Content;
-                        <a class="friends__item" href="@content.SponsorUrl" target="_blank" rel="noopener">
+                        <a class="sponsors__item" href="@content.SponsorUrl" target="_blank" rel="noopener">
                             @if (content.SponsorImage != null)
                             {
                                 <img src="@content.SponsorImage.Url()" alt="@(content.SponsorAltText ?? "")" width="100" height="100" />

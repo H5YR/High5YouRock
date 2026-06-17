@@ -1,0 +1,36 @@
+@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+  var metaTitle = Html.Coalesce(Model.Value("titles"), Model.Value("pageTitle"), Model.Name);
+  var metaDescription = @Model.Value("descriptions", fallback: Fallback.ToAncestors);
+}
+
+
+@* DNS prefetch and preconnect for external resources *@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+
+@* Basic meta tags *@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>@metaTitle</title>
+<meta name="description" content="@metaDescription" />
+
+@* Open Graph / Facebook *@
+<meta property="og:site_name" content="High Five, You Rock! #h5yr" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="@Model.Url(mode: UrlMode.Absolute)" />
+<meta property="og:title" content="@metaTitle" />
+<meta property="og:description" content="@metaDescription" />
+<meta property="og:image" content="https://h5yr.com/assets/images/h5yr.png" />
+
+@* X (Twitter) *@
+<meta name="twitter:site" content="@("@h5yr")" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="@Model.Url(mode: UrlMode.Absolute)" />
+<meta property="twitter:title" content="@metaTitle" />
+<meta property="twitter:description" content="@metaDescription" />
+<meta property="twitter:image" content="https://h5yr.com/assets/images/h5yr.png" />
