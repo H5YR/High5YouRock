@@ -35,6 +35,14 @@ export function initCommunityStats() {
 
 	if (!summaryEl && !activityEl && !contributorsEl) return
 
+	// The total is rendered server-side from IUnifiedFeedService.GetTotalCount()
+	// via the data-total attribute, so animate it independently of the API fetch.
+	const totalEl = document.getElementById('js-stat-total')
+	if (totalEl) {
+		const total = Number(totalEl.dataset.total ?? 0)
+		animateCounterOnScroll(totalEl, total)
+	}
+
 	fetch('/api/communitystats')
 		.then((response) => {
 			if (!response.ok) throw new Error(`HTTP ${response.status}`)
@@ -58,16 +66,16 @@ export function initCommunityStats() {
 }
 
 function renderSummary(data) {
-	const total = data.totalH5yrs ?? data.totalH5Yrs ?? 0
 	const widget = data.totalWidgetSubmissions ?? 0
 	const today = data.todayCount ?? 0
 
-	const totalEl = document.getElementById('js-stat-total')
 	const widgetEl = document.getElementById('js-stat-widget')
 	const todayEl = document.getElementById('js-stat-today')
 
+	// Note: the total card (#js-stat-total) is driven server-side via its
+	// data-total attribute and animated in initCommunityStats, not here.
+
 	// Animate counters when they come into view
-	animateCounterOnScroll(totalEl, total)
 	animateCounterOnScroll(widgetEl, widget)
 	animateCounterOnScroll(todayEl, today)
 }
