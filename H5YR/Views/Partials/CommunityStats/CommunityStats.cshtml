@@ -1,8 +1,11 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject H5YR.Core.Services.IUnifiedFeedService UnifiedFeedService
 @{
   var engagementPage = Umbraco.ContentAtRoot()
       .SelectMany(x => x.DescendantsOrSelf())
       .FirstOrDefault(x => x.ContentType.Alias == "page" && x.Name == "Community Engagement");
+
+  var totalCount = UnifiedFeedService.GetTotalCount();
 }
 @* Community Stats Cards - Homepage *@
 <section class="section mt-2xl mb-2xl">
@@ -12,7 +15,7 @@
 
       <div class="stats-dashboard__summary" id="js-stats-summary">
         <div class="stats-card">
-          <span class="stats-card__number" id="js-stat-total">0</span>
+          <span class="stats-card__number" id="js-stat-total" data-total="@totalCount">0</span>
           <span class="stats-card__label">@Umbraco.GetDictionaryValue("CommunityStats.TotalLabel")</span>
         </div>
         <div class="stats-card">
