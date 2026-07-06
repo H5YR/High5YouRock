@@ -96,7 +96,7 @@
         }
         .widget__auth-label {
             font-size: 14px;
-            color: #555;
+            color: var(--widget-color, #555);
             font-weight: 600;
             width: 100%;
             margin-bottom: 2px;
@@ -114,14 +114,14 @@
             font-weight: 600;
             font-family: inherit;
             text-decoration: none;
-            color: #333;
+            color: #333; /* Don't override as buttons stay white */
             transition: all 0.2s ease;
             flex: 1 1 auto;
             min-width: 160px;
         }
         .auth-btn:hover {
             background: #fff;
-            border-color: #6E48AA;
+                border-color: var(--widget-accent, #6E48AA);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(110, 72, 170, 0.2);
         }
@@ -145,21 +145,21 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            border: 2px solid #6E48AA;
+            border: 2px solid var(--widget-accent, #6E48AA);
         }
         .widget__user-name {
             font-weight: 700;
             font-size: 14px;
-            color: #333;
+            color: var(--widget-color, #333);
         }
         .widget__user-provider {
             font-size: 11px;
-            color: #888;
+            color: var(--widget-color, #888);
         }
         .widget__signout {
             margin-left: auto;
             font-size: 12px;
-            color: #6E48AA;
+            color: var(--widget-accent, #6E48AA);
             cursor: pointer;
             border: none;
             background: none;
@@ -176,7 +176,7 @@
             width: 100%;
             padding: 12px 20px;
             background: var(--widget-accent, linear-gradient(135deg, #6E48AA, #9D50BB));
-            color: #fff;
+            color: var(--widget-color, #fff);
             border: none;
             border-radius: 8px;
             font-size: 15px;
@@ -202,7 +202,7 @@
         /* Remaining */
         .widget__remaining {
             font-size: 12px;
-            color: #666;
+            color: var(--widget-color, #666);
             margin-top: 6px;
             text-align: center;
             font-weight: 500;
@@ -224,7 +224,7 @@
         }
         .widget__success-text {
             font-weight: 700;
-            background: linear-gradient(135deg, #6E48AA, #9D50BB);
+            background: var(--widget-accent, linear-gradient(135deg, #6E48AA, #9D50BB));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -232,7 +232,7 @@
         }
         .widget__success-sub {
             font-size: 13px;
-            color: #666;
+            color: var(--widget-color, #666);
             margin-top: 6px;
         }
 
@@ -240,7 +240,7 @@
         .widget__limited {
             text-align: center;
             padding: 12px 16px;
-            color: #555;
+            color: var(--widget-color, #555);
             font-size: 14px;
             background: rgba(255, 193, 7, 0.1);
             border-radius: 8px;
@@ -263,17 +263,17 @@
         /* Target URL preview */
         .widget__target {
             font-size: 12px;
-            color: #666;
+            color: var(--widget-color, #666);
             margin-bottom: 12px;
             word-break: break-all;
             line-height: 1.5;
             padding: 8px 12px;
             background: rgba(110, 72, 170, 0.05);
             border-radius: 6px;
-            border-left: 3px solid #6E48AA;
+            border-left: 3px solid var(--widget-accent, #6E48AA);
         }
         .widget__target strong {
-            color: #6E48AA;
+                color: var(--widget-accent, #6E48AA);
             font-weight: 700;
         }
 
@@ -287,16 +287,16 @@
             border-top: 1px solid rgba(110, 72, 170, 0.1);
             text-align: center;
             font-size: 11px;
-            color: #888;
+            color: var(--widget-color, #888);
         }
         .widget__footer a {
-            color: #6E48AA;
+            color: var(--widget-accent, #6E48AA);
             text-decoration: none;
             font-weight: 700;
             transition: color 0.2s;
         }
         .widget__footer a:hover {
-            color: #9D50BB;
+            color: var(--widget-accent, #9D50BB);
         }
         
         /* Responsive: Better horizontal on wider screens */
