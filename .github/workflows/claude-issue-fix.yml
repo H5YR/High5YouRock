@@ -1,5 +1,5 @@
 # Save as .github/workflows/claude-issue-fix.yml (on the repo's DEFAULT branch, or GitHub won't fire it)
-# Needs repo secret: ANTHROPIC_API_KEY
+# Needs repo secret: CLAUDE_CODE_OAUTH_TOKEN (run `claude setup-token` locally; uses your Pro/Max plan)
 #
 # Trigger it on a trusted issue by EITHER:
 #   - adding the label "ready-for-fix" (only people with triage/write access can label), or
@@ -75,7 +75,7 @@ jobs:
       - name: Plan and implement
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           claude_args: |
             --max-turns 80
