@@ -669,12 +669,12 @@
   }
   .stats-dashboard__charts {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
   }
   @media all and (max-width: 768px) {
     .stats-dashboard__charts {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
   .stats-card {
@@ -701,6 +701,7 @@
     letter-spacing: 0.03em;
   }
   .stats-chart {
+    min-width: 0;
     background: var(--clr-white);
     border-radius: var(--radius-base);
     padding: 1.5rem;
@@ -822,17 +823,19 @@
   }
   .tweet__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
     grid-gap: 30px;
     grid-auto-flow: dense;
   }
   @media all and (max-width: 568px) {
     .tweet__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       grid-gap: 20px;
     }
   }
   .tweet__card {
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-size: var(--text-sm);
     background: var(--clr-white);
     box-shadow: var(--shadow-base);
