@@ -61,8 +61,6 @@ jobs:
                **Summary:** one or two sentences on what's wrong / what's being asked.
                **Likely cause / affected areas:** bullet list of files (with paths) and why they matter.
                **Plan:** numbered steps a contributor can follow.
-               **Estimate:** a size (XS <1h, S 1–3h, M 3–8h, L 1–3 days, XL >3 days) plus an hour range,
-               and one line on what drives the estimate or could blow it out.
                **Test plan:** manual steps (local run, backoffice checks, uSync/content, frontend build)
                and, where worthwhile, unit tests that could be added. Say "Not required" with a reason if trivial.
                **Open questions:** anything the reporter needs to clarify (omit if none).
