@@ -279,6 +279,7 @@
 
         /* Hidden utility */
         .hidden { display: none !important; }
+        .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
         /* Powered by */
         .widget__footer {
@@ -327,6 +328,9 @@
         </div>
 
         <div class="widget__content">
+            <!-- Screen reader announcements (always in the DOM so changes are announced) -->
+            <div class="sr-only" id="statusAnnouncer" role="status" aria-live="polite" aria-atomic="true"></div>
+
             <!-- State: Unauthenticated -->
             <div class="widget__auth" id="stateAuth">
                 <div class="widget__auth-label">Sign in to give a high five:</div>
@@ -399,6 +403,7 @@
             var userProvider = document.getElementById('userProvider');
             var remainingText = document.getElementById('remainingText');
             var errorText = document.getElementById('errorText');
+            var statusAnnouncer = document.getElementById('statusAnnouncer');
             var targetPreview = document.getElementById('targetPreview');
 
             // Show target URL
@@ -468,9 +473,14 @@
                 state.classList.remove('hidden');
             }
 
+            function announce(msg) {
+                statusAnnouncer.textContent = msg;
+            }
+
             function showError(msg) {
                 errorText.textContent = msg;
                 errorText.classList.remove('hidden');
+                announce(msg);
             }
 
             // ── Auth check ───────────────────────────────────────────
@@ -498,6 +508,7 @@
 
                         if (data.remaining <= 0) {
                             showState(stateLimited);
+                            announce(stateLimited.textContent.trim());
                         } else {
                             remainingText.textContent = data.remaining + ' remaining today for this site';
                             showState(stateReady);
@@ -531,10 +542,11 @@
                     body: JSON.stringify({ token: token, targetUrl: TARGET_URL })
                 })
                 .then(function(r) {
-                    if (r.status === 429) { showState(stateLimited); return; }
+                    if (r.status === 429) { showState(stateLimited); announce(stateLimited.textContent.trim()); return; }
                     return r.json().then(function(data) {
                         if (r.ok) {
                             showState(stateSuccess);
+                            announce('You gave a #H5YR! It will appear on h5yr.com shortly.');
                             notifyParent();
                         } else {
                             showError(data.error || 'Something went wrong.');
