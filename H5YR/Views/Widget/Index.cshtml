@@ -510,6 +510,16 @@
 
             // ── Submit h5yr ──────────────────────────────────────────
 
+            // Tell the embedding page a High 5 was given (no personal data in the payload),
+            // so host sites can count real High 5s in their own analytics.
+            function notifyParent() {
+                try {
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage({ type: 'h5yr:submitted' }, '*');
+                    }
+                } catch(e) { /* never break the widget over analytics */ }
+            }
+
             btnSubmit.addEventListener('click', function() {
                 btnSubmit.disabled = true;
                 btnSubmit.textContent = 'Submitting...';
@@ -525,6 +535,7 @@
                     return r.json().then(function(data) {
                         if (r.ok) {
                             showState(stateSuccess);
+                            notifyParent();
                         } else {
                             showError(data.error || 'Something went wrong.');
                             btnSubmit.disabled = false;
