@@ -22,7 +22,7 @@ namespace H5YR.Core.Controllers.API
         }
 
         [HttpPost]
-        public IActionResult Submit([FromBody] WidgetSubmitRequest request)
+        public async Task<IActionResult> Submit([FromBody] WidgetSubmitRequest request)
         {
             // Validate JWT token
             var principal = _jwtService.ValidateToken(request.Token);
@@ -42,7 +42,7 @@ namespace H5YR.Core.Controllers.API
                 return BadRequest(new { error = "Target URL is required." });
             }
 
-            var result = _widgetH5yrService.Submit(
+            var result = await _widgetH5yrService.SubmitAsync(
                 authProvider, externalUserId, displayName, avatarUrl, profileUrl, request.TargetUrl);
 
             if (result == null)

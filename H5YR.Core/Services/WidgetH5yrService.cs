@@ -13,12 +13,15 @@ namespace H5YR.Core.Services
         private readonly ILogger<WidgetH5yrService> _logger;
         private readonly IWidgetH5yrStore _store;
         private readonly IOptions<WidgetSettings> _widgetSettings;
+        private readonly IPageMetadataService _pageMetadata;
 
         public WidgetH5yrService(
             ILogger<WidgetH5yrService> logger,
             IWidgetH5yrStore store,
-            IOptions<WidgetSettings> widgetSettings)
+            IOptions<WidgetSettings> widgetSettings,
+            IPageMetadataService pageMetadata)
         {
+            _pageMetadata = pageMetadata ?? throw new ArgumentNullException(nameof(pageMetadata));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _store = store ?? throw new ArgumentNullException(nameof(store));
             _widgetSettings = widgetSettings ?? throw new ArgumentNullException(nameof(widgetSettings));
@@ -34,7 +37,7 @@ namespace H5YR.Core.Services
             return _store.GetRecentBefore(before, count).Select(MapToFeedItem);
         }
 
-        public WidgetH5yr? Submit(string authProvider, string externalUserId, string displayName,
+        public async Task<WidgetH5yr?> SubmitAsync(string authProvider, string externalUserId, string displayName,
             string avatarUrl, string profileUrl, string targetUrl)
         {
             // Validate URL
@@ -61,6 +64,17 @@ namespace H5YR.Core.Services
             // Sanitize the display URL for content
             var displayUrl = HttpUtility.HtmlEncode(targetUrl);
 
+            // Show the page title/description when we can fetch them, otherwise just the URL
+            var metadata = await _pageMetadata.GetMetadataAsync(uri);
+            var linkText = string.IsNullOrEmpty(metadata?.Title)
+                ? displayUrl
+                : $"<strong>{HttpUtility.HtmlEncode(metadata.Title)}</strong>";
+            var content = $"<p><span class=\"h5yr\">#H5YR</span> for <a href=\"{displayUrl}\" target=\"_blank\" rel=\"noopener\">{linkText}</a></p>";
+            if (!string.IsNullOrEmpty(metadata?.Description))
+            {
+                content += $"<p>{HttpUtility.HtmlEncode(metadata.Description)}</p>";
+            }
+
             var entity = new WidgetH5yr
             {
                 AuthProvider = authProvider,
@@ -70,7 +84,7 @@ namespace H5YR.Core.Services
                 ProfileUrl = profileUrl,
                 TargetUrl = targetUrl,
                 TargetSiteHost = targetSiteHost,
-                Content = $"<p><span class=\"h5yr\">#H5YR</span> for <a href=\"{displayUrl}\" target=\"_blank\" rel=\"noopener\">{displayUrl}</a></p>",
+                Content = content,
                 CreatedAt = DateTime.UtcNow
             };
 

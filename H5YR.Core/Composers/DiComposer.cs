@@ -38,6 +38,7 @@ namespace H5YR.Core.Composers
 
             // Widget H5YR services
             builder.Services.AddSingleton<IWidgetH5yrStore, WidgetH5yrStore>();
+            builder.Services.AddSingleton<IPageMetadataService, PageMetadataService>();
             builder.Services.AddSingleton<IWidgetH5yrService, WidgetH5yrService>();
             builder.Services.AddSingleton<IWidgetJwtService, WidgetJwtService>();
             builder.Services.Configure<WidgetSettings>(builder.Config.GetSection("WidgetSettings"));

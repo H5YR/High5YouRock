@@ -17,8 +17,9 @@ namespace H5YR.Core.Services
 
         /// <summary>
         /// Submit a new h5yr from the widget. Returns the created entity or null if rate limited.
+        /// The target page's title/description are fetched and included in the content when available.
         /// </summary>
-        WidgetH5yr? Submit(string authProvider, string externalUserId, string displayName,
+        Task<WidgetH5yr?> SubmitAsync(string authProvider, string externalUserId, string displayName,
             string avatarUrl, string profileUrl, string targetUrl);
 
         /// <summary>
