@@ -7,7 +7,11 @@
       "mcp__Claude_in_Chrome__javascript_tool",
       "mcp__Claude_in_Chrome__get_page_text",
       "mcp__Claude_in_Chrome__read_page",
-      "PowerShell(netstat -ano)"
+      "PowerShell(netstat -ano)",
+      "Bash(dotnet build *)",
+      "Bash(git rm *)",
+      "Bash(curl -sk -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"http://localhost:60473/api/loadmoreposts/?startId=&oldestDate=\")",
+      "Bash(curl -sk -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"http://localhost:60473/api/loadmoreposts/?startId=widget_5&oldestDate=2026-05-01T00:00:00.000Z\")"
     ]
   }
 }

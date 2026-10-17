@@ -72,6 +72,8 @@ jobs:
             WidgetSettings.GoogleClientId: ${{secrets.WIDGET_GOOGLE_CLIENT_ID}}
             WidgetSettings.GoogleClientSecret: ${{secrets.WIDGET_GOOGLE_CLIENT_SECRET}}
             WidgetSettings.JwtSigningKey: ${{secrets.WIDGET_JWT_SIGNING_KEY}}
+            BlueskySettings.Identifier: ${{secrets.BLUESKY_IDENTIFIER}}
+            BlueskySettings.AppPassword: ${{secrets.BLUESKY_APP_PASSWORD}}
             
         - name: Build Solution
           run: | 
