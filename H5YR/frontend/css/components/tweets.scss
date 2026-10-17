@@ -49,17 +49,19 @@
 
 .tweet__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
   grid-gap: 30px;
   grid-auto-flow: dense;
 
   @include media($small) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-gap: 20px;
   }
 }
 
 .tweet__card {
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-size: var(--text-sm);
     background: var(--clr-white);
     box-shadow: var(--shadow-base);
