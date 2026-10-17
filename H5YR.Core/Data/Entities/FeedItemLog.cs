@@ -22,7 +22,7 @@ namespace H5YR.Core.Data.Entities
         public string ExternalId { get; set; } = string.Empty;
 
         /// <summary>
-        /// "mastodon" or "widget"
+        /// "mastodon", "widget" or "bluesky"
         /// </summary>
         [Column(FeedItemLogSchemaConstants.Source)]
         [Length(50)]
