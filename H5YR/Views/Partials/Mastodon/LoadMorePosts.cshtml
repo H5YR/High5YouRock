@@ -29,6 +29,9 @@
                             🖐 widget
                         </span>
                     } else {
+                        if (item.Source == "bluesky") {
+                            <span class="source-badge bluesky">🦋 Bluesky</span>
+                        }
                         <a href="@item.Permalink" target="_blank" rel="noopener">
                             [Permalink]
                         </a>

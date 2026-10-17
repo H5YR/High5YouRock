@@ -10,20 +10,25 @@ namespace H5YR.Core.Services
         private readonly IFeedItemLogStore _feedItemLogStore;
         private readonly IWidgetH5yrStore _widgetH5yrStore;
         private readonly IMastodonService _mastodonService;
+        private readonly IBlueskyService _blueskyService;
 
         private const int MastodonPageSize = 40;
+        private const int BlueskyPageSize = 100;
+        private const int MaxBlueskyPages = 20;
         private static readonly TimeSpan BackfillWindow = TimeSpan.FromDays(90);
 
         public FeedItemLogBackfillService(
             ILogger<FeedItemLogBackfillService> logger,
             IFeedItemLogStore feedItemLogStore,
             IWidgetH5yrStore widgetH5yrStore,
-            IMastodonService mastodonService)
+            IMastodonService mastodonService,
+            IBlueskyService blueskyService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _feedItemLogStore = feedItemLogStore ?? throw new ArgumentNullException(nameof(feedItemLogStore));
             _widgetH5yrStore = widgetH5yrStore ?? throw new ArgumentNullException(nameof(widgetH5yrStore));
             _mastodonService = mastodonService ?? throw new ArgumentNullException(nameof(mastodonService));
+            _blueskyService = blueskyService ?? throw new ArgumentNullException(nameof(blueskyService));
         }
 
         public void BackfillFromWidget()
@@ -56,6 +61,50 @@ namespace H5YR.Core.Services
             {
                 _logger.LogInformation("No new widget items to back-fill.");
             }
+        }
+
+        public async Task BackfillFromBlueskyAsync()
+        {
+            _logger.LogInformation("Starting FeedItemLog back-fill from Bluesky.");
+
+            string? cursor = null;
+            int totalInserted = 0;
+
+            // Bluesky search pages are capped at 100 posts; bound the walk so a runaway cursor can't loop forever
+            for (int page = 0; page < MaxBlueskyPages; page++)
+            {
+                var (items, nextCursor) = await _blueskyService.GetPostsPageAsync(BlueskyPageSize, cursor);
+                if (items.Count == 0)
+                {
+                    break;
+                }
+
+                var toInsert = items
+                    .Select(i => new FeedItemLog
+                    {
+                        ExternalId = $"bluesky_{i.Id}",
+                        Source = "bluesky",
+                        CreatedAt = i.CreatedAt
+                    })
+                    .Where(l => !_feedItemLogStore.Exists(l.ExternalId))
+                    .ToList();
+
+                if (toInsert.Count > 0)
+                {
+                    _feedItemLogStore.SaveRange(toInsert);
+                    totalInserted += toInsert.Count;
+                }
+
+                if (string.IsNullOrEmpty(nextCursor))
+                {
+                    break;
+                }
+
+                cursor = nextCursor;
+                await Task.Delay(500);
+            }
+
+            _logger.LogInformation("Bluesky back-fill complete. Inserted {Count} items.", totalInserted);
         }
 
         public async Task BackfillFromMastodonAsync()
