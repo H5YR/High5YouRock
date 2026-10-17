@@ -29,6 +29,8 @@ namespace H5YR.Core.Composers
             });
 
             builder.Services.AddSingleton<IMastodonService, MastodonService>();
+            builder.Services.AddSingleton<IBlueskyService, BlueskyService>();
+            builder.Services.Configure<BlueskySettings>(builder.Config.GetSection("BlueskySettings"));
             builder.Services.AddSingleton<IPostCounterStore, PostCounterStore>();
             builder.Services.Configure<APISettings>(builder.Config.GetSection("APISettings"));
             builder.Services.AddSingleton<HomeSettingsService>();

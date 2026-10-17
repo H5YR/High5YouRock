@@ -9,7 +9,7 @@ namespace H5YR.Core.Models
         public string Id { get; set; } = string.Empty;
 
         /// <summary>
-        /// "mastodon" or "widget"
+        /// "mastodon", "widget" or "bluesky"
         /// </summary>
         public string Source { get; set; } = string.Empty;
 

@@ -17,6 +17,7 @@ namespace H5YR.Core.Controllers.API
         private readonly IOptions<APISettings> _apiSettings;
         private readonly IMastodonService _mastodonService;
         private readonly IWidgetH5yrService _widgetH5yrService;
+        private readonly IBlueskyService _blueskyService;
 
         protected bool IsOffline => _apiSettings.Value.Offline == "true";
 
@@ -28,12 +29,14 @@ namespace H5YR.Core.Controllers.API
             ILogger<LoadMorePostsController> logger,
             IOptions<APISettings> apiSettings,
             IMastodonService mastodonService,
-            IWidgetH5yrService widgetH5yrService)
+            IWidgetH5yrService widgetH5yrService,
+            IBlueskyService blueskyService)
         {
             _logger = logger;
             _apiSettings = apiSettings;
             _mastodonService = mastodonService;
             _widgetH5yrService = widgetH5yrService;
+            _blueskyService = blueskyService;
         }
 
         [HttpGet]
@@ -85,14 +88,17 @@ namespace H5YR.Core.Controllers.API
 
             // Get widget h5yr items from before the oldest date shown
             var widgetItems = new List<FeedItem>();
+            var blueskyItems = new List<FeedItem>();
             if (DateTime.TryParse(oldestDate, out var beforeDate))
             {
                 widgetItems = _widgetH5yrService.GetFeedItemsBefore(beforeDate, PageSize).ToList();
+                blueskyItems = _blueskyService.GetFeedItemsBefore(beforeDate, PageSize).ToList();
             }
 
             // Merge and sort
             var allItems = mastodonFeedItems
                 .Concat(widgetItems)
+                .Concat(blueskyItems)
                 .OrderByDescending(f => f.CreatedAt)
                 .ToList();
 

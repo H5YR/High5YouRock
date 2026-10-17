@@ -4,7 +4,8 @@ namespace H5YR.Core.Models
     {
         Mastodon,
         Discourse,
-        Widget
+        Widget,
+        Bluesky
     }
 
     public class UnifiedFeedItem

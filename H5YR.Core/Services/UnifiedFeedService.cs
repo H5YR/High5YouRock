@@ -9,6 +9,7 @@ namespace H5YR.Core.Services
     {
         private readonly ILogger<UnifiedFeedService> _logger;
         private readonly IMastodonService _mastodonService;
+        private readonly IBlueskyService _blueskyService;
         private readonly IDiscourseService _discourseService;
         private readonly IWidgetH5yrService _widgetService;
         private readonly IFeedItemLogStore _feedItemLogStore;
@@ -16,12 +17,14 @@ namespace H5YR.Core.Services
         public UnifiedFeedService(
             ILogger<UnifiedFeedService> logger,
             IMastodonService mastodonService,
+            IBlueskyService blueskyService,
             IDiscourseService discourseService,
             IWidgetH5yrService widgetService,
             IFeedItemLogStore feedItemLogStore)
         {
             _logger = logger;
             _mastodonService = mastodonService;
+            _blueskyService = blueskyService;
             _discourseService = discourseService;
             _widgetService = widgetService;
             _feedItemLogStore = feedItemLogStore;
@@ -33,6 +36,7 @@ namespace H5YR.Core.Services
             {
                 // Fetch more than needed from each source to ensure we have enough after merging
                 var mastodonItems = _mastodonService.GetStatusesAsFeedItems(count).ToList();
+                var blueskyItems = _blueskyService.GetPostsAsFeedItems(count).ToList();
                 var discourseItems = _discourseService.GetRecentReactionsAsFeedItems(count);
                 var widgetItems = _widgetService.GetRecentFeedItems(count)
                     .Select(w => new UnifiedFeedItem
@@ -54,11 +58,13 @@ namespace H5YR.Core.Services
                 // now-unused MastodonViewComponent, which left the stats frozen).
                 LogNewFeedItems(mastodonItems);
                 LogNewFeedItems(widgetItems);
+                LogNewFeedItems(blueskyItems);
 
                 // Merge and sort by date (newest first)
                 var unifiedFeed = mastodonItems
                     .Concat(discourseItems)
                     .Concat(widgetItems)
+                    .Concat(blueskyItems)
                     .OrderByDescending(item => item.CreatedAt)
                     .Take(count)
                     .ToList();
@@ -74,12 +80,14 @@ namespace H5YR.Core.Services
 
         public int GetTotalCount()
         {
-            return _mastodonService.GetPostCount() + _discourseService.GetTotalReactionCount() + _widgetService.GetTotalCount();
+            var blueskyCount = _feedItemLogStore.GetAll().Count(x => x.Source == "bluesky");
+
+            return _mastodonService.GetPostCount() + _discourseService.GetTotalReactionCount() + _widgetService.GetTotalCount() + blueskyCount;
         }
 
         /// <summary>
         /// Persists any new feed items to the log table so date-based stats
-        /// (activity timeline, today count) stay current. Only Mastodon and widget
+        /// (activity timeline, today count) stay current. Only Mastodon, Bluesky and widget
         /// items are recorded, matching the original stats behaviour; Discourse
         /// reactions are shown in the feed but excluded from the counts.
         /// </summary>
@@ -93,6 +101,7 @@ namespace H5YR.Core.Services
                 string? externalId = item.SourceType switch
                 {
                     FeedSourceType.Mastodon => $"mastodon_{item.Id}",
+                    FeedSourceType.Bluesky => $"bluesky_{item.Id}",
                     FeedSourceType.Widget => item.Id,
                     _ => null
                 };
@@ -109,7 +118,12 @@ namespace H5YR.Core.Services
                         _feedItemLogStore.Save(new FeedItemLog
                         {
                             ExternalId = externalId,
-                            Source = item.SourceType == FeedSourceType.Mastodon ? "mastodon" : "widget",
+                            Source = item.SourceType switch
+                            {
+                                FeedSourceType.Mastodon => "mastodon",
+                                FeedSourceType.Bluesky => "bluesky",
+                                _ => "widget"
+                            },
                             CreatedAt = item.CreatedAt
                         });
                     }
