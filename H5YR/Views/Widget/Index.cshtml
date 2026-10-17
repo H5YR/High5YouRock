@@ -525,6 +525,12 @@
                     return r.json().then(function(data) {
                         if (r.ok) {
                             showState(stateSuccess);
+                            // Let the embedding page count real High 5s (no personal data in payload)
+                            try {
+                                if (window.parent !== window) {
+                                    window.parent.postMessage({ type: 'h5yr:submitted' }, '*');
+                                }
+                            } catch (e) { /* ignore */ }
                         } else {
                             showError(data.error || 'Something went wrong.');
                             btnSubmit.disabled = false;
