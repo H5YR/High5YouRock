@@ -31,5 +31,10 @@ namespace H5YR.Core.Services
         /// Get total widget h5yr count.
         /// </summary>
         int GetTotalCount();
+
+        /// <summary>
+        /// Get the number of widget h5yrs given for a specific page URL.
+        /// </summary>
+        int GetCountForUrl(string targetUrl);
     }
 }

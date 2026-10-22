@@ -5,6 +5,7 @@
     var bgColor = ViewBag.BgColor as string;
     var textColor = ViewBag.Color as string;
     var accentColor = ViewBag.Accent as string;
+    var h5yrCount = ViewBag.H5yrCount as int? ?? 0;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -277,6 +278,15 @@
             font-weight: 700;
         }
 
+        /* Count of High Fives given for this page */
+        .widget__count {
+            font-size: 12px;
+            color: var(--widget-color, #666);
+            margin: -6px 0 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
         /* Hidden utility */
         .hidden { display: none !important; }
 
@@ -325,6 +335,8 @@
         <div class="widget__target" id="targetPreview">
             <strong>#H5YR</strong> for this page
         </div>
+
+        <div class="widget__count" id="countText"></div>
 
         <div class="widget__content">
             <!-- State: Unauthenticated -->
@@ -384,6 +396,7 @@
             var BASE_URL = '@Html.Raw(baseUrl)';
             var TARGET_URL = '@Html.Raw(targetUrl)';
             var TOKEN_KEY = 'h5yr_widget_token';
+            var h5yrCount = @h5yrCount;
 
             // DOM refs
             var stateAuth = document.getElementById('stateAuth');
@@ -400,6 +413,18 @@
             var remainingText = document.getElementById('remainingText');
             var errorText = document.getElementById('errorText');
             var targetPreview = document.getElementById('targetPreview');
+            var countText = document.getElementById('countText');
+
+            function renderCount() {
+                if (h5yrCount <= 0) {
+                    countText.textContent = '✋ Be the first to give a High Five!';
+                } else if (h5yrCount === 1) {
+                    countText.textContent = '✋ 1 High Five has been given';
+                } else {
+                    countText.textContent = '✋ ' + h5yrCount + ' High Fives have been given';
+                }
+            }
+            renderCount();
 
             // Show target URL
             if (TARGET_URL) {
@@ -535,6 +560,8 @@
                     return r.json().then(function(data) {
                         if (r.ok) {
                             showState(stateSuccess);
+                            h5yrCount++;
+                            renderCount();
                             notifyParent();
                         } else {
                             showError(data.error || 'Something went wrong.');
