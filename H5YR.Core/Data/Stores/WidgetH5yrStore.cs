@@ -76,5 +76,14 @@ namespace H5YR.Core.Data.Stores
             scope.Complete();
             return count;
         }
+
+        public int GetCountForUrl(string targetUrl)
+        {
+            using var scope = _scopeProvider.CreateScope();
+            var count = scope.Database.ExecuteScalar<int>(
+                "SELECT COUNT(*) FROM WidgetH5yr WHERE TargetUrl = @0", targetUrl);
+            scope.Complete();
+            return count;
+        }
     }
 }

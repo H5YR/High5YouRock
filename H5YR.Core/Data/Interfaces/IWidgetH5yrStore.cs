@@ -17,5 +17,7 @@ namespace H5YR.Core.Data.Interfaces
         void Delete(WidgetH5yr poco);
 
         int GetTotalCount();
+
+        int GetCountForUrl(string targetUrl);
     }
 }

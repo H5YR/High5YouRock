@@ -1,3 +1,4 @@
+using H5YR.Core.Services;
 using H5YR.Core.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -8,10 +9,12 @@ namespace H5YR.Core.Controllers
     public class WidgetController : Controller
     {
         private readonly IOptions<WidgetSettings> _widgetSettings;
+        private readonly IWidgetH5yrService _widgetH5yrService;
 
-        public WidgetController(IOptions<WidgetSettings> widgetSettings)
+        public WidgetController(IOptions<WidgetSettings> widgetSettings, IWidgetH5yrService widgetH5yrService)
         {
             _widgetSettings = widgetSettings;
+            _widgetH5yrService = widgetH5yrService;
         }
 
         [HttpGet("embed.js")]
@@ -48,6 +51,7 @@ namespace H5YR.Core.Controllers
             ViewBag.BgColor = SanitizeHexColor(bgcolor);
             ViewBag.Color = SanitizeHexColor(color);
             ViewBag.Accent = SanitizeHexColor(accent);
+            ViewBag.H5yrCount = _widgetH5yrService.GetCountForUrl(url);
             return View("~/Views/Widget/Index.cshtml");
         }
 
