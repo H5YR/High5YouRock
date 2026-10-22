@@ -109,6 +109,12 @@ namespace H5YR.Core.Services
             return _store.GetTotalCount();
         }
 
+        public int GetCountForUrl(string targetUrl)
+        {
+            if (string.IsNullOrEmpty(targetUrl)) return 0;
+            return _store.GetCountForUrl(targetUrl);
+        }
+
         private static FeedItem MapToFeedItem(WidgetH5yr entity)
         {
             return new FeedItem
