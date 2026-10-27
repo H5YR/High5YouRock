@@ -2,7 +2,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
     var root = Umbraco.ContentAtRoot().FirstOrDefault();
-    var navigation = root?.Children().Where(x => x.IsVisible()) ?? Enumerable.Empty<IPublishedContent>();
+    var navigation = root?.Children().Where(x => x.IsVisible() && x.ContentType.Alias != "errorPage") ?? Enumerable.Empty<IPublishedContent>();
 }
 
 <input type="checkbox" id="nav-toggle" class="navigation__toggle" aria-hidden="true" />

@@ -43,7 +43,7 @@
     </environment>
 
 
-    <header class="@(Model is Page ? "header header-short" : "header")">
+    <header class="@(Model is Page || Model.ContentType.Alias == "errorPage" ?"header header-short" : "header")">
         <div class="container">
             <div class="header__inner">
                 <div class="header__logo">

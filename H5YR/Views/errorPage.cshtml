@@ -1,0 +1,34 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.Strings;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    Layout = "Master.cshtml";
+
+    var pageTitle = Model.Value<string>("pageTitle");
+    var bodyText = Model.Value<IHtmlEncodedString>("bodyText");
+}
+
+
+<section class="section section--top mb-2xl">
+    <div class="container">
+        <div class="content-block align-center">
+            <h1>@(string.IsNullOrWhiteSpace(pageTitle) ? "Oops! We can't find that page" : pageTitle)</h1>
+
+            @if (bodyText != null && !string.IsNullOrWhiteSpace(bodyText.ToHtmlString()))
+            {
+                @bodyText
+            }
+            else
+            {
+                <p>We looked high and low, but this page has gone missing. It may have moved, or the link might be wrong.</p>
+            }
+
+            <div class="button-group">
+                <a class="button icon-left" href="/">
+                    <i class="icon fa-solid fa-house" aria-hidden="true"></i>
+                    <span>Back to the homepage</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
