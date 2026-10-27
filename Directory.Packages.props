@@ -2,6 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.7" />
@@ -15,5 +16,11 @@
     <PackageVersion Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
     <PackageVersion Include="uSync" Version="17.5.0" />
     <PackageVersion Include="Vite.AspNetCore" Version="2.0.0" />
+  </ItemGroup>
+  <!-- Transitive pins to patch known vulnerabilities in packages pulled in by Umbraco / SqlClient / MimeKit -->
+  <ItemGroup>
+    <PackageVersion Include="MessagePack" Version="3.1.12" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.2.0" />
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
   </ItemGroup>
 </Project>
