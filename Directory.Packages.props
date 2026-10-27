@@ -4,7 +4,6 @@
     <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.9" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.7" />
     <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.19.2" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
