@@ -53,7 +53,7 @@ public class SitemapService : ISitemapService
             }
         }
 
-        var visiblePages = allPages.Where(x => x.IsVisible(_publishedValueFallback));
+        var visiblePages = allPages.Where(x => x.IsVisible(_publishedValueFallback) && x.ContentType.Alias != "errorPage");
 
         var sitemapUrls = visiblePages.Select(page => new SitemapUrlViewModel
         {
